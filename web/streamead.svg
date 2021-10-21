@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 595.28 841.89" style="enable-background:new 0 0 595.28 841.89;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;}
+	.st1{fill:#4F3A96;}
+	.st2{fill:#4F3A96;stroke:url(#SVGID_1_);stroke-width:0.5076;stroke-miterlimit:10;}
+	.st3{fill:#4F3A96;stroke:url(#SVGID_2_);stroke-width:0.5076;stroke-miterlimit:10;}
+	.st4{fill:#4F3A96;stroke:url(#SVGID_3_);stroke-width:0.5076;stroke-miterlimit:10;}
+	.st5{fill:#4F3A96;stroke:url(#SVGID_4_);stroke-width:0.5076;stroke-miterlimit:10;}
+</style>
+<pattern  width="123.43" height="234.9" patternUnits="userSpaceOnUse" id="Unnamed_Pattern" viewBox="0 -234.9 123.43 234.9" style="overflow:visible;">
+	<g>
+		<rect y="-234.9" class="st0" width="123.43" height="234.9"/>
+		<rect y="-234.9" class="st1" width="123.43" height="234.9"/>
+	</g>
+</pattern>
+<g>
+	<g>
+		<pattern  id="SVGID_1_" xlink:href="#Unnamed_Pattern" patternTransform="matrix(1.8159 0 0 1.7593 5993.5752 5778.7568)">
+		</pattern>
+		<path class="st2" d="M210.84,429.09c0,22.07,7.25,43.75,20.53,61.4l-11.86,11.86c-16.32-20.84-25.26-46.71-25.26-73.26
+			c0-26.54,8.94-52.42,25.26-73.26l11.86,11.86C218.09,385.34,210.84,407.02,210.84,429.09z"/>
+		<pattern  id="SVGID_2_" xlink:href="#Unnamed_Pattern" patternTransform="matrix(1.8159 0 0 1.7593 5993.5752 5778.7568)">
+		</pattern>
+		<path class="st3" d="M313.11,345.22c-21.54,0-41.85,8.05-57.42,22.78l61.13,61.09l-61.13,61.13
+			c15.57,14.69,35.88,22.74,57.42,22.74c46.27,0,83.92-37.6,83.92-83.87C397.03,382.82,359.38,345.22,313.11,345.22z M352.02,447.49
+			c-10.17,0-18.4-8.23-18.4-18.4c0-10.13,8.23-18.36,18.4-18.36c10.13,0,18.36,8.23,18.36,18.36
+			C370.38,439.26,362.15,447.49,352.02,447.49z"/>
+		<pattern  id="SVGID_3_" xlink:href="#Unnamed_Pattern" patternTransform="matrix(1.8159 0 0 1.7593 5993.5752 5778.7568)">
+		</pattern>
+		<path class="st4" d="M246.49,429.09c0,12.78,3.63,25.13,10.48,35.79l-11.94,11.94c-9.91-13.98-15.08-30.43-15.08-47.73
+			c0-17.3,5.18-33.71,15.08-47.73l11.94,11.94C250.12,404.01,246.49,416.31,246.49,429.09z"/>
+		<pattern  id="SVGID_4_" xlink:href="#Unnamed_Pattern" patternTransform="matrix(1.8159 0 0 1.7593 5993.5752 5778.7568)">
+		</pattern>
+		<path class="st5" d="M292.76,429.09l-21.81,21.81c-3.49-6.68-5.35-14.16-5.35-21.81c0-7.65,1.86-15.08,5.35-21.81L292.76,429.09z"
+			/>
+	</g>
+</g>
+</svg>
