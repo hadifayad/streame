@@ -1120,8 +1120,7 @@ class MobileController extends ApiController {
 
     public function actionTestUploadVideo() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//            return "qwe";
-//            return $_POST["title"];
+
             $file_name = $_FILES['myFile']['name'];
             $file_size = $_FILES['myFile']['size'];
             $file_type = $_FILES['myFile']['type'];
@@ -1130,7 +1129,7 @@ class MobileController extends ApiController {
             $location = "videoUploads/";
 
             move_uploaded_file($temp_name, $location . $file_name);
-            return "http://5.189.150.68/buy_and_sell_in_lebanon/web/videoUploads/" . $file_name;
+            return "https://www.theleader.team/videoUploads/" . $file_name;
         } else {
             return "Error";
         }
