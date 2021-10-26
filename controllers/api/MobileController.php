@@ -206,7 +206,7 @@ class MobileController extends ApiController {
                 $model->game_id = $userGame->id;
                 $model->game_account_id = $userGame->account_game_id;
                 if ($model->save()) {
-
+                    
                 }
             }
 
@@ -639,7 +639,7 @@ class MobileController extends ApiController {
                                     $model->game_id = $userGame->game_id;
                                     $model->game_account_id = $userGame->game_account_id;
                                     if ($model->save()) {
-
+                                        
                                     } else {
                                         return [
                                             "status" => "0",
@@ -660,7 +660,7 @@ class MobileController extends ApiController {
                                 $model->game_id = $userGame->id;
                                 $model->game_account_id = $userGame->game_account_id;
                                 if ($model->save()) {
-
+                                    
                                 } else {
                                     return [
                                         "status" => "0",
@@ -668,7 +668,7 @@ class MobileController extends ApiController {
                                     ];
                                 }
                             } else {
-
+                                
                             }
                         }
                     } else {
@@ -1073,7 +1073,7 @@ class MobileController extends ApiController {
                 $userPurchace->quantity = $quantity;
                 $userPurchace->acknowledged = $acknowledged;
                 if ($userPurchace->save()) {
-
+                    
                 }
                 return [
                     "status" => "1",
@@ -1115,6 +1115,24 @@ class MobileController extends ApiController {
                 "status" => "0",
                 "message" => "user does not exist",
             ];
+        }
+    }
+
+    public function actionTestUploadVideo() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+//            return "qwe";
+//            return $_POST["title"];
+            $file_name = $_FILES['myFile']['name'];
+            $file_size = $_FILES['myFile']['size'];
+            $file_type = $_FILES['myFile']['type'];
+            $temp_name = $_FILES['myFile']['tmp_name'];
+
+            $location = "videoUploads/";
+
+            move_uploaded_file($temp_name, $location . $file_name);
+            return "http://5.189.150.68/buy_and_sell_in_lebanon/web/videoUploads/" . $file_name;
+        } else {
+            return "Error";
         }
     }
 
