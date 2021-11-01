@@ -23,25 +23,21 @@ class MobileController extends ApiController {
     public function actionCreateRoom() {
         $post = Yii::$app->request->post();
         $text = $post["text"];
-//        // $image = $post["image"];
+        $title = $post["title"];
+        $mention = $post["mention"];
+        $category = $post["category"];
+
         $user = $post["userId"];
-        $page_name = $post["page_name"];
-        $page_link = $post["page_link"];
-        $date = $post["date"];
+
         $room = new Rooms();
-        $room->page_link = $page_link;
-        $room->page_name = $page_name;
+        $room->category = $category;
+        $room->mention = $mention;
         $room->r_admin = $user;
         $room->c_text = $text;
-//
-//        return $user;
-        $room->creation_date = $date;
-//        $post = new Rooms();
-//        $post->page_link = "link";
-//        $post->page_name = "name";
-//        $post->r_admin = "12";
-//        $post->c_text = "text";
-        // $post->creation_date = "date";
+        $room->title = $title;
+
+        $room->creation_date = date("Y-m-d H:i:s");
+
         if ($room->save()) {
             return true;
         } else {
@@ -94,6 +90,28 @@ class MobileController extends ApiController {
 
 
         return $arrayList;
+    }
+
+    public function actionGetFollowedStreamers() {
+
+        $post = Yii::$app->request->post();
+        $userId = $post["userId"];
+
+//
+//        $sql = "SELECT * FROM `users`
+//LEFT JOIN follow on users.id = follow.r_page
+//WHERE follow.r_user = $userId";
+//        $command = Yii::$app->db->createCommand($sql);
+//        $arrayList = $command->queryAll();
+//
+        $streamers = Users::find()
+                ->leftJoin('follow', 'users.id = follow.r_page')
+                ->where(['follow.r_user' => $userId])
+                ->all();
+
+
+
+        return $streamers;
     }
 
     public function actionGetRoomsByUser() {
