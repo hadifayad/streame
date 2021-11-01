@@ -98,17 +98,29 @@ class MobileController extends ApiController {
 
     public function actionGetRoomsByUser() {
 
-        $post = Yii::$app->request->post();
-        $userId = $post["userId"];
+//        $post = Yii::$app->request->post();
+//        $userId = $post["userId"];
 
-        $rooms = Rooms::find()
-                ->where(['r_admin' => $userId])
-                ->all();
+        $userId = 19;
+//        $rooms = Rooms::find()
+//                ->where(['r_admin' => $userId])
+//                ->all();
+//        
+//                return $rooms;
+
+        $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
+            (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
+            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
+             FROM rooms
+             JOIN users ON rooms.r_admin = users.id
+             LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
+             WHERE  rooms.r_admin = $userId AND rooms.creation_date >= CURDATE();";
+
+        $command = Yii::$app->db->createCommand($sql);
+        $arrayList = $command->queryAll();
 
 
-
-
-        return $rooms;
+        return $arrayList;
     }
 
     public function actionGetProUsersPosts() {
@@ -1120,16 +1132,21 @@ class MobileController extends ApiController {
 
     public function actionTestUploadVideo() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+            $title = $_POST[""];
             $file_name = $_FILES['myFile']['name'];
-            $file_size = $_FILES['myFile']['size'];
-            $file_type = $_FILES['myFile']['type'];
+            $ext = pathinfo($file_name, PATHINFO_EXTENSION);
+//            $file_size = $_FILES['myFile']['size'];
+//            $file_type = $_FILES['myFile']['type'];
             $temp_name = $_FILES['myFile']['tmp_name'];
 
-            $location = "videoUploads/";
+            $randomFileName = Yii::$app->security->generateRandomString() . "." . $ext;
+            $location = "postVideos/";
 
-            move_uploaded_file($temp_name, $location . $file_name);
-            return "https://www.theleader.team/videoUploads/" . $file_name;
+
+            move_uploaded_file($temp_name, $location . $randomFileName);
+
+
+            return "https://www.theleader.team/postVideos/" . $randomFileName;
         } else {
             return "Error";
         }
