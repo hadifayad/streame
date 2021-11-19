@@ -241,7 +241,7 @@ EOF;
     public function seeHttpHeaderOnce($name)
     {
         $headers = $this->getRunningClient()->getInternalResponse()->getHeader($name, false);
-        $this->assertCount(1, $headers);
+        $this->assertEquals(1, count($headers));
     }
 
     /**
@@ -339,10 +339,10 @@ EOF;
 
     /**
      * Allows to send REST request using AWS Authorization
-     *
      * Only works with PhpBrowser
-     * Example Config:
-     * ```yml
+     * Example
+     * Config -
+     *
      * modules:
      *      enabled:
      *          - REST:
@@ -351,8 +351,7 @@ EOF;
      *                  secret: accessSecret
      *                  service: awsService
      *                  region: awsRegion
-     * ```
-     * Code:
+     *
      * ```php
      * <?php
      * $I->amAWSAuthenticated();
@@ -515,12 +514,12 @@ EOF;
     {
         $values = [];
         foreach ($linkEntries as $linkEntry) {
-            \PHPUnit\Framework\Assert::assertArrayHasKey(
+            \PHPUnit_Framework_Assert::assertArrayHasKey(
                 'uri',
                 $linkEntry,
                 'linkEntry should contain property "uri"'
             );
-            \PHPUnit\Framework\Assert::assertArrayHasKey(
+            \PHPUnit_Framework_Assert::assertArrayHasKey(
                 'link-param',
                 $linkEntry,
                 'linkEntry should contain property "link-param"'
@@ -726,11 +725,11 @@ EOF;
     public function seeResponseIsJson()
     {
         $responseContent = $this->connectionModule->_getResponseContent();
-        \PHPUnit\Framework\Assert::assertNotEquals('', $responseContent, 'response is empty');
+        \PHPUnit_Framework_Assert::assertNotEquals('', $responseContent, 'response is empty');
         json_decode($responseContent);
         $errorCode = json_last_error();
         $errorMessage = json_last_error_msg();
-        \PHPUnit\Framework\Assert::assertEquals(
+        \PHPUnit_Framework_Assert::assertEquals(
             JSON_ERROR_NONE,
             $errorCode,
             sprintf(
@@ -791,7 +790,7 @@ EOF;
      */
     public function seeResponseContainsJson($json = [])
     {
-        \PHPUnit\Framework\Assert::assertThat(
+        \PHPUnit_Framework_Assert::assertThat(
             $this->connectionModule->_getResponseContent(),
             new JsonContains($json)
         );
@@ -1088,7 +1087,7 @@ EOF;
             $jsonArray = $jsonArray->filterByJsonPath($jsonPath);
         }
 
-        \PHPUnit\Framework\Assert::assertThat($jsonArray, new JsonTypeConstraint($jsonType));
+        \PHPUnit_Framework_Assert::assertThat($jsonArray, new JsonTypeConstraint($jsonType));
     }
 
     /**
@@ -1107,7 +1106,7 @@ EOF;
             $jsonArray = $jsonArray->filterByJsonPath($jsonPath);
         }
 
-        \PHPUnit\Framework\Assert::assertThat($jsonArray, new JsonTypeConstraint($jsonType, false));
+        \PHPUnit_Framework_Assert::assertThat($jsonArray, new JsonTypeConstraint($jsonType, false));
     }
 
     /**
@@ -1163,51 +1162,6 @@ EOF;
     }
 
     /**
-     * Checks that the response code is 2xx
-     *
-     * @part json
-     * @part xml
-     */
-    public function seeResponseCodeIsSuccessful()
-    {
-        $this->connectionModule->seeResponseCodeIsSuccessful();
-    }
-
-    /**
-     * Checks that the response code 3xx
-     *
-     * @part json
-     * @part xml
-     */
-    public function seeResponseCodeIsRedirection()
-    {
-        $this->connectionModule->seeResponseCodeIsRedirection();
-    }
-
-    /**
-     * Checks that the response code is 4xx
-     *
-     * @part json
-     * @part xml
-     */
-    public function seeResponseCodeIsClientError()
-    {
-        $this->connectionModule->seeResponseCodeIsClientError();
-    }
-
-    /**
-     * Checks that the response code is 5xx
-     *
-     * @part json
-     * @part xml
-     */
-    public function seeResponseCodeIsServerError()
-    {
-        $this->connectionModule->seeResponseCodeIsServerError();
-    }
-
-
-    /**
      * Checks whether last response was valid XML.
      * This is done with libxml_get_last_error function.
      *
@@ -1226,7 +1180,7 @@ EOF;
             libxml_clear_errors();
         }
         libxml_use_internal_errors(false);
-        \PHPUnit\Framework\Assert::assertNotSame(
+        \PHPUnit_Framework_Assert::assertNotSame(
             false,
             $doc,
             "xml decoding error #$num with message \"$title\", see http://www.xmlsoft.org/html/libxml-xmlerror.html"
@@ -1308,7 +1262,7 @@ EOF;
      */
     public function seeXmlResponseEquals($xml)
     {
-        \PHPUnit\Framework\Assert::assertXmlStringEqualsXmlString($this->connectionModule->_getResponseContent(), $xml);
+        \PHPUnit_Framework_Assert::assertXmlStringEqualsXmlString($this->connectionModule->_getResponseContent(), $xml);
     }
 
 
@@ -1323,7 +1277,7 @@ EOF;
      */
     public function dontSeeXmlResponseEquals($xml)
     {
-        \PHPUnit\Framework\Assert::assertXmlStringNotEqualsXmlString(
+        \PHPUnit_Framework_Assert::assertXmlStringNotEqualsXmlString(
             $this->connectionModule->_getResponseContent(),
             $xml
         );

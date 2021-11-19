@@ -6,7 +6,7 @@ use Robo\Task\Development\GenerateMarkdownDoc as Doc;
 
 class RoboFile extends \Robo\Tasks
 {
-    const STABLE_BRANCH = '2.5';
+    const STABLE_BRANCH = '2.3';
     const REPO_BLOB_URL = 'https://github.com/Codeception/Codeception/blob';
 
     public function release()
@@ -96,6 +96,11 @@ class RoboFile extends \Robo\Tasks
     public function testWebdriver($args = '', $opt = ['test|t' => null])
     {
         $test = $opt['test'] ? ':'.$opt['test'] : '';
+        $container = $this->taskDockerRun('davert/selenium-env')
+            ->detached()
+            ->publish(4444, 4444)
+            ->env('APP_PORT', 8000)
+            ->run();
 
         $this->taskServer(8000)
             ->dir('tests/data/app')
@@ -103,14 +108,22 @@ class RoboFile extends \Robo\Tasks
             ->host('0.0.0.0')
             ->run();
 
+        sleep(3); // wait for selenium to launch
+
         $this->taskCodecept('./codecept')
-            ->suite('web')
+            ->test('tests/web/WebDriverTest.php'.$test)
             ->args($args)
             ->run();
+
+        $this->taskDockerStop($container)->run();
     }
 
-    public function testLaunchServer()
+    public function testLaunchServer($pathToSelenium = '~/selenium-server.jar ')
     {
+        $this->taskExec('java -jar '.$pathToSelenium)
+            ->background()
+            ->run();
+
         $this->taskServer(8010)
             ->background()
             ->dir('tests/data/rest')
@@ -131,11 +144,11 @@ class RoboFile extends \Robo\Tasks
             ->run();
     }
 
-    private function installDependenciesForPhp5()
+    private function installDependenciesForPhp54()
     {
         $this->taskReplaceInFile('composer.json')
             ->regex('/"platform": \{.*?\}/')
-            ->to('"platform": {"php": "5.6.0"}')
+            ->to('"platform": {"php": "5.4.0"}')
             ->run();
 
         $this->taskComposerUpdate()->run();
@@ -184,7 +197,7 @@ class RoboFile extends \Robo\Tasks
         if (!file_exists('package/php54')) {
             mkdir('package/php54');
         }
-        $this->installDependenciesForPhp5();
+        $this->installDependenciesForPhp54();
         $this->packPhar('package/codecept5.phar');
         $this->_copy('package/codecept5.phar', 'package/php54/codecept.phar');
         $code = $this->taskExec('php codecept.phar')->dir('package/php54')->run()->getExitCode();
@@ -257,13 +270,10 @@ class RoboFile extends \Robo\Tasks
 
         $pharTask->addFile('autoload.php', 'autoload.php')
             ->addFile('codecept', 'package/bin')
-            ->addFile('shim.php', 'shim.php');
+            ->addFile('shim.php', 'shim.php')
+            ->addFile('phpunit5-loggers.php', 'phpunit5-loggers.php')
+            ->run();
 
-        if (file_exists(__DIR__ .'phpunit5-loggers.php')) {
-            $pharTask->addFile('phpunit5-loggers.php', 'phpunit5-loggers.php');
-        }
-
-        $pharTask->run();
     }
 
     /**
@@ -519,10 +529,8 @@ EOF;
                 $releaseFile->line("\n## $branch");
                 if ($major < 2) {
                     $releaseFile->line("*Requires: PHP 5.3 and higher + CURL*\n");
-                } elseif ($major == 2 && $minor < 4) {
-                    $releaseFile->line("*Requires: PHP 5.4 and higher + CURL*\n");
                 } else {
-                    $releaseFile->line("*Requires: PHP 5.6 and higher + CURL*\n");
+                    $releaseFile->line("*Requires: PHP 5.4 and higher + CURL*\n");
                 }
                 $releaseFile->line("* **[Download Latest $branch Release]($downloadUrl)**");
             }
@@ -530,9 +538,7 @@ EOF;
 
             if (file_exists("releases/$releaseName/php54/codecept.phar")) {
                 $downloadUrl = "http://codeception.com/releases/$releaseName/php54/codecept.phar";
-                if (version_compare($releaseName, '2.4.0', '>=')) {
-                    $versionLine .= ", [for PHP 5.6]($downloadUrl)";
-                } elseif (version_compare($releaseName, '2.3.0', '>=')) {
+                if (version_compare($releaseName, '2.3.0', '>=')) {
                     $versionLine .= ", [for PHP 5.4 - 5.6]($downloadUrl)";
                 } else {
                     $versionLine .= ", [for PHP 5.4 or 5.5]($downloadUrl)";
@@ -601,7 +607,7 @@ EOF;
                     'source' => self::REPO_BLOB_URL."/".self::STABLE_BRANCH."/src/Codeception/Module/$name.php"
                 ];
                 // building version switcher
-                foreach (['master', '2.3', '2.2', '2.1', '2.0', '1.8'] as $branch) {
+                foreach (['master', '2.2', '2.1', '2.0', '1.8'] as $branch) {
                     $buttons[$branch] = self::REPO_BLOB_URL."/$branch/docs/modules/$name.md";
                 }
                 $buttonHtml = "\n\n".'<div class="btn-group" role="group" style="float: right" aria-label="...">';

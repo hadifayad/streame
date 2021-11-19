@@ -7,6 +7,7 @@ use app\models\Follow;
 use app\models\Followrooms;
 use app\models\NotificationForm;
 use app\models\Pageadmin;
+use app\models\PostFiles;
 use app\models\ProUserPosts;
 use app\models\Rooms;
 use app\models\StreamerGames;
@@ -22,21 +23,120 @@ class MobileController extends ApiController {
 
     public function actionCreateRoom() {
         $post = Yii::$app->request->post();
-        $text = $post["text"];
         $title = $post["title"];
-        $mention = $post["mention"];
-        $category = $post["category"];
-
+        $text = $post["text"];
         $user = $post["userId"];
+        $type = $post["type"];
+        $category = $post["category"];
+        $mention = $post["mention"];
 
         $room = new Rooms();
+        $room->title = $title;
+        $room->c_text = $text;
+        $room->r_admin = $user;
+        $room->type = $type;
         $room->category = $category;
         $room->mention = $mention;
-        $room->r_admin = $user;
-        $room->c_text = $text;
-        $room->title = $title;
 
+        if ($type == "video") {
+
+
+            $file_name = $_FILES['myFile']['name'];
+            $ext = pathinfo($file_name, PATHINFO_EXTENSION);
+//            $file_size = $_FILES['myFile']['size'];
+//            $file_type = $_FILES['myFile']['type'];
+            $temp_name = $_FILES['myFile']['tmp_name'];
+            $randomFileName = Yii::$app->security->generateRandomString() . "." . $ext;
+            $location = "postVideos/";
+            if (move_uploaded_file($temp_name, $location . $randomFileName)) {
+                if ($room->save()) {
+                    $postFiles = new PostFiles();
+                    $postFiles->post_id = $room->primaryKey;
+                    $postFiles->file_name = $randomFileName;
+                    if ($postFiles->save()) {
+                        return "true";
+                    } else {
+                        return $postFiles->getErrors();
+                    }
+                    return "good post only saved";
+                } else {
+                    return $room->getErrors();
+                }
+            } else {
+                return "not upload";
+            }
+        } else if ($type == "pictures") {
+            $imagesSize = $post["imagesSize"];
+            $location = "postPictures/";
+            if ($room->save()) {
+                for ($i = 0; $i < $imagesSize; $i++) {
+                    $image = $post["image" . ($i + 1)];
+
+                    $uploads_dir = $location;
+                    $imageName = Yii::$app->security->generateRandomString() . ".jpeg";
+                    if ($image) {
+                        $percent = 1;
+
+                        $data = base64_decode($image);
+
+                        $im = imagecreatefromstring($data);
+                        $width = imagesx($im);
+                        $height = imagesy($im);
+                        $newwidth = $width * $percent;
+                        $newheight = $height * $percent;
+                        $thumb = imagecreatetruecolor($newwidth, $newheight);
+                        header('Content-type: image/jpeg');
+                        // Resize
+                        imagecopyresized($thumb, $im, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+                        // Output
+//                    imagejpeg($im, $uploads_dir . $imageName);
+                        imagejpeg($thumb, $uploads_dir . $imageName);
+
+                        //save record to database table 
+                        $postFiles = new PostFiles();
+                        $postFiles->post_id = $room->primaryKey;
+                        $postFiles->file_name = $imageName;
+                        if ($postFiles->save()) {
+//                            return "good everything is saved";
+                        } else {
+//                            return $postFiles->getErrors();
+                        }
+//                        return "good post only saved";
+                    }
+                }
+            } else {
+                return $room->getErrors();
+            }
+
+            return "true";
+        }
+
+
+        return "https://www.theleader.team/postVideos/" . $randomFileName;
+
+
+
+
+        $post = Yii::$app->request->post();
+        $title = $post["title"];
+        $text = $post["text"];
+        $user = $post["userId"];
+        $type = $post["type"];
+        $category = $post["category"];
+        $mention = $post["mention"];
+
+        $room = new Rooms();
+        $room->title = $title;
+        $room->c_text = $text;
+        $room->r_admin = $user;
+        $room->type = $type;
+        $room->category = $category;
+        $room->mention = $mention;
         $room->creation_date = date("Y-m-d H:i:s");
+
+
+
 
         if ($room->save()) {
             return true;
@@ -66,7 +166,7 @@ class MobileController extends ApiController {
 //        $post->page_name = "name";
 //        $post->r_admin = "12";
 //        $post->c_text = "text";
-        // $post->creation_date = "date";
+// $post->creation_date = "date";
         if ($room->update()) {
             return true;
         } else {
@@ -84,7 +184,8 @@ class MobileController extends ApiController {
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
              LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
-             WHERE rooms.creation_date >= CURDATE();";
+             WHERE rooms.creation_date >= CURDATE()
+             ORDER BY rooms.creation_date DESC;";
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
 
@@ -163,6 +264,30 @@ class MobileController extends ApiController {
                 ->where(['user_id' => $userId])
                 ->all();
         return $posts;
+    }
+
+    public function actionCreateProUserPost() {
+        $post = Yii::$app->request->post();
+        $userId = $post["userId"];
+
+        $file_name = $_FILES['myFile']['name'];
+        $ext = pathinfo($file_name, PATHINFO_EXTENSION);
+        $temp_name = $_FILES['myFile']['tmp_name'];
+        $randomFileName = Yii::$app->security->generateRandomString() . "." . $ext;
+        $location = "proUserPost/";
+        if (move_uploaded_file($temp_name, $location . $randomFileName)) {
+            $proUserPost = new ProUserPosts();
+            $proUserPost->video = $randomFileName;
+            $proUserPost->user_id = $userId;
+
+            if ($proUserPost->save()) {
+                return "true";
+            } else {
+                return $proUserPost->getErrors();
+            }
+        } else {
+            return "not upload";
+        }
     }
 
     public function actionGetOneRoom() {
@@ -602,7 +727,7 @@ class MobileController extends ApiController {
         $post = Yii::$app->request->post();
         $id = $post["id"];
 //        $id = 1;
-        //$client = \app\models\User::findOne(["id" => $id]);
+//$client = \app\models\User::findOne(["id" => $id]);
 
         $adsQuery = (new Query)
                 ->select("*")
@@ -879,10 +1004,10 @@ class MobileController extends ApiController {
                 $thumb = imagecreatetruecolor($newwidth, $newheight);
 
 //                            header('Content-type: image/jpeg');
-                // Resize
+// Resize
                 imagecopyresized($thumb, $im, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 
-                // Output
+// Output
                 imagejpeg($thumb, $uploads_dir . $imageName);
                 if ($user->profile_picture && file_exists(\Yii::getAlias('@webroot/profilePicture/') . $user->profile_picture)) {
                     unlink(\Yii::getAlias('@webroot/profilePicture/') . $user->profile_picture);

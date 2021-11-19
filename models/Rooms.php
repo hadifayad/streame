@@ -8,13 +8,13 @@ use Yii;
  * This is the model class for table "rooms".
  *
  * @property int $id
- * @property string $title
+ * @property string|null $title
  * @property string $c_text
  * @property int $r_admin
- * @property string $creation_date
- * @property string $type
- * @property string $category
- * @property int $mention
+ * @property string|null $creation_date
+ * @property string|null $type
+ * @property string|null $category
+ * @property int|null $mention
  *
  * @property Comment[] $comments
  * @property Followrooms[] $followrooms
@@ -38,12 +38,13 @@ class Rooms extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'c_text', 'r_admin', 'creation_date'], 'required'],
+            [['c_text', 'r_admin'], 'required'],
             [['c_text'], 'string'],
             [['r_admin', 'mention'], 'integer'],
+            [['creation_date'], 'safe'],
             [['title'], 'string', 'max' => 255],
-            [['creation_date', 'category'], 'string', 'max' => 200],
             [['type'], 'string', 'max' => 50],
+            [['category'], 'string', 'max' => 200],
             [['r_admin'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['r_admin' => 'id']],
             [['mention'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['mention' => 'id']],
         ];
@@ -55,18 +56,20 @@ class Rooms extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'title' => Yii::t('app', 'Title'),
-            'c_text' => Yii::t('app', 'C Text'),
-            'r_admin' => Yii::t('app', 'R Admin'),
-            'creation_date' => Yii::t('app', 'Creation Date'),
-            'type' => Yii::t('app', 'Type'),
-            'category' => Yii::t('app', 'Category'),
-            'mention' => Yii::t('app', 'Mention'),
+            'id' => 'ID',
+            'title' => 'Title',
+            'c_text' => 'C Text',
+            'r_admin' => 'R Admin',
+            'creation_date' => 'Creation Date',
+            'type' => 'Type',
+            'category' => 'Category',
+            'mention' => 'Mention',
         ];
     }
 
     /**
+     * Gets query for [[Comments]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getComments()
@@ -75,6 +78,8 @@ class Rooms extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Followrooms]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getFollowrooms()
@@ -83,6 +88,8 @@ class Rooms extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[PostFiles]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getPostFiles()
@@ -91,6 +98,8 @@ class Rooms extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[RAdmin]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getRAdmin()
@@ -99,6 +108,8 @@ class Rooms extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Mention0]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getMention0()

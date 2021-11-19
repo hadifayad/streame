@@ -83,8 +83,6 @@ class Cookie
 
     /**
      * Returns the HTTP representation of the Cookie.
-     *
-     * @return string
      */
     public function __toString()
     {
@@ -136,7 +134,7 @@ class Cookie
             throw new \InvalidArgumentException(sprintf('The cookie string "%s" is not valid.', $parts[0]));
         }
 
-        [$name, $value] = explode('=', array_shift($parts), 2);
+        list($name, $value) = explode('=', array_shift($parts), 2);
 
         $values = [
             'name' => trim($name),
@@ -201,7 +199,7 @@ class Cookie
         );
     }
 
-    private static function parseDate(string $dateValue): ?string
+    private static function parseDate($dateValue)
     {
         // trim single quotes around date if present
         if (($length = \strlen($dateValue)) > 1 && "'" === $dateValue[0] && "'" === $dateValue[$length - 1]) {
@@ -218,8 +216,6 @@ class Cookie
         if (false !== $date = date_create($dateValue, new \DateTimeZone('GMT'))) {
             return $date->format('U');
         }
-
-        return null;
     }
 
     /**
@@ -309,7 +305,7 @@ class Cookie
      */
     public function isExpired()
     {
-        return null !== $this->expires && 0 != $this->expires && $this->expires <= time();
+        return null !== $this->expires && 0 != $this->expires && $this->expires < time();
     }
 
     /**
