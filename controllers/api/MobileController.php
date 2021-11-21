@@ -217,10 +217,10 @@ class MobileController extends ApiController {
 
     public function actionGetRoomsByUser() {
 
-//        $post = Yii::$app->request->post();
-//        $userId = $post["userId"];
+        $post = Yii::$app->request->post();
+        $userId = $post["userId"];
 
-        $userId = 19;
+//        $userId = 19;
 //        $rooms = Rooms::find()
 //                ->where(['r_admin' => $userId])
 //                ->all();
