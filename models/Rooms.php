@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "rooms".
@@ -20,9 +22,11 @@ use Yii;
  * @property Followrooms[] $followrooms
  * @property PostFiles[] $postFiles
  * @property Users $rAdmin
+ * @property  $challenge_coins
+
  * @property Users $mention0
  */
-class Rooms extends \yii\db\ActiveRecord
+class Rooms extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -38,8 +42,8 @@ class Rooms extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'c_text', 'r_admin', 'creation_date'], 'required'],
-            [['c_text'], 'string'],
+            [[ 'r_admin', 'creation_date'], 'required'],
+            [['c_text','challenge_coins'], 'string'],
             [['r_admin', 'mention'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['creation_date', 'category'], 'string', 'max' => 200],
@@ -63,11 +67,12 @@ class Rooms extends \yii\db\ActiveRecord
             'type' => Yii::t('app', 'Type'),
             'category' => Yii::t('app', 'Category'),
             'mention' => Yii::t('app', 'Mention'),
+            'challenge_coins' => Yii::t('app', 'Challenge Coins'),
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getComments()
     {
@@ -75,7 +80,7 @@ class Rooms extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFollowrooms()
     {
@@ -83,7 +88,7 @@ class Rooms extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getPostFiles()
     {
@@ -91,7 +96,7 @@ class Rooms extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getRAdmin()
     {
@@ -99,7 +104,7 @@ class Rooms extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getMention0()
     {
