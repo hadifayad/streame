@@ -199,11 +199,11 @@ class MobileController extends ApiController {
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
              LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
-             WHERE rooms.creation_date >= CURDATE()
+            
              ORDER BY rooms.creation_date DESC;";
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
-
+// WHERE rooms.creation_date >= CURDATE()
 
         return $arrayList;
     }

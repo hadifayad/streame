@@ -23,6 +23,9 @@ use yii\db\ActiveRecord;
  * @property PostFiles[] $postFiles
  * @property Users $rAdmin
  * @property  $challenge_coins
+ * @property  $streamer_response
+ * @property  $invitation_response
+ * @property  $challenge_result
 
  * @property Users $mention0
  */
@@ -68,6 +71,9 @@ class Rooms extends ActiveRecord
             'category' => Yii::t('app', 'Category'),
             'mention' => Yii::t('app', 'Mention'),
             'challenge_coins' => Yii::t('app', 'Challenge Coins'),
+            'streamer_response' => Yii::t('app', 'streamer response'),
+            'invitation_response' => Yii::t('app', 'invitation response'),
+            'challenge_result' => Yii::t('app', 'challenge result'),
         ];
     }
 
