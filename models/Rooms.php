@@ -15,33 +15,33 @@ use Yii;
  * @property string|null $type
  * @property string|null $category
  * @property int|null $mention
- *
+ * @property string|null $color1 
+ * @property string|null $color2 
  * @property Comment[] $comments
  * @property Followrooms[] $followrooms
  * @property PostFiles[] $postFiles
  * @property Users $rAdmin
  * @property Users $mention0
  */
-class Rooms extends \yii\db\ActiveRecord
-{
+class Rooms extends \yii\db\ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'rooms';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['c_text', 'r_admin'], 'required'],
             [['c_text'], 'string'],
             [['r_admin', 'mention'], 'integer'],
             [['creation_date'], 'safe'],
+            [['color1', 'color2'], 'string', 'max' => 20],
             [['title'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 50],
             [['category'], 'string', 'max' => 200],
@@ -53,8 +53,7 @@ class Rooms extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'title' => 'Title',
@@ -64,6 +63,8 @@ class Rooms extends \yii\db\ActiveRecord
             'type' => 'Type',
             'category' => 'Category',
             'mention' => 'Mention',
+            'color1' => 'Color1',
+            'color2' => 'Color2',
         ];
     }
 
@@ -72,8 +73,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getComments()
-    {
+    public function getComments() {
         return $this->hasMany(Comment::className(), ['r_room' => 'id']);
     }
 
@@ -82,8 +82,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getFollowrooms()
-    {
+    public function getFollowrooms() {
         return $this->hasMany(Followrooms::className(), ['r_room' => 'id']);
     }
 
@@ -92,8 +91,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPostFiles()
-    {
+    public function getPostFiles() {
         return $this->hasMany(PostFiles::className(), ['post_id' => 'id']);
     }
 
@@ -102,8 +100,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getRAdmin()
-    {
+    public function getRAdmin() {
         return $this->hasOne(Users::className(), ['id' => 'r_admin']);
     }
 
@@ -112,8 +109,8 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMention0()
-    {
+    public function getMention0() {
         return $this->hasOne(Users::className(), ['id' => 'mention']);
     }
+
 }

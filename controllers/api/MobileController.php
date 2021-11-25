@@ -29,6 +29,8 @@ class MobileController extends ApiController {
         $type = $post["type"];
         $category = $post["category"];
         $mention = $post["mention"];
+        $color1 = $post["color1"];
+        $color2 = $post["color2"];
 
         $room = new Rooms();
         $room->title = $title;
@@ -110,6 +112,16 @@ class MobileController extends ApiController {
             }
 
             return "true";
+        } else if ($type == "text") {
+            $room->color1 = $color1;
+            $room->color2 = $color2;
+//            return $room;
+//            return $room->getErrors();
+            if ($room->save()) {
+                return "true";
+            } else {
+                return $room->getErrors();
+            }
         }
 
 
