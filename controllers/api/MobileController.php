@@ -29,6 +29,7 @@ class MobileController extends ApiController {
         $type = $post["type"];
         $category = $post["category"];
         $mention = $post["mention"];
+        $coins = $post["challenge_coins"];
         $color1 = $post["color1"];
         $color2 = $post["color2"];
 
@@ -39,6 +40,8 @@ class MobileController extends ApiController {
         $room->type = $type;
         $room->category = $category;
         $room->mention = $mention;
+        $room->challenge_coins = $coins;
+        $room->creation_date = date("Y-m-d H:i:s");
 
         if ($type == "video") {
 
@@ -122,6 +125,12 @@ class MobileController extends ApiController {
             } else {
                 return $room->getErrors();
             }
+        } else {
+            if ($room->save()) {
+                return "true";
+            } else {
+                return $room->getErrors();
+            }
         }
 
 
@@ -196,11 +205,11 @@ class MobileController extends ApiController {
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
              LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
-             WHERE rooms.creation_date >= CURDATE()
+            
              ORDER BY rooms.creation_date DESC;";
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
-
+// WHERE rooms.creation_date >= CURDATE()
 
         return $arrayList;
     }
@@ -232,12 +241,9 @@ class MobileController extends ApiController {
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
 
-//        $userId = 19;
 //        $rooms = Rooms::find()
 //                ->where(['r_admin' => $userId])
 //                ->all();
-//        
-//                return $rooms;
 
         $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
             (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
