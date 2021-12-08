@@ -18,7 +18,8 @@ use yii\db\ActiveRecord;
  * @property string|null $category
  * @property int|null $mention
  * @property string|null $color1 
- * @property string|null $color2 
+ * @property string|null $color2
+ * @property string|null $video_thumbnail
  * @property Comment[] $comments
  * @property Followrooms[] $followrooms
  * @property PostFiles[] $postFiles
@@ -44,14 +45,14 @@ class Rooms extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [[ 'r_admin'], 'required'],
-            [['c_text','challenge_coins'], 'string'],
+            [['r_admin'], 'required'],
+            [['c_text', 'challenge_coins'], 'string'],
             [['r_admin', 'mention'], 'integer'],
             [['creation_date'], 'safe'],
             [['color1', 'color2'], 'string', 'max' => 20],
             [['title'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 50],
-            [['category'], 'string', 'max' => 200],
+            [['category', 'video_thumbnail'], 'string', 'max' => 200],
             [['r_admin'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['r_admin' => 'id']],
             [['mention'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['mention' => 'id']],
         ];
@@ -74,6 +75,7 @@ class Rooms extends \yii\db\ActiveRecord {
             'streamer_response' => Yii::t('app', 'streamer response'),
             'invitation_response' => Yii::t('app', 'invitation response'),
             'challenge_result' => Yii::t('app', 'challenge result'),
+            'video_thumbnail' => 'Video Thumbnail',
         ];
     }
 

@@ -6,11 +6,29 @@
     'aliases' => 
     array (
     ),
-    'reference' => '6617731b389723237c2c24e52fbf33705fa6160a',
+    'reference' => '53434828d102b1b45af22956a552d8fe28c12929',
     'name' => 'yiisoft/yii2-app-basic',
   ),
   'versions' => 
   array (
+    'aequasi/screenshotr' => 
+    array (
+      'pretty_version' => '1.1.1',
+      'version' => '1.1.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8c8018380976bb6d706da9274e3c524d6f1bd49c',
+    ),
+    'alchemy/binary-driver' => 
+    array (
+      'pretty_version' => 'v5.2.0',
+      'version' => '5.2.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'e0615cdff315e6b4b05ada67906df6262a020d22',
+    ),
     'behat/gherkin' => 
     array (
       'pretty_version' => 'v4.4.5',
@@ -110,6 +128,15 @@
       ),
       'reference' => '8a17273017e23a866df3fa2ad2b4182b7ce354f0',
     ),
+    'doctrine/cache' => 
+    array (
+      'pretty_version' => '1.12.1',
+      'version' => '1.12.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '4cf401d14df219fa6f38b671f5493449151c9ad8',
+    ),
     'doctrine/instantiator' => 
     array (
       'pretty_version' => '1.4.0',
@@ -136,6 +163,24 @@
       array (
       ),
       'reference' => 'ee0db30118f661fb166bcffbf5d82032df484697',
+    ),
+    'elisevgeniy/yii2-ffmpeg' => 
+    array (
+      'pretty_version' => '1.0.5',
+      'version' => '1.0.5.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '3cddd5f3c9563c8838e8a8bfc2394b6c316b73f9',
+    ),
+    'evenement/evenement' => 
+    array (
+      'pretty_version' => 'v3.0.1',
+      'version' => '3.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '531bfb9d15f8aa57454f5f0285b18bec903b8fb7',
     ),
     'ezyang/htmlpurifier' => 
     array (
@@ -186,6 +231,15 @@
         0 => '1.10.2',
       ),
     ),
+    'neutron/temporary-filesystem' => 
+    array (
+      'pretty_version' => '3.0',
+      'version' => '3.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '60e79adfd16f42f4b888e351ad49f9dcb959e3c2',
+    ),
     'opis/closure' => 
     array (
       'pretty_version' => '3.6.2',
@@ -221,6 +275,15 @@
       array (
       ),
       'reference' => 'a70c0ced4be299a63d32fa96d9281d03e94041df',
+    ),
+    'php-ffmpeg/php-ffmpeg' => 
+    array (
+      'pretty_version' => 'v0.18.0',
+      'version' => '0.18.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'edc0a7729d8818ed883e77b3d26ceb6d49ec41de',
     ),
     'phpdocumentor/reflection-common' => 
     array (
@@ -361,6 +424,15 @@
       array (
         0 => '1.0',
       ),
+    ),
+    'psr/log' => 
+    array (
+      'pretty_version' => '1.1.4',
+      'version' => '1.1.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
     ),
     'psr/log-implementation' => 
     array (
@@ -565,6 +637,15 @@
         0 => '1.1',
       ),
     ),
+    'symfony/filesystem' => 
+    array (
+      'pretty_version' => 'v5.4.0',
+      'version' => '5.4.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '731f917dc31edcffec2c6a777f3698c33bea8f01',
+    ),
     'symfony/finder' => 
     array (
       'pretty_version' => 'v4.4.30',
@@ -646,6 +727,15 @@
       ),
       'reference' => '1100343ed1a92e3a38f9ae122fc0eb21602547be',
     ),
+    'symfony/process' => 
+    array (
+      'pretty_version' => 'v5.4.0',
+      'version' => '5.4.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '5be20b3830f726e019162b26223110c8f47cf274',
+    ),
     'symfony/service-contracts' => 
     array (
       'pretty_version' => 'v1.1.2',
@@ -663,6 +753,15 @@
       array (
       ),
       'reference' => '3abcc4db06d4e776825eaa3ed8ad924d5bc7432a',
+    ),
+    'tbetool/php-video-screenshot' => 
+    array (
+      'pretty_version' => '1.1.1',
+      'version' => '1.1.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9d1ddda6618a7a0ec75c6c6b8cc2802419e5c9c7',
     ),
     'theseer/tokenizer' => 
     array (
@@ -698,7 +797,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '6617731b389723237c2c24e52fbf33705fa6160a',
+      'reference' => '53434828d102b1b45af22956a552d8fe28c12929',
     ),
     'yiisoft/yii2-bootstrap' => 
     array (

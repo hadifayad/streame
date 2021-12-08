@@ -66,4 +66,13 @@ return array (
       '@yii/swiftmailer' => $vendorDir . '/yiisoft/yii2-swiftmailer/src',
     ),
   ),
+  'elisevgeniy/yii2-ffmpeg' => 
+  array (
+    'name' => 'elisevgeniy/yii2-ffmpeg',
+    'version' => '1.0.5.0',
+    'alias' => 
+    array (
+      '@rbtphp/ffmpeg' => $vendorDir . '/elisevgeniy/yii2-ffmpeg',
+    ),
+  ),
 );
