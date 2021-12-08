@@ -10,14 +10,16 @@ use yii\db\ActiveRecord;
  * This is the model class for table "rooms".
  *
  * @property int $id
- * @property string $title
+ * @property string|null $title
  * @property string $c_text
  * @property int $r_admin
- * @property string $creation_date
- * @property string $type
- * @property string $category
- * @property int $mention
- *
+ * @property string|null $creation_date
+ * @property string|null $type
+ * @property string|null $category
+ * @property int|null $mention
+ * @property string|null $color1 
+ * @property string|null $color2
+ * @property string|null $video_thumbnail
  * @property Comment[] $comments
  * @property Followrooms[] $followrooms
  * @property PostFiles[] $postFiles
@@ -30,28 +32,28 @@ use yii\db\ActiveRecord;
 
  * @property Users $mention0
  */
-class Rooms extends ActiveRecord
-{
+class Rooms extends \yii\db\ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'rooms';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [[ 'r_admin', 'creation_date'], 'required'],
             [['c_text'], 'string'],
             [['r_admin', 'mention'], 'integer'],
+            [['creation_date'], 'safe'],
+            [['color1', 'color2'], 'string', 'max' => 20],
             [['title'], 'string', 'max' => 255],
-            [['creation_date', 'category'], 'string', 'max' => 200],
             [['type'], 'string', 'max' => 50],
+            [['category', 'video_thumbnail'], 'string', 'max' => 200],
             [['r_admin'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['r_admin' => 'id']],
             [['mention'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['mention' => 'id']],
         ];
@@ -60,8 +62,7 @@ class Rooms extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'title' => Yii::t('app', 'Title'),
@@ -75,6 +76,7 @@ class Rooms extends ActiveRecord
             'streamer_response' => Yii::t('app', 'streamer response'),
             'invitation_response' => Yii::t('app', 'invitation response'),
             'challenge_result' => Yii::t('app', 'challenge result'),
+            'video_thumbnail' => 'Video Thumbnail',
             'challenge_user_result' => Yii::t('app', 'challenge user result'),
         ];
     }
@@ -82,40 +84,36 @@ class Rooms extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getComments()
-    {
+    public function getComments() {
         return $this->hasMany(Comment::className(), ['r_room' => 'id']);
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getFollowrooms()
-    {
+    public function getFollowrooms() {
         return $this->hasMany(Followrooms::className(), ['r_room' => 'id']);
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getPostFiles()
-    {
+    public function getPostFiles() {
         return $this->hasMany(PostFiles::className(), ['post_id' => 'id']);
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getRAdmin()
-    {
+    public function getRAdmin() {
         return $this->hasOne(Users::className(), ['id' => 'r_admin']);
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getMention0()
-    {
+    public function getMention0() {
         return $this->hasOne(Users::className(), ['id' => 'mention']);
     }
+
 }

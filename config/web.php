@@ -13,7 +13,7 @@ $config = [
     ],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+// !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'P_ICwoZKNK2G4w96vN8AxM995MlDutHP',
         ],
         'cache' => [
@@ -30,8 +30,8 @@ $config = [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
+// 'useFileTransport' to false and configure a transport
+// for the mailer to send real emails.
             'useFileTransport' => true,
         ],
         'log' => [
@@ -50,6 +50,7 @@ $config = [
 //            'rules' => [
 //            ],
         ],
+        'ffmpeg' => ['class' => '\php-ffmpeg\php-ffmpeg\src\Ffmpeg\FFMpeg.php'],
     ],
     'params' => $params,
 ];

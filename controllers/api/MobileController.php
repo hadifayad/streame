@@ -15,11 +15,30 @@ use app\models\UserNotifications;
 use app\models\UserPurchaseDetails;
 use app\models\Users;
 use app\models\UsersSpinSilver;
+use TBETool\GenerateVideoScreenshots;
 use Yii;
 use yii\db\Query;
 use function contains;
 
 class MobileController extends ApiController {
+
+    public function actionTest() {
+
+//        $frame = 10;
+//        $movie = 'test.mp4';
+//        $thumbnail = 'thumbnail.png';
+//        $mov = new ffmpeg_movie($movie);
+//        $screenShotr = new \ScreenShotr\Core('http://theleader.team/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4');
+//        $screenShotr = new \ScreenShotr\Core('videoUploads/ddd.mp4');
+//        $screenshot = $screenShotr->generateScreenshot(1);
+//        return $screenshot;
+//        $obj = new GenerateVideoScreenshots("videoUploads/ddd.mp4");
+//        return $obj;
+//        return $obj->setOutputPath('output_location');
+//        $thumbnail = $obj->generateScreenshot('http://theleader.team/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4');
+//        return $thumbnail;
+//        $video = $ffmpeg->open("http://theleader.team/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4");
+    }
 
     public function actionCreateRoom() {
         $post = Yii::$app->request->post();
@@ -29,7 +48,9 @@ class MobileController extends ApiController {
         $type = $post["type"];
         $category = $post["category"];
         $mention = $post["mention"];
+        $imageString = $post["imageString"];
         $coins = $post["challenge_coins"];
+
 
         $room = new Rooms();
         $room->title = $title;
@@ -39,9 +60,11 @@ class MobileController extends ApiController {
         $room->category = $category;
         $room->mention = $mention;
         $room->challenge_coins = $coins;
-         $room->creation_date = date("Y-m-d H:i:s");
+        $room->creation_date = date("Y-m-d H:i:s");
 
         if ($type == "video") {
+
+
 
 
             $file_name = $_FILES['myFile']['name'];
@@ -57,6 +80,39 @@ class MobileController extends ApiController {
                     $postFiles->post_id = $room->primaryKey;
                     $postFiles->file_name = $randomFileName;
                     if ($postFiles->save()) {
+
+                        //for image
+                        $location = "postPictures/";
+                        $uploads_dir = $location;
+                        $imageName = Yii::$app->security->generateRandomString() . ".jpeg";
+                        $percent = 1;
+
+                        $data = base64_decode($imageString);
+
+                        $im = imagecreatefromstring($data);
+                        $width = imagesx($im);
+                        $height = imagesy($im);
+                        $newwidth = $width * $percent;
+                        $newheight = $height * $percent;
+                        $thumb = imagecreatetruecolor($newwidth, $newheight);
+                        header('Content-type: image/jpeg');
+                        // Resize
+                        imagecopyresized($thumb, $im, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+                        // Output
+//                    imagejpeg($im, $uploads_dir . $imageName);
+                        imagejpeg($thumb, $uploads_dir . $imageName);
+
+                        //save record to database table 
+                        $room = Rooms::findOne(["id" => $room->primaryKey]);
+                        $room->video_thumbnail = $imageName;
+                        if ($room->save()) {
+//                            return "good everything is saved";
+                        } else {
+//                            return $postFiles->getErrors();
+                        }
+//                        return "good post only saved";
+                        //////
                         return "true";
                     } else {
                         return $postFiles->getErrors();
@@ -69,6 +125,9 @@ class MobileController extends ApiController {
                 return "not upload";
             }
         } else if ($type == "pictures") {
+            $color1 = $post["color1"];
+            $color2 = $post["color2"];
+
             $imagesSize = $post["imagesSize"];
             $location = "postPictures/";
             if ($room->save()) {
@@ -113,18 +172,22 @@ class MobileController extends ApiController {
             }
 
             return "true";
-        }
-        
-        else{
-            
-              if($room->save()){
-                    return "true";
-                }
-                
-                else {
-                return $room->getErrors();      
-                }
-            
+        } else if ($type == "text") {
+            $room->color1 = $color1;
+            $room->color2 = $color2;
+//            return $room;
+//            return $room->getErrors();
+            if ($room->save()) {
+                return "true";
+            } else {
+                return $room->getErrors();
+            }
+        } else {
+            if ($room->save()) {
+                return "true";
+            } else {
+                return $room->getErrors();
+            }
         }
 
 
@@ -253,8 +316,8 @@ class MobileController extends ApiController {
 
         return $arrayList;
     }
-    
-       public function actionGetMyChallenges() {
+
+    public function actionGetMyChallenges() {
 
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
@@ -263,17 +326,17 @@ class MobileController extends ApiController {
 //                ->where(['r_admin' => $userId])
 //                ->all();
 
-     
-        
-        
-        
-         $sql =  "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
+
+
+
+
+        $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
             (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
             (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
                LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
-             WHERE  rooms.mention = $userId AND rooms.category = 'challenge' AND rooms.invitation_response is NULL  OR rooms.invitation_response=1" ;
+             WHERE  rooms.mention = $userId AND rooms.category = 'challenge' AND rooms.invitation_response is NULL  OR rooms.invitation_response=1";
 
 
 
@@ -318,30 +381,28 @@ class MobileController extends ApiController {
          $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
-                ->where(['id'=>$roomId])
+                ->where(['id' => $roomId])
                 ->one();
-        if($room){
-            $room->invitation_response =1;
-            if($room->save()){
+        if ($room) {
+            $room->invitation_response = 1;
+            if ($room->save()) {
                 return true;
             }
         }
-        
     }
-    
-        public function actionDeclineChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionDeclineChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
-                ->where(['id'=>$roomId])
+                ->where(['id' => $roomId])
                 ->one();
-        if($room){
-            $room->invitation_response =0;
-            if($room->save()){
+        if ($room) {
+            $room->invitation_response = 0;
+            if ($room->save()) {
                 return true;
             }
         }
-        
     }
     
     
@@ -836,7 +897,7 @@ class MobileController extends ApiController {
         $postId = $post["postId"];
 
         $commentsByPost = (new Query)
-                ->select(Comment::tableName() . ".*,users.fullname  ")
+                ->select(Comment::tableName() . ".*,users.fullname,users.profile_picture")
                 ->from(Comment::tableName())
                 ->where([
                     "r_room" => $postId

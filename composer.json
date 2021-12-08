@@ -19,7 +19,11 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "sjaakp/yii2-gcharts": "*",
-        "geertw/yii2-adsense": "^1.0"
+        "geertw/yii2-adsense": "^1.0",
+        "php-ffmpeg/php-ffmpeg": "^0.18.0",
+        "elisevgeniy/yii2-ffmpeg": "*",
+        "tbetool/php-video-screenshot": "^1.1",
+        "aequasi/screenshotr": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
