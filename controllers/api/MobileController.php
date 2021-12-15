@@ -16,6 +16,7 @@ use app\models\UserPurchaseDetails;
 use app\models\Users;
 use app\models\UsersSpinSilver;
 use Yii;
+use yii\db\Expression;
 use yii\db\Query;
 use function contains;
 
@@ -345,8 +346,8 @@ class MobileController extends ApiController {
 
         return $arrayList;
     }
-    
-          public function actionGetRelatedChallenges() {
+
+    public function actionGetRelatedChallenges() {
 
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
@@ -355,17 +356,17 @@ class MobileController extends ApiController {
 //                ->where(['r_admin' => $userId])
 //                ->all();
 
-     
-        
-        
-        
-         $sql =  "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
+
+
+
+
+        $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
             (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
             (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
                LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
-             WHERE  rooms.mention = $userId OR rooms.r_admin = $userId AND rooms.category = 'challenge' AND rooms.invitation_response is NULL  OR rooms.invitation_response=1" ;
+             WHERE  rooms.mention = $userId OR rooms.r_admin = $userId AND rooms.category = 'challenge' AND rooms.invitation_response is NULL  OR rooms.invitation_response=1";
 
 
 
@@ -375,9 +376,9 @@ class MobileController extends ApiController {
 
         return $arrayList;
     }
-    
-    public function actionAcceptChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionAcceptChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
                 ->where(['id' => $roomId])
@@ -403,77 +404,68 @@ class MobileController extends ApiController {
             }
         }
     }
-    
-    
-        public function actionUserWinChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionUserWinChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
-                ->where(['id'=>$roomId])
+                ->where(['id' => $roomId])
                 ->one();
-        if($room){
-            $room->challenge_result =1;
-            $room->challenge_user_result =1;
-            if($room->save()){
+        if ($room) {
+            $room->challenge_result = 1;
+            $room->challenge_user_result = 1;
+            if ($room->save()) {
                 return true;
             }
         }
-        
     }
-    
-      public function actionUserLoseChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionUserLoseChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
-                ->where(['id'=>$roomId])
+                ->where(['id' => $roomId])
                 ->one();
-        if($room){
-           
-            $room->challenge_user_result =0;
-            if($room->save()){
+        if ($room) {
+
+            $room->challenge_user_result = 0;
+            if ($room->save()) {
                 return true;
             }
         }
-        
     }
-    
-          public function actionStreamerAcceptLoseChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionStreamerAcceptLoseChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
-                ->where(['id'=>$roomId])
+                ->where(['id' => $roomId])
                 ->one();
-        if($room){
-           
-            $room->streamer_response =1;
+        if ($room) {
+
+            $room->streamer_response = 1;
             $room->challenge_result = $room->challenge_user_result;
-            if($room->save()){
+            if ($room->save()) {
                 return true;
             }
         }
-        
     }
-    
-         public function actionStreamerDeclineLoseChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionStreamerDeclineLoseChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
-                ->where(['id'=>$roomId])
+                ->where(['id' => $roomId])
                 ->one();
-        if($room){
-           
-            $room->streamer_response =0;
-            if($room->save()){
+        if ($room) {
+
+            $room->streamer_response = 0;
+            if ($room->save()) {
                 return true;
-            }
-            else return $room->errors;
+            } else
+                return $room->errors;
         }
-        
     }
-    
-    
-    
-    
 
     public function actionGetProUsersPosts() {
 
@@ -481,8 +473,11 @@ class MobileController extends ApiController {
         $posts = (new Query)
                 ->select('pro_user_posts.*,users.fullname,users.profile_picture')
                 ->from("pro_user_posts")
+                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
+//                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
+                ->where('creation_date >= now() - INTERVAL 1 DAY')
                 ->groupBy('pro_user_posts.user_id')
-                ->leftJoin('users', 'users.id = pro_user_posts.user_id')
+                ->orderBy('creation_date DESC')
                 ->all();
         return $posts;
     }
