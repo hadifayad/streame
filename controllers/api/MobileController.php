@@ -15,7 +15,6 @@ use app\models\UserNotifications;
 use app\models\UserPurchaseDetails;
 use app\models\Users;
 use app\models\UsersSpinSilver;
-use TBETool\GenerateVideoScreenshots;
 use Yii;
 use yii\db\Query;
 use function contains;
@@ -409,11 +408,42 @@ class MobileController extends ApiController {
         $randomFileName = Yii::$app->security->generateRandomString() . "." . $ext;
         $location = "proUserPost/";
         if (move_uploaded_file($temp_name, $location . $randomFileName)) {
+
             $proUserPost = new ProUserPosts();
             $proUserPost->video = $randomFileName;
             $proUserPost->user_id = $userId;
 
             if ($proUserPost->save()) {
+
+                $imageString = $post["imageString"];
+                //for image
+                $location = "postPictures/";
+                $uploads_dir = $location;
+                $imageName = Yii::$app->security->generateRandomString() . ".jpeg";
+                $percent = 1;
+
+                $data = base64_decode($imageString);
+
+                $im = imagecreatefromstring($data);
+                $width = imagesx($im);
+                $height = imagesy($im);
+                $newwidth = $width * $percent;
+                $newheight = $height * $percent;
+                $thumb = imagecreatetruecolor($newwidth, $newheight);
+                header('Content-type: image/jpeg');
+                // Resize
+                imagecopyresized($thumb, $im, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+                // Output
+//                    imagejpeg($im, $uploads_dir . $imageName);
+                imagejpeg($thumb, $uploads_dir . $imageName);
+
+                //save record to database table 
+                $proUserPost = ProUserPosts::findOne(["id" => $proUserPost->primaryKey]);
+                $proUserPost->image = $imageName;
+
+                if ($proUserPost->save()) {
+                    
+                }
                 return "true";
             } else {
                 return $proUserPost->getErrors();
