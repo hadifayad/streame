@@ -40,10 +40,6 @@ class ComposerStaticInit7a01b5365b04d54a87938c1b7c73cd36
         array (
             'sjaakp\\gcharts\\' => 15,
         ),
-        'r' => 
-        array (
-            'rbtphp\\ffmpeg\\' => 14,
-        ),
         'p' => 
         array (
             'phpDocumentor\\Reflection\\' => 25,
@@ -77,9 +73,7 @@ class ComposerStaticInit7a01b5365b04d54a87938c1b7c73cd36
             'Symfony\\Contracts\\Service\\' => 26,
             'Symfony\\Contracts\\EventDispatcher\\' => 34,
             'Symfony\\Component\\Yaml\\' => 23,
-            'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\Finder\\' => 25,
-            'Symfony\\Component\\Filesystem\\' => 29,
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\DomCrawler\\' => 29,
             'Symfony\\Component\\CssSelector\\' => 30,
@@ -114,7 +108,6 @@ class ComposerStaticInit7a01b5365b04d54a87938c1b7c73cd36
         array (
             'Doctrine\\Instantiator\\' => 22,
             'Doctrine\\Common\\Lexer\\' => 22,
-            'Doctrine\\Common\\Cache\\' => 22,
             'DeepCopy\\' => 9,
         ),
         'C' => 
@@ -156,10 +149,6 @@ class ComposerStaticInit7a01b5365b04d54a87938c1b7c73cd36
         'sjaakp\\gcharts\\' => 
         array (
             0 => __DIR__ . '/..' . '/sjaakp/yii2-gcharts',
-        ),
-        'rbtphp\\ffmpeg\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/elisevgeniy/yii2-ffmpeg',
         ),
         'phpDocumentor\\Reflection\\' => 
         array (
@@ -227,17 +216,9 @@ class ComposerStaticInit7a01b5365b04d54a87938c1b7c73cd36
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
         ),
-        'Symfony\\Component\\Process\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/process',
-        ),
         'Symfony\\Component\\Finder\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
-        ),
-        'Symfony\\Component\\Filesystem\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/filesystem',
         ),
         'Symfony\\Component\\EventDispatcher\\' => 
         array (
@@ -258,14 +239,6 @@ class ComposerStaticInit7a01b5365b04d54a87938c1b7c73cd36
         'Symfony\\Component\\BrowserKit\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/browser-kit',
-        ),
-        'ScreenShotr\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/aequasi/screenshotr/src',
-        ),
-        'Psr\\Log\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
         'Psr\\Http\\Message\\' => 
         array (
@@ -303,10 +276,6 @@ class ComposerStaticInit7a01b5365b04d54a87938c1b7c73cd36
         array (
             0 => __DIR__ . '/..' . '/doctrine/lexer/lib/Doctrine/Common/Lexer',
         ),
-        'Doctrine\\Common\\Cache\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
-        ),
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
@@ -317,8 +286,8 @@ class ComposerStaticInit7a01b5365b04d54a87938c1b7c73cd36
         ),
         'Codeception\\' => 
         array (
-            0 => __DIR__ . '/..' . '/codeception/base/src/Codeception',
-            1 => __DIR__ . '/..' . '/codeception/stub/src',
+            0 => __DIR__ . '/..' . '/codeception/stub/src',
+            1 => __DIR__ . '/..' . '/codeception/base/src/Codeception',
         ),
     );
 

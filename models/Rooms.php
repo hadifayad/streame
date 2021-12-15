@@ -27,6 +27,7 @@ use yii\db\ActiveRecord;
  * @property  $challenge_coins
  * @property  $streamer_response
  * @property  $invitation_response
+ * @property   $challenge_user_result
  * @property  $challenge_result
 
  * @property Users $mention0
@@ -45,8 +46,8 @@ class Rooms extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['r_admin'], 'required'],
-            [['c_text', 'challenge_coins'], 'string'],
+            [[ 'r_admin', 'creation_date'], 'required'],
+            [['c_text'], 'string'],
             [['r_admin', 'mention'], 'integer'],
             [['creation_date'], 'safe'],
             [['color1', 'color2'], 'string', 'max' => 20],
@@ -76,6 +77,7 @@ class Rooms extends \yii\db\ActiveRecord {
             'invitation_response' => Yii::t('app', 'invitation response'),
             'challenge_result' => Yii::t('app', 'challenge result'),
             'video_thumbnail' => 'Video Thumbnail',
+            'challenge_user_result' => Yii::t('app', 'challenge user result'),
         ];
     }
 
