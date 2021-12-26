@@ -178,6 +178,7 @@ class MobileController extends ApiController {
             $room->color1 = $color1;
             $room->color2 = $color2;
 //            return $room;
+//            return $room;
 //            return $room->getErrors();
             if ($room->save()) {
                 return "true";
