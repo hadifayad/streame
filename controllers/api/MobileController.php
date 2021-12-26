@@ -173,6 +173,8 @@ class MobileController extends ApiController {
 
             return "true";
         } else if ($type == "text") {
+                $color1 = $post["color1"];
+            $color2 = $post["color2"];
             $room->color1 = $color1;
             $room->color2 = $color2;
 //            return $room;
