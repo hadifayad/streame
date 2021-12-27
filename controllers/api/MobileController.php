@@ -48,8 +48,15 @@ class MobileController extends ApiController {
         $type = $post["type"];
         $category = $post["category"];
         $mention = $post["mention"];
+        $mention2 = $post["mention2"];
+        $mention3 = $post["mention3"];
+        $challengeTime = $post["challengeTime"];
+        
+        
+        
+        
         $imageString = $post["imageString"];
-        $coins = $post["challenge_coins"];
+        $coins = $post["challengeCoins"];
 
 
         $room = new Rooms();
@@ -60,6 +67,9 @@ class MobileController extends ApiController {
         $room->category = $category;
         $room->mention = $mention;
         $room->challenge_coins = $coins;
+        $room->challenge_date = $challengeTime;
+        $room->mention2 = $mention2;
+        $room->mention3 = $mention3;
         $room->creation_date = date("Y-m-d H:i:s");
 
         if ($type == "video") {
@@ -1324,7 +1334,7 @@ class MobileController extends ApiController {
         $visitorId = $post["visitorId"];
 //        $userId = 13;
         $userProfile = Users::find()
-                ->select("username,fullname,role,link_facebook,link_youtube,link_instagram,link_tiktok,profile_picture,")
+                ->select("username,fullname,role,link_facebook,link_youtube,link_instagram,link_tiktok,profile_picture,address,email,phone,gender")
                 ->where(['id' => $userId])
                 ->asArray()
                 ->one();
