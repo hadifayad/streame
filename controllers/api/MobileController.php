@@ -9,6 +9,7 @@ use app\models\NotificationForm;
 use app\models\Pageadmin;
 use app\models\PostFiles;
 use app\models\ProUserPosts;
+use app\models\ProUserPostsViews;
 use app\models\Rooms;
 use app\models\StreamerGames;
 use app\models\UserNotifications;
@@ -16,8 +17,8 @@ use app\models\UserPurchaseDetails;
 use app\models\Users;
 use app\models\UsersSpinSilver;
 use Yii;
-use yii\db\Expression;
 use yii\db\Query;
+use yii\web\Response;
 use function contains;
 
 class MobileController extends ApiController {
@@ -469,9 +470,29 @@ class MobileController extends ApiController {
 
     public function actionGetProUsersPosts() {
 
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $post = Yii::$app->request->post();
+        $userId = $post["userId"];
+
+//        $posts = (new Query)
+//                ->select('pro_user_posts.*,users.fullname,users.profile_picture')
+//                ->from("pro_user_posts")
+//                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
+////                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
+//                ->where('creation_date >= now() - INTERVAL 1 DAY')
+//                ->groupBy('pro_user_posts.user_id')
+//                    ->orderBy('creation_date DESC')
+//                ->all();
+//        return $posts;
 
         $posts = (new Query)
-                ->select('pro_user_posts.*,users.fullname,users.profile_picture')
+                ->select("pro_user_posts.*,users.fullname,users.profile_picture,COUNT(pro_user_posts.id) as count,(SELECT COUNT(pro_user_posts_views.id) as count
+                          FROM pro_user_posts_views 
+                          JOIN pro_user_posts pup ON pup.id = pro_user_posts_views.pro_post_id
+                          WHERE pro_user_posts_views.user_id = $userId AND pro_user_posts_views.creation_date >= now() - INTERVAL 1 DAY AND pup.user_id = pro_user_posts.user_id
+                          ORDER BY pro_user_posts_views.creation_date DESC
+                          ) as viewed_count")
                 ->from("pro_user_posts")
                 ->join('join', 'users', 'users.id = pro_user_posts.user_id')
 //                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
@@ -479,6 +500,23 @@ class MobileController extends ApiController {
                 ->groupBy('pro_user_posts.user_id')
                 ->orderBy('creation_date DESC')
                 ->all();
+
+        $temp_array1 = [];
+        $temp_array2 = [];
+        for ($i = 0; $i < sizeof($posts); $i++) {
+            $post = $posts[$i];
+            if ($post["count"] > $post["viewed_count"]) {
+                array_push($temp_array1, $post);
+            } else {
+                array_push($temp_array2, $post);
+            }
+        }
+        for ($j = 0; $j < sizeof($temp_array2); $j++) {
+            array_push($temp_array1, $temp_array2[$j]);
+        }
+
+        return $temp_array1;
+//        return json_decode(json_encode($temp_array1), FALSE);
         return $posts;
     }
 
@@ -1551,6 +1589,30 @@ class MobileController extends ApiController {
             return "https://www.theleader.team/postVideos/" . $randomFileName;
         } else {
             return "Error";
+        }
+    }
+
+    public function actionProPostViewed() {
+
+        $post = Yii::$app->request->post();
+
+        $userId = $post["userId"];
+        $proPostId = $post["proPostId"];
+
+
+        $model = new ProUserPostsViews();
+        $model->user_id = $userId;
+        $model->pro_post_id = $proPostId;
+        if ($model->save()) {
+            return [
+                "status" => "true",
+                "message" => "saved"
+            ];
+        } else {
+            return [
+                "status" => "true",
+                "message" => "already Saved"
+            ];
         }
     }
 
