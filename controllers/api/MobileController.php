@@ -487,7 +487,9 @@ class MobileController extends ApiController {
 //        return $posts;
 
         $posts = (new Query)
-                ->select("pro_user_posts.*,users.fullname,users.profile_picture,COUNT(pro_user_posts.id) as count,(SELECT COUNT(pro_user_posts_views.id) as count
+                ->select("pro_user_posts.*,users.fullname,users.profile_picture,
+                    COUNT(pro_user_posts.id) as count,
+                    (SELECT COUNT(pro_user_posts_views.id) as count
                           FROM pro_user_posts_views 
                           JOIN pro_user_posts pup ON pup.id = pro_user_posts_views.pro_post_id
                           WHERE pro_user_posts_views.user_id = $userId AND pro_user_posts_views.creation_date >= now() - INTERVAL 1 DAY AND pup.user_id = pro_user_posts.user_id
@@ -500,6 +502,8 @@ class MobileController extends ApiController {
                 ->groupBy('pro_user_posts.user_id')
                 ->orderBy('creation_date DESC')
                 ->all();
+
+        return $posts;
 
         $temp_array1 = [];
         $temp_array2 = [];
@@ -528,6 +532,8 @@ class MobileController extends ApiController {
 
         $posts = ProUserPosts::find()
                 ->where(['user_id' => $userId])
+                ->andWhere('creation_date >= now() - INTERVAL 1 DAY')
+                ->orderBy('creation_date DESC')
                 ->all();
         return $posts;
     }
