@@ -533,7 +533,7 @@ class MobileController extends ApiController {
         $posts = ProUserPosts::find()
                 ->where(['user_id' => $userId])
                 ->andWhere('creation_date >= now() - INTERVAL 1 DAY')
-                ->orderBy('creation_date ASC')
+                ->orderBy('creation_date DESC')
                 ->all();
         return $posts;
     }
