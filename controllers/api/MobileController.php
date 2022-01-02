@@ -52,10 +52,10 @@ class MobileController extends ApiController {
         $mention2 = $post["mention2"];
         $mention3 = $post["mention3"];
         $challengeTime = $post["challengeTime"];
-        
-        
-        
-        
+
+
+
+
         $imageString = $post["imageString"];
         $coins = $post["challengeCoins"];
 
@@ -184,7 +184,7 @@ class MobileController extends ApiController {
 
             return "true";
         } else if ($type == "text") {
-                $color1 = $post["color1"];
+            $color1 = $post["color1"];
             $color2 = $post["color2"];
             $room->color1 = $color1;
             $room->color2 = $color2;
@@ -285,61 +285,61 @@ class MobileController extends ApiController {
         return $arrayList;
     }
 
-     public function actionGetProUsersPosts() {
-         
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-
-        $post = Yii::$app->request->post();
-        $userId = $post["userId"];
-
+//     public function actionGetProUsersPosts() {
+//         
+//        \Yii::$app->response->format = Response::FORMAT_JSON;
+//
+//        $post = Yii::$app->request->post();
+//        $userId = $post["userId"];
+//
+////        $posts = (new Query)
+////                ->select('pro_user_posts.*,users.fullname,users.profile_picture')
+////                ->from("pro_user_posts")
+////                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
+//////                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
+////                ->where('creation_date >= now() - INTERVAL 1 DAY')
+////                ->groupBy('pro_user_posts.user_id')
+////                    ->orderBy('creation_date DESC')
+////                ->all();
+////        return $posts;
+//
 //        $posts = (new Query)
-//                ->select('pro_user_posts.*,users.fullname,users.profile_picture')
+//                ->select("pro_user_posts.*,users.fullname,users.profile_picture,
+//                    COUNT(pro_user_posts.id) as count,
+//                    (SELECT COUNT(pro_user_posts_views.id) as count
+//                          FROM pro_user_posts_views 
+//                          JOIN pro_user_posts pup ON pup.id = pro_user_posts_views.pro_post_id
+//                          WHERE pro_user_posts_views.user_id = $userId AND pro_user_posts_views.creation_date >= now() - INTERVAL 1 DAY AND pup.user_id = pro_user_posts.user_id
+//                          ORDER BY pro_user_posts_views.creation_date DESC
+//                          ) as viewed_count")
 //                ->from("pro_user_posts")
 //                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
 ////                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
 //                ->where('creation_date >= now() - INTERVAL 1 DAY')
 //                ->groupBy('pro_user_posts.user_id')
-//                    ->orderBy('creation_date DESC')
+//                ->orderBy('creation_date DESC')
 //                ->all();
+//
 //        return $posts;
-
-        $posts = (new Query)
-                ->select("pro_user_posts.*,users.fullname,users.profile_picture,
-                    COUNT(pro_user_posts.id) as count,
-                    (SELECT COUNT(pro_user_posts_views.id) as count
-                          FROM pro_user_posts_views 
-                          JOIN pro_user_posts pup ON pup.id = pro_user_posts_views.pro_post_id
-                          WHERE pro_user_posts_views.user_id = $userId AND pro_user_posts_views.creation_date >= now() - INTERVAL 1 DAY AND pup.user_id = pro_user_posts.user_id
-                          ORDER BY pro_user_posts_views.creation_date DESC
-                          ) as viewed_count")
-                ->from("pro_user_posts")
-                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
-//                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
-                ->where('creation_date >= now() - INTERVAL 1 DAY')
-                ->groupBy('pro_user_posts.user_id')
-                ->orderBy('creation_date DESC')
-                ->all();
-
-        return $posts;
-
-        $temp_array1 = [];
-        $temp_array2 = [];
-        for ($i = 0; $i < sizeof($posts); $i++) {
-            $post = $posts[$i];
-            if ($post["count"] > $post["viewed_count"]) {
-                array_push($temp_array1, $post);
-            } else {
-                array_push($temp_array2, $post);
-            }
-        }
-        for ($j = 0; $j < sizeof($temp_array2); $j++) {
-            array_push($temp_array1, $temp_array2[$j]);
-        }
-
-        return $temp_array1;
-//        return json_decode(json_encode($temp_array1), FALSE);
-        return $posts;
-     }
+//
+//        $temp_array1 = [];
+//        $temp_array2 = [];
+//        for ($i = 0; $i < sizeof($posts); $i++) {
+//            $post = $posts[$i];
+//            if ($post["count"] > $post["viewed_count"]) {
+//                array_push($temp_array1, $post);
+//            } else {
+//                array_push($temp_array2, $post);
+//            }
+//        }
+//        for ($j = 0; $j < sizeof($temp_array2); $j++) {
+//            array_push($temp_array1, $temp_array2[$j]);
+//        }
+//
+//        return $temp_array1;
+////        return json_decode(json_encode($temp_array1), FALSE);
+//        return $posts;
+//     }
     public function actionGetFollowedStreamers() {
 
         $post = Yii::$app->request->post();
@@ -385,13 +385,13 @@ class MobileController extends ApiController {
 
         return $arrayList;
     }
-    
-      public function actionGetPostsBySearch() {
+
+    public function actionGetPostsBySearch() {
 
         $post = Yii::$app->request->post();
         $searchText = $post["searchText"];
         $userId = $post["userId"];
-        $searchText = "'%".$searchText."%'";
+        $searchText = "'%" . $searchText . "%'";
 
 //        $rooms = Rooms::find()
 //                ->where(['r_admin' => $userId])
@@ -411,21 +411,21 @@ class MobileController extends ApiController {
 
         return $arrayList;
     }
-    
+
     public function actionGetUsersBySearch() {
 
         $post = Yii::$app->request->post();
         $searchText = $post["searchText"];
         $userId = $post["userId"];
-        $searchText = "'%".$searchText."%'";
+        $searchText = "'%" . $searchText . "%'";
 
 //        $rooms = Rooms::find()
 //                ->where(['r_admin' => $userId])
 //                ->all();
-        
-        
 
-        
+
+
+
         $sql = "   
              SELECT   users.*, 
        (SELECT COUNT(*) FROM follow
@@ -433,12 +433,12 @@ class MobileController extends ApiController {
 FROM users
  LEFT JOIN follow ON follow.r_page = users.id AND follow.r_user = $userId
    WHERE  LOWER(users.fullname) like LOWER($searchText) ;";
-            
-        
-        
-        
-        
-        
+
+
+
+
+
+
 
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
@@ -621,7 +621,7 @@ FROM users
                     (SELECT COUNT(pro_user_posts_views.id) as count
                           FROM pro_user_posts_views 
                           JOIN pro_user_posts pup ON pup.id = pro_user_posts_views.pro_post_id
-                          WHERE pro_user_posts_views.user_id = $userId AND pro_user_posts_views.creation_date >= now() - INTERVAL 1 DAY AND pup.user_id = pro_user_posts.user_id
+                          WHERE pro_user_posts_views.user_id = $userId  AND pup.user_id = pro_user_posts.user_id
                           ORDER BY pro_user_posts_views.creation_date DESC
                           ) as viewed_count")
                 ->from("pro_user_posts")
@@ -631,8 +631,6 @@ FROM users
                 ->groupBy('pro_user_posts.user_id')
                 ->orderBy('creation_date DESC')
                 ->all();
-
-        return $posts;
 
         $temp_array1 = [];
         $temp_array2 = [];
@@ -648,7 +646,7 @@ FROM users
             array_push($temp_array1, $temp_array2[$j]);
         }
 
-        return $temp_array1;
+//        return $temp_array1;
 //        return json_decode(json_encode($temp_array1), FALSE);
         return $posts;
     }
