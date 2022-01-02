@@ -9,15 +9,16 @@ use app\models\NotificationForm;
 use app\models\Pageadmin;
 use app\models\PostFiles;
 use app\models\ProUserPosts;
+use app\models\ProUserPostsViews;
 use app\models\Rooms;
 use app\models\StreamerGames;
 use app\models\UserNotifications;
 use app\models\UserPurchaseDetails;
 use app\models\Users;
 use app\models\UsersSpinSilver;
-use TBETool\GenerateVideoScreenshots;
 use Yii;
 use yii\db\Query;
+use yii\web\Response;
 use function contains;
 
 class MobileController extends ApiController {
@@ -475,8 +476,8 @@ FROM users
 
         return $arrayList;
     }
-    
-          public function actionGetRelatedChallenges() {
+
+    public function actionGetRelatedChallenges() {
 
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
@@ -485,17 +486,17 @@ FROM users
 //                ->where(['r_admin' => $userId])
 //                ->all();
 
-     
-        
-        
-        
-         $sql =  "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
+
+
+
+
+        $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
             (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
             (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
                LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
-             WHERE  rooms.mention = $userId OR rooms.r_admin = $userId AND rooms.category = 'challenge' AND rooms.invitation_response is NULL  OR rooms.invitation_response=1" ;
+             WHERE  rooms.mention = $userId OR rooms.r_admin = $userId AND rooms.category = 'challenge' AND rooms.invitation_response is NULL  OR rooms.invitation_response=1";
 
 
 
@@ -505,9 +506,9 @@ FROM users
 
         return $arrayList;
     }
-    
-    public function actionAcceptChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionAcceptChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
                 ->where(['id' => $roomId])
@@ -533,83 +534,124 @@ FROM users
             }
         }
     }
-    
-    
-        public function actionUserWinChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionUserWinChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
-                ->where(['id'=>$roomId])
+                ->where(['id' => $roomId])
                 ->one();
-        if($room){
-            $room->challenge_result =1;
-            $room->challenge_user_result =1;
-            if($room->save()){
+        if ($room) {
+            $room->challenge_result = 1;
+            $room->challenge_user_result = 1;
+            if ($room->save()) {
                 return true;
             }
         }
-        
     }
-    
-      public function actionUserLoseChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionUserLoseChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
-                ->where(['id'=>$roomId])
+                ->where(['id' => $roomId])
                 ->one();
-        if($room){
-           
-            $room->challenge_user_result =0;
-            if($room->save()){
+        if ($room) {
+
+            $room->challenge_user_result = 0;
+            if ($room->save()) {
                 return true;
             }
         }
-        
     }
-    
-          public function actionStreamerAcceptLoseChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionStreamerAcceptLoseChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
-                ->where(['id'=>$roomId])
+                ->where(['id' => $roomId])
                 ->one();
-        if($room){
-           
-            $room->streamer_response =1;
+        if ($room) {
+
+            $room->streamer_response = 1;
             $room->challenge_result = $room->challenge_user_result;
-            if($room->save()){
+            if ($room->save()) {
                 return true;
             }
         }
-        
     }
-    
-         public function actionStreamerDeclineLoseChallenge(){
-         $post = Yii::$app->request->post();
+
+    public function actionStreamerDeclineLoseChallenge() {
+        $post = Yii::$app->request->post();
         $roomId = $post["roomId"];
         $room = Rooms::find()
-                ->where(['id'=>$roomId])
+                ->where(['id' => $roomId])
                 ->one();
-        if($room){
-           
-            $room->streamer_response =0;
-            if($room->save()){
+        if ($room) {
+
+            $room->streamer_response = 0;
+            if ($room->save()) {
                 return true;
-            }
-            else return $room->errors;
+            } else
+                return $room->errors;
         }
-        
     }
-    
- 
 
-  
+    public function actionGetProUsersPosts() {
 
-    
-    
-    
+        \Yii::$app->response->format = Response::FORMAT_JSON;
 
- 
+        $post = Yii::$app->request->post();
+        $userId = $post["userId"];
+
+//        $posts = (new Query)
+//                ->select('pro_user_posts.*,users.fullname,users.profile_picture')
+//                ->from("pro_user_posts")
+//                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
+////                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
+//                ->where('creation_date >= now() - INTERVAL 1 DAY')
+//                ->groupBy('pro_user_posts.user_id')
+//                    ->orderBy('creation_date DESC')
+//                ->all();
+//        return $posts;
+
+        $posts = (new Query)
+                ->select("pro_user_posts.*,users.fullname,users.profile_picture,
+                    COUNT(pro_user_posts.id) as count,
+                    (SELECT COUNT(pro_user_posts_views.id) as count
+                          FROM pro_user_posts_views 
+                          JOIN pro_user_posts pup ON pup.id = pro_user_posts_views.pro_post_id
+                          WHERE pro_user_posts_views.user_id = $userId AND pro_user_posts_views.creation_date >= now() - INTERVAL 1 DAY AND pup.user_id = pro_user_posts.user_id
+                          ORDER BY pro_user_posts_views.creation_date DESC
+                          ) as viewed_count")
+                ->from("pro_user_posts")
+                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
+//                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
+                ->where('creation_date >= now() - INTERVAL 1 DAY')
+                ->groupBy('pro_user_posts.user_id')
+                ->orderBy('creation_date DESC')
+                ->all();
+
+        return $posts;
+
+        $temp_array1 = [];
+        $temp_array2 = [];
+        for ($i = 0; $i < sizeof($posts); $i++) {
+            $post = $posts[$i];
+            if ($post["count"] > $post["viewed_count"]) {
+                array_push($temp_array1, $post);
+            } else {
+                array_push($temp_array2, $post);
+            }
+        }
+        for ($j = 0; $j < sizeof($temp_array2); $j++) {
+            array_push($temp_array1, $temp_array2[$j]);
+        }
+
+        return $temp_array1;
+//        return json_decode(json_encode($temp_array1), FALSE);
+        return $posts;
+    }
 
     public function actionGetProUserPosts() {
 
@@ -619,6 +661,8 @@ FROM users
 
         $posts = ProUserPosts::find()
                 ->where(['user_id' => $userId])
+                ->andWhere('creation_date >= now() - INTERVAL 1 DAY')
+                ->orderBy('creation_date DESC')
                 ->all();
         return $posts;
     }
@@ -633,11 +677,42 @@ FROM users
         $randomFileName = Yii::$app->security->generateRandomString() . "." . $ext;
         $location = "proUserPost/";
         if (move_uploaded_file($temp_name, $location . $randomFileName)) {
+
             $proUserPost = new ProUserPosts();
             $proUserPost->video = $randomFileName;
             $proUserPost->user_id = $userId;
 
             if ($proUserPost->save()) {
+
+                $imageString = $post["imageString"];
+                //for image
+                $location = "postPictures/";
+                $uploads_dir = $location;
+                $imageName = Yii::$app->security->generateRandomString() . ".jpeg";
+                $percent = 1;
+
+                $data = base64_decode($imageString);
+
+                $im = imagecreatefromstring($data);
+                $width = imagesx($im);
+                $height = imagesy($im);
+                $newwidth = $width * $percent;
+                $newheight = $height * $percent;
+                $thumb = imagecreatetruecolor($newwidth, $newheight);
+                header('Content-type: image/jpeg');
+                // Resize
+                imagecopyresized($thumb, $im, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+                // Output
+//                    imagejpeg($im, $uploads_dir . $imageName);
+                imagejpeg($thumb, $uploads_dir . $imageName);
+
+                //save record to database table 
+                $proUserPost = ProUserPosts::findOne(["id" => $proUserPost->primaryKey]);
+                $proUserPost->image = $imageName;
+
+                if ($proUserPost->save()) {
+                    
+                }
                 return "true";
             } else {
                 return $proUserPost->getErrors();
@@ -1649,6 +1724,30 @@ FROM users
             return "https://www.theleader.team/postVideos/" . $randomFileName;
         } else {
             return "Error";
+        }
+    }
+
+    public function actionProPostViewed() {
+
+        $post = Yii::$app->request->post();
+
+        $userId = $post["userId"];
+        $proPostId = $post["proPostId"];
+
+
+        $model = new ProUserPostsViews();
+        $model->user_id = $userId;
+        $model->pro_post_id = $proPostId;
+        if ($model->save()) {
+            return [
+                "status" => "true",
+                "message" => "saved"
+            ];
+        } else {
+            return [
+                "status" => "true",
+                "message" => "already Saved"
+            ];
         }
     }
 
