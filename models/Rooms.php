@@ -17,6 +17,8 @@ use yii\db\ActiveRecord;
  * @property string|null $type
  * @property string|null $category
  * @property int|null $mention
+ * @property int|null $mention2
+ * @property int|null $mention3
  * @property string|null $color1 
  * @property string|null $color2
  * @property string|null $video_thumbnail
@@ -29,6 +31,7 @@ use yii\db\ActiveRecord;
  * @property  $invitation_response
  * @property   $challenge_user_result
  * @property  $challenge_result
+ * @property  $challenge_date
 
  * @property Users $mention0
  */
@@ -47,7 +50,7 @@ class Rooms extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [[ 'r_admin', 'creation_date'], 'required'],
-            [['c_text'], 'string'],
+            [['c_text','challenge_date'], 'string'],
             [['r_admin', 'mention'], 'integer'],
             [['creation_date'], 'safe'],
             [['color1', 'color2'], 'string', 'max' => 20],
@@ -55,7 +58,7 @@ class Rooms extends \yii\db\ActiveRecord {
             [['type'], 'string', 'max' => 50],
             [['category', 'video_thumbnail'], 'string', 'max' => 200],
             [['r_admin'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['r_admin' => 'id']],
-            [['mention'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['mention' => 'id']],
+            [['mention','mention2','mention3'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['mention' => 'id']],
         ];
     }
 
@@ -72,6 +75,8 @@ class Rooms extends \yii\db\ActiveRecord {
             'type' => Yii::t('app', 'Type'),
             'category' => Yii::t('app', 'Category'),
             'mention' => Yii::t('app', 'Mention'),
+            'mention2' => Yii::t('app', 'Mention2'),
+            'mention3' => Yii::t('app', 'Mention3'),
             'challenge_coins' => Yii::t('app', 'Challenge Coins'),
             'streamer_response' => Yii::t('app', 'streamer response'),
             'invitation_response' => Yii::t('app', 'invitation response'),
@@ -114,6 +119,12 @@ class Rooms extends \yii\db\ActiveRecord {
      */
     public function getMention0() {
         return $this->hasOne(Users::className(), ['id' => 'mention']);
+    }
+    public function getMention2() {
+        return $this->hasOne(Users::className(), ['id' => 'mention2']);
+    }
+    public function getMention3() {
+        return $this->hasOne(Users::className(), ['id' => 'mention3']);
     }
 
 }

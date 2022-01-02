@@ -49,8 +49,15 @@ class MobileController extends ApiController {
         $type = $post["type"];
         $category = $post["category"];
         $mention = $post["mention"];
+        $mention2 = $post["mention2"];
+        $mention3 = $post["mention3"];
+        $challengeTime = $post["challengeTime"];
+        
+        
+        
+        
         $imageString = $post["imageString"];
-        $coins = $post["challenge_coins"];
+        $coins = $post["challengeCoins"];
 
 
         $room = new Rooms();
@@ -61,6 +68,9 @@ class MobileController extends ApiController {
         $room->category = $category;
         $room->mention = $mention;
         $room->challenge_coins = $coins;
+        $room->challenge_date = $challengeTime;
+        $room->mention2 = $mention2;
+        $room->mention3 = $mention3;
         $room->creation_date = date("Y-m-d H:i:s");
 
         if ($type == "video") {
@@ -174,8 +184,11 @@ class MobileController extends ApiController {
 
             return "true";
         } else if ($type == "text") {
+                $color1 = $post["color1"];
+            $color2 = $post["color2"];
             $room->color1 = $color1;
             $room->color2 = $color2;
+//            return $room;
 //            return $room;
 //            return $room->getErrors();
             if ($room->save()) {
@@ -272,6 +285,61 @@ class MobileController extends ApiController {
         return $arrayList;
     }
 
+     public function actionGetProUsersPosts() {
+         
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $post = Yii::$app->request->post();
+        $userId = $post["userId"];
+
+//        $posts = (new Query)
+//                ->select('pro_user_posts.*,users.fullname,users.profile_picture')
+//                ->from("pro_user_posts")
+//                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
+////                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
+//                ->where('creation_date >= now() - INTERVAL 1 DAY')
+//                ->groupBy('pro_user_posts.user_id')
+//                    ->orderBy('creation_date DESC')
+//                ->all();
+//        return $posts;
+
+        $posts = (new Query)
+                ->select("pro_user_posts.*,users.fullname,users.profile_picture,
+                    COUNT(pro_user_posts.id) as count,
+                    (SELECT COUNT(pro_user_posts_views.id) as count
+                          FROM pro_user_posts_views 
+                          JOIN pro_user_posts pup ON pup.id = pro_user_posts_views.pro_post_id
+                          WHERE pro_user_posts_views.user_id = $userId AND pro_user_posts_views.creation_date >= now() - INTERVAL 1 DAY AND pup.user_id = pro_user_posts.user_id
+                          ORDER BY pro_user_posts_views.creation_date DESC
+                          ) as viewed_count")
+                ->from("pro_user_posts")
+                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
+//                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
+                ->where('creation_date >= now() - INTERVAL 1 DAY')
+                ->groupBy('pro_user_posts.user_id')
+                ->orderBy('creation_date DESC')
+                ->all();
+
+        return $posts;
+
+        $temp_array1 = [];
+        $temp_array2 = [];
+        for ($i = 0; $i < sizeof($posts); $i++) {
+            $post = $posts[$i];
+            if ($post["count"] > $post["viewed_count"]) {
+                array_push($temp_array1, $post);
+            } else {
+                array_push($temp_array2, $post);
+            }
+        }
+        for ($j = 0; $j < sizeof($temp_array2); $j++) {
+            array_push($temp_array1, $temp_array2[$j]);
+        }
+
+        return $temp_array1;
+//        return json_decode(json_encode($temp_array1), FALSE);
+        return $posts;
+     }
     public function actionGetFollowedStreamers() {
 
         $post = Yii::$app->request->post();
@@ -310,6 +378,67 @@ class MobileController extends ApiController {
              JOIN users ON rooms.r_admin = users.id
              LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
              WHERE  rooms.r_admin = $userId ;";
+
+        $command = Yii::$app->db->createCommand($sql);
+        $arrayList = $command->queryAll();
+
+
+        return $arrayList;
+    }
+    
+      public function actionGetPostsBySearch() {
+
+        $post = Yii::$app->request->post();
+        $searchText = $post["searchText"];
+        $userId = $post["userId"];
+        $searchText = "'%".$searchText."%'";
+
+//        $rooms = Rooms::find()
+//                ->where(['r_admin' => $userId])
+//                ->all();
+
+        $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
+            (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
+            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
+             FROM rooms
+             JOIN users ON rooms.r_admin = users.id
+             LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
+             WHERE  rooms.c_text like $searchText OR rooms.title like $searchText Or users.fullname like $searchText;";
+
+        $command = Yii::$app->db->createCommand($sql);
+        $arrayList = $command->queryAll();
+
+
+        return $arrayList;
+    }
+    
+    public function actionGetUsersBySearch() {
+
+        $post = Yii::$app->request->post();
+        $searchText = $post["searchText"];
+        $userId = $post["userId"];
+        $searchText = "'%".$searchText."%'";
+
+//        $rooms = Rooms::find()
+//                ->where(['r_admin' => $userId])
+//                ->all();
+        
+        
+
+        
+        $sql = "   
+             SELECT   users.*, 
+       (SELECT COUNT(*) FROM follow
+        WHERE users.id = follow.r_page) AS followers,follow.r_page as followed
+FROM users
+ LEFT JOIN follow ON follow.r_page = users.id AND follow.r_user = $userId
+   WHERE  LOWER(users.fullname) like LOWER($searchText) ;";
+            
+        
+        
+        
+        
+        
 
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
@@ -1390,7 +1519,7 @@ class MobileController extends ApiController {
         $visitorId = $post["visitorId"];
 //        $userId = 13;
         $userProfile = Users::find()
-                ->select("username,fullname,role,link_facebook,link_youtube,link_instagram,link_tiktok,profile_picture,")
+                ->select("username,fullname,role,link_facebook,link_youtube,link_instagram,link_tiktok,profile_picture,address,email,phone,gender")
                 ->where(['id' => $userId])
                 ->asArray()
                 ->one();
