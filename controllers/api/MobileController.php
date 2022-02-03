@@ -131,7 +131,9 @@ class MobileController extends ApiController {
                     } else {
                         return $postFiles->getErrors();
                     }
-                    NotificationForm::notifyStreamersForChallenge($room);
+                    if ($category == "challenge") {
+                        NotificationForm::notifyStreamersForChallenge($room);
+                    }
                     return "true";
 //                    return "good post only saved";
                 } else {
@@ -186,7 +188,9 @@ class MobileController extends ApiController {
             } else {
                 return $room->getErrors();
             }
-            NotificationForm::notifyStreamersForChallenge($room);
+            if ($category == "challenge") {
+                NotificationForm::notifyStreamersForChallenge($room);
+            }
             return "true";
         } else if ($type == "text") {
             $color1 = $post["color1"];
@@ -197,7 +201,9 @@ class MobileController extends ApiController {
 //            return $room;
 //            return $room->getErrors();
             if ($room->save()) {
-                NotificationForm::notifyStreamersForChallenge($room);
+                if ($category == "challenge") {
+                    NotificationForm::notifyStreamersForChallenge($room);
+                }
                 return "true";
             } else {
                 return $room->getErrors();
@@ -477,8 +483,12 @@ class MobileController extends ApiController {
         for ($i = 0; $i < sizeof($arrayList); $i++) {
             $item = $arrayList[$i];
             if ($item["category"] == "challenge") {
-                $challengeVideos = MobileController::getChallengesVideosMentioned($item["id"], $item["mention"], $item["mention2"], $item["mention3"]);
-                $arrayList[$i]["challengesVideos"] = $challengeVideos;
+                if ($item["accept1"] == 0 && $item["accept2"] == 0 && $item["accept3"] == 0) {
+                    array_splice($arrayList, $i, 1);
+                } else {
+                    $challengeVideos = MobileController::getChallengesVideosMentioned($item["id"], $item["mention"], $item["mention2"], $item["mention3"]);
+                    $arrayList[$i]["challengesVideos"] = $challengeVideos;
+                }
             } else {
                 $arrayList[$i]["challengesVideos"] = null;
             }
@@ -2050,6 +2060,26 @@ FROM users
                 'message' => 'post does not exist',
                 'data' => ''
             ];
+        }
+    }
+
+    public function actionUpdateToken() {
+        $post = Yii::$app->request->post();
+
+        $userId = $post["userId"];
+        $token = $post["token"];
+
+
+        $user = Users::findOne(["id" => $userId]);
+        if ($user) {
+            $user->token = $token;
+            if ($user->save()) {
+                return true;
+            } else {
+                return $user->getErrors();
+            }
+        } else {
+            return "no user found";
         }
     }
 
