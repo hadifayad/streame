@@ -2,6 +2,8 @@
 
 namespace app\controllers\api;
 
+use app\models\ChallengesVideos;
+use app\models\ChallengeVoting;
 use app\models\Comment;
 use app\models\Follow;
 use app\models\Followrooms;
@@ -53,10 +55,10 @@ class MobileController extends ApiController {
         $mention3 = $post["mention3"];
         $challengeTime = $post["challengeTime"];
         $gameId = $post["game"];
-        
-        
-        
-        
+
+
+
+
         $imageString = $post["imageString"];
         $coins = $post["challengeCoins"];
 
@@ -126,11 +128,14 @@ class MobileController extends ApiController {
                         }
 //                        return "good post only saved";
                         //////
-                        return "true";
                     } else {
                         return $postFiles->getErrors();
                     }
-                    return "good post only saved";
+                    if ($category == "challenge") {
+                        NotificationForm::notifyStreamersForChallenge($room);
+                    }
+                    return "true";
+//                    return "good post only saved";
                 } else {
                     return $room->getErrors();
                 }
@@ -183,7 +188,9 @@ class MobileController extends ApiController {
             } else {
                 return $room->getErrors();
             }
-
+            if ($category == "challenge") {
+                NotificationForm::notifyStreamersForChallenge($room);
+            }
             return "true";
         } else if ($type == "text") {
             $color1 = $post["color1"];
@@ -194,6 +201,9 @@ class MobileController extends ApiController {
 //            return $room;
 //            return $room->getErrors();
             if ($room->save()) {
+                if ($category == "challenge") {
+                    NotificationForm::notifyStreamersForChallenge($room);
+                }
                 return "true";
             } else {
                 return $room->getErrors();
@@ -207,35 +217,221 @@ class MobileController extends ApiController {
         }
 
 
-        return "https://www.theleader.team/postVideos/" . $randomFileName;
+//        return "https://www.theleader.team/postVideos/" . $randomFileName;
+//
+//
+//
+//
+//        $post = Yii::$app->request->post();
+//        $title = $post["title"];
+//        $text = $post["text"];
+//        $user = $post["userId"];
+//        $type = $post["type"];
+//        $category = $post["category"];
+//        $mention = $post["mention"];
+//
+//        $room = new Rooms();
+//        $room->title = $title;
+//        $room->c_text = $text;
+//        $room->r_admin = $user;
+//        $room->type = $type;
+//        $room->category = $category;
+//        $room->mention = $mention;
+//        $room->creation_date = date("Y-m-d H:i:s");
+//
+//
+//
+//
+//        if ($room->save()) {
+//            return true;
+//        } else {
+//            return $room->errors;
+//        }
+    }
 
-
-
-
+    public function actionGetChallengesVideos() {
         $post = Yii::$app->request->post();
-        $title = $post["title"];
-        $text = $post["text"];
-        $user = $post["userId"];
-        $type = $post["type"];
-        $category = $post["category"];
-        $mention = $post["mention"];
+        $postId = $post["postId"];
+        $mention1 = $post["mention1"];
+        $mention2 = $post["mention2"];
+        $mention3 = $post["mention3"];
 
-        $room = new Rooms();
-        $room->title = $title;
-        $room->c_text = $text;
-        $room->r_admin = $user;
-        $room->type = $type;
-        $room->category = $category;
-        $room->mention = $mention;
-        $room->creation_date = date("Y-m-d H:i:s");
+        return MobileController::getChallengesVideosMentioned($postId, $mention1, $mention2, $mention3);
+    }
 
+    public static function getChallengesVideosMentioned($postId, $mention1, $mention2, $mention3) {
+        $mentions = [];
 
+        $isMention1 = "0";
+        $isChallenge1 = "0";
+        $challenge1 = null;
+        $user1 = null;
+        $votes = 0;
+        if ($mention1 && $mention1 != null && $mention1 != "") {
+            $isMention1 = "1";
+            $user1 = Users::find()
+                    ->select(["id", "fullname"])
+                    ->where(["id" => $mention1])
+                    ->asArray()
+                    ->one();
+            $challenge1 = ChallengesVideos::findOne([
+                        "streamer_id" => $mention1,
+                        "post_id" => $postId
+            ]);
+            if ($challenge1) {
+                $isChallenge1 = "1";
+            }
+            $votes = ChallengeVoting::find()
+                    ->where([
+                        "post_id" => $postId,
+                        "r_streamer_voted" => $mention1
+                    ])
+                    ->count();
+        }
+        array_push($mentions, [
+            "isMention" => $isMention1,
+            "mention" => $user1,
+            "isChallenge" => $isChallenge1,
+            "challenge" => $challenge1,
+            "votes" => $votes
+        ]);
 
+        $isMention2 = "0";
+        $user2 = null;
+        $isChallenge2 = "0";
+        $challenge2 = null;
+        $votes = 0;
+        if ($mention2 && $mention2 != null && $mention2 != "") {
+            $isMention2 = "1";
+            $user2 = Users::find()
+                    ->select(["id", "fullname"])
+                    ->where(["id" => $mention2])
+                    ->asArray()
+                    ->one();
+            $challenge2 = ChallengesVideos::findOne([
+                        "streamer_id" => $mention2,
+                        "post_id" => $postId
+            ]);
+            if ($challenge2) {
+                $isChallenge2 = "1";
+            }
+            $votes = ChallengeVoting::find()
+                    ->where([
+                        "post_id" => $postId,
+                        "r_streamer_voted" => $mention2
+                    ])
+                    ->count();
+        }
+        array_push($mentions, [
+            "isMention" => $isMention2,
+            "mention" => $user2,
+            "isChallenge" => $isChallenge2,
+            "challenge" => $challenge2,
+            "votes" => $votes
+        ]);
 
-        if ($room->save()) {
-            return true;
+        $isMention3 = "0";
+        $user3 = null;
+        $isChallenge3 = "0";
+        $challenge3 = null;
+        $votes = 0;
+        if ($mention3 && $mention3 != null && $mention3 != "") {
+            $isMention3 = "1";
+            $user3 = Users::find()
+                    ->select(["id", "fullname"])
+                    ->where(["id" => $mention3])
+                    ->asArray()
+                    ->one();
+            $challenge3 = ChallengesVideos::findOne([
+                        "streamer_id" => $mention3,
+                        "post_id" => $postId
+            ]);
+            if ($challenge3) {
+                $isChallenge3 = "1";
+            }
+            $votes = ChallengeVoting::find()
+                    ->where([
+                        "post_id" => $postId,
+                        "r_streamer_voted" => $mention3
+                    ])
+                    ->count();
+        }
+        array_push($mentions, [
+            "isMention" => $isMention3,
+            "mention" => $user3,
+            "isChallenge" => $isChallenge3,
+            "challenge" => $challenge3,
+            "votes" => $votes
+        ]);
+
+        return $mentions;
+    }
+
+    public function actionAddChallengeVideo() {
+        $post = Yii::$app->request->post();
+        $postId = $post["postId"];
+        $streamerId = $post["streamerId"];
+        $imageString = $post["imageString"];
+
+        $file_name = $_FILES['myFile']['name'];
+        $ext = pathinfo($file_name, PATHINFO_EXTENSION);
+//            $file_size = $_FILES['myFile']['size'];
+//            $file_type = $_FILES['myFile']['type'];
+        $temp_name = $_FILES['myFile']['tmp_name'];
+        $randomFileName = Yii::$app->security->generateRandomString() . "." . $ext;
+        $location = "postChallengesFiles/";
+        $isPost = Rooms::findOne(["id" => $postId]);
+        $isStreamer = Users::findOne(["id" => $streamerId]);
+        if ($isPost) {
+            if ($isStreamer) {
+                if (move_uploaded_file($temp_name, $location . $randomFileName)) {
+                    $challenge = new ChallengesVideos();
+                    $challenge->post_id = $postId;
+                    $challenge->streamer_id = $streamerId;
+                    $challenge->file_name = $randomFileName;
+                    if ($challenge->save()) {
+                        //for image
+                        $location = "postChallengesFiles/";
+                        $uploads_dir = $location;
+                        $imageName = Yii::$app->security->generateRandomString() . ".jpeg";
+                        $percent = 1;
+
+                        $data = base64_decode($imageString);
+
+                        $im = imagecreatefromstring($data);
+                        $width = imagesx($im);
+                        $height = imagesy($im);
+                        $newwidth = $width * $percent;
+                        $newheight = $height * $percent;
+                        $thumb = imagecreatetruecolor($newwidth, $newheight);
+                        header('Content-type: image/jpeg');
+                        // Resize
+                        imagecopyresized($thumb, $im, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+                        // Output
+//                    imagejpeg($im, $uploads_dir . $imageName);
+                        imagejpeg($thumb, $uploads_dir . $imageName);
+
+                        //save record to database table 
+                        $challenge = ChallengesVideos::findOne(["id" => $challenge->primaryKey]);
+                        $challenge->thumbnail = $imageName;
+                        if ($challenge->save()) {
+                            return "true";
+                        } else {
+                            return $challenge->getErrors();
+                        }
+                        return "true";
+                    } else {
+                        return $challenge->getErrors();
+                    }
+                } else {
+                    return "Video not saved";
+                }
+            } else {
+                return "streamer does not exist";
+            }
         } else {
-            return $room->errors;
+            return "post does not exist";
         }
     }
 
@@ -283,6 +479,21 @@ class MobileController extends ApiController {
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
 // WHERE rooms.creation_date >= CURDATE()
+
+        for ($i = 0; $i < sizeof($arrayList); $i++) {
+            $item = $arrayList[$i];
+            if ($item["category"] == "challenge") {
+                if ($item["accept1"] == 0 && $item["accept2"] == 0 && $item["accept3"] == 0) {
+                    array_splice($arrayList, $i, 1);
+                } else {
+                    $challengeVideos = MobileController::getChallengesVideosMentioned($item["id"], $item["mention"], $item["mention2"], $item["mention3"]);
+                    $arrayList[$i]["challengesVideos"] = $challengeVideos;
+                }
+            } else {
+                $arrayList[$i]["challengesVideos"] = null;
+            }
+        }
+
 
         return $arrayList;
     }
@@ -1751,4 +1962,157 @@ FROM users
         }
     }
 
+    public function actionVoteForStreamer() {
+        $post = Yii::$app->request->post();
+
+        $postId = $post["postId"];
+        $streamerId = $post["streamerId"];
+        $voterId = $post["voterId"];
+
+        $room = Rooms::findOne(["id" => $postId]);
+        if ($room) {
+            $deadline = $room["challenge_date"];
+            $result = time() - strtotime($deadline);
+            if (!$deadline || $result > 0) {
+                return [
+                    'status' => true,
+                    'message' => 'voting period is finished',
+                    'data' => ''
+                ];
+            } else {
+                $voteTable = ChallengeVoting::findOne([
+                            "post_id" => $postId,
+                            "r_user" => $voterId
+                ]);
+                if ($voteTable) {
+                    return [
+                        'status' => true,
+                        'message' => 'you already voted',
+                        'data' => ''
+                    ];
+                } else {
+                    $vote = new ChallengeVoting();
+                    $vote->r_user = $voterId;
+                    $vote->post_id = $postId;
+                    $vote->r_streamer_voted = $streamerId;
+                    if ($vote->save()) {
+                        return [
+                            'status' => true,
+                            'message' => 'successfully voted',
+                            'data' => ''
+                        ];
+                    } else {
+                        return [
+                            'status' => true,
+                            'message' => 'something went worng',
+                            'data' => ''
+                        ];
+                    }
+                }
+            }
+        } else {
+            return [
+                'status' => true,
+                'message' => 'post does not exist',
+                'data' => ''
+            ];
+        }
+    }
+
+    public function actionAcceptInvitationToChallenge() {
+        $post = Yii::$app->request->post();
+
+        $postId = $post["postId"];
+        $streamerId = $post["streamerId"];
+
+
+        $room = Rooms::findOne(["id" => $postId]);
+        if ($room) {
+            if ($room["mention"] == $streamerId) {
+                $room->accept1 = 1;
+            } else if ($room["mention2"] == $streamerId) {
+                $room->accept2 = 1;
+            } else if ($room["mention3"] == $streamerId) {
+                $room->accept3 = 1;
+            } else {
+                return [
+                    'status' => true,
+                    'message' => 'streamer is not mentioned',
+                    'data' => ''
+                ];
+            }
+            if ($room->save()) {
+                return [
+                    'status' => true,
+                    'message' => 'challenge accepted',
+                    'data' => ''
+                ];
+            } else {
+                return [
+                    'status' => true,
+                    'message' => 'error accepting invitation',
+                    'data' => ''
+                ];
+            }
+        } else {
+            return [
+                'status' => true,
+                'message' => 'post does not exist',
+                'data' => ''
+            ];
+        }
+    }
+
+    public function actionUpdateToken() {
+        $post = Yii::$app->request->post();
+
+        $userId = $post["userId"];
+        $token = $post["token"];
+
+
+        $user = Users::findOne(["id" => $userId]);
+        if ($user) {
+            $user->token = $token;
+            if ($user->save()) {
+                return true;
+            } else {
+                return $user->getErrors();
+            }
+        } else {
+            return "no user found";
+        }
+    }
+
+//    public function actionSs() {
+//
+//
+//        $msg = array
+//            (
+//            'title' => "some subject",
+//            'body' => "some body",
+//            "userId" => 1,
+//            "challengeId" => 1,
+//        );
+//        $fields = array
+//            (
+//            'registration_ids' => ["eWG5U4bYST60ryg-NYIfFN:APA91bG9jlSW84MVGvO3Xz4tHC6xpto1Szgtz_bfkLLsyLPHqzWtk_lkjjbFyzCVPlhKLf_Bu4x4u5C7Nc1FAnI3fR_fAaSrV-_XaALDvkfsb9ZIq3eNZuTlp9Hx1-CcKgD5aihc6d7z"],
+//            'data' => $msg
+//        );
+//
+//        $headers = array
+//            (
+//            'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
+//            'Content-Type: application/json'
+//        );
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+//        curl_setopt($ch, CURLOPT_POST, true);
+//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+//        $result = curl_exec($ch);
+//        curl_close($ch);
+//        return true;
+//    }
 }
