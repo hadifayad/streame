@@ -42,6 +42,21 @@ class MobileController extends ApiController {
 //        return $thumbnail;
 //        $video = $ffmpeg->open("http://theleader.team/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4");
     }
+    
+    
+    
+       public function actionGetCoins() {
+        $post = Yii::$app->request->post();
+        $userId = $post["userId"];
+         $user = Users::findOne([
+                    'id' => $userId,
+                    
+//                    'role' => $role
+        ]);
+         
+         return $user->coins;
+        
+       }
 
     public function actionCreateRoom() {
         $post = Yii::$app->request->post();
