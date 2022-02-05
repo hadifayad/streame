@@ -18,6 +18,7 @@ use app\models\UserNotifications;
 use app\models\UserPurchaseDetails;
 use app\models\Users;
 use app\models\UsersSpinSilver;
+use app\models\UserTransactions;
 use Yii;
 use yii\db\Query;
 use yii\web\Response;
@@ -55,6 +56,63 @@ class MobileController extends ApiController {
         ]);
          
          return $user->coins;
+        
+       }
+       
+       
+       public function actionMakeDonation() {
+        $post = Yii::$app->request->post();
+        $userId = $post["userId"];
+        $donatorId = $post["donatorId"];
+        $coins = $post["coins"];
+         $user = Users::findOne([
+                    'id' => $userId,
+                    
+//                    'role' => $role
+        ]);
+         $donator = Users::findOne([
+                    'id' => $donatorId,
+                    
+//                    'role' => $role
+        ]);
+         
+         if($donator->coins > $coins){
+             
+             $donation = new UserTransactions();
+             $donation->userId = $userId;
+             $donation->fromUser =$donatorId;
+             $donation->coins = $coins ;
+             $donation->type="donation";
+             $donator->coins = $donator->coins - $coins ;
+             $user->coins = $user->coins + $coins ;
+             
+             if($donation->save() ){
+                 
+                if($user->save()){
+                     if($donator->save()){
+                         
+                          return $donator->coins;
+                     }
+                     else{
+                         
+                         return "d";
+                     }
+                }
+                
+                else{
+                    
+                      return "u";
+                }
+                
+             }
+             else {
+                 return $donation->errors;
+             }
+     
+             
+         }
+         
+    
         
        }
 
@@ -504,7 +562,13 @@ class MobileController extends ApiController {
                     $challengeVideos = MobileController::getChallengesVideosMentioned($item["id"], $item["mention"], $item["mention2"], $item["mention3"]);
                     $arrayList[$i]["challengesVideos"] = $challengeVideos;
                 }
-            } else {
+            }
+            else if($item["category"] == "donate"){
+                $arrayList[$i]["challengesVideos"] = null;
+                
+                $donations = UserTransactions::find
+            }
+            else {
                 $arrayList[$i]["challengesVideos"] = null;
             }
         }

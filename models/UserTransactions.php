@@ -35,8 +35,8 @@ class UserTransactions extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'userId', 'fromUser', 'coins', 'type'], 'required'],
-            [['id', 'userId', 'fromUser', 'roomId', 'coins'], 'integer'],
+            [[ 'userId', 'fromUser', 'coins', 'type'], 'required'],
+            [[ 'userId', 'fromUser', 'roomId', 'coins'], 'integer'],
             [['date'], 'safe'],
             [['type'], 'string', 'max' => 255],
             [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['userId' => 'id']],
