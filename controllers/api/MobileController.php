@@ -65,6 +65,7 @@ class MobileController extends ApiController {
         $userId = $post["userId"];
         $donatorId = $post["donatorId"];
         $coins = $post["coins"];
+        $roomId = $post["roomId"];
          $user = Users::findOne([
                     'id' => $userId,
                     
@@ -83,6 +84,7 @@ class MobileController extends ApiController {
              $donation->fromUser =$donatorId;
              $donation->coins = $coins ;
              $donation->type="donation";
+             $donation->roomId = $roomId;
              $donator->coins = $donator->coins - $coins ;
              $user->coins = $user->coins + $coins ;
              
@@ -564,9 +566,21 @@ class MobileController extends ApiController {
                 }
             }
             else if($item["category"] == "donate"){
-                $arrayList[$i]["challengesVideos"] = null;
+               
+//                $arrayList[$i]["challengesVideos"] = null;
+//                
+             $donations = "SELECT  SUM(user_transactions.coins) AS value_sum 
+FROM user_transactions
+WHERE roomId =".$item["id"];
+               
+            
+              $command1 = Yii::$app->db->createCommand($donations);
+//              return  $command1->queryOne()["value_sum"]; 
+           $itemDonate =  $command1->queryOne();
+                $arrayList[$i]["number_of_donates"] =   $itemDonate["value_sum"];
+//              
                 
-                $donations = UserTransactions::find
+
             }
             else {
                 $arrayList[$i]["challengesVideos"] = null;
