@@ -25,7 +25,7 @@ use Yii;
  * @property string|null $color2
  * @property string|null $video_thumbnail
  * @property int|null $challenge_coins
- * @property int|null $challenge_result
+ * @property int|null $is_challenge_finished
  * @property int|null $challenge_user_result
  * @property int|null $streamer_response
  * @property int|null $invitation_response
@@ -62,7 +62,7 @@ class Rooms extends \yii\db\ActiveRecord
         return [
             [['c_text'], 'string'],
             [['r_admin'], 'required'],
-            [['r_admin', 'game', 'mention', 'mention2', 'mention3', 'accept1', 'accept2', 'accept3', 'challenge_coins', 'challenge_result', 'challenge_user_result', 'streamer_response', 'invitation_response'], 'integer'],
+            [['r_admin', 'game', 'mention', 'mention2', 'mention3', 'accept1', 'accept2', 'accept3', 'challenge_coins', 'is_challenge_finished', 'challenge_winner', 'streamer_response', 'invitation_response'], 'integer'],
             [['creation_date', 'challenge_date'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 50],
@@ -100,8 +100,8 @@ class Rooms extends \yii\db\ActiveRecord
             'color2' => 'Color2',
             'video_thumbnail' => 'Video Thumbnail',
             'challenge_coins' => 'Challenge Coins',
-            'challenge_result' => 'Challenge Result',
-            'challenge_user_result' => 'Challenge User Result',
+            'is_challenge_finished' => 'Challenge Result',
+            'challenge_winner' => 'Challenge User Result',
             'streamer_response' => 'Streamer Response',
             'invitation_response' => 'Invitation Response',
             'challenge_date' => 'Challenge Date',

@@ -59,6 +59,123 @@ class MobileController extends ApiController {
         
        }
        
+       public function actionChallengeCheck(){
+           
+           
+                $post = Yii::$app->request->post();
+        $userId = $post["userId"];
+        $sql = "SELECT * FROM `rooms` WHERE is_challenge_finished= 0
+and challenge_date < CURDATE();";
+        $command = Yii::$app->db->createCommand($sql);
+        $arrayList = $command->queryAll();
+        
+        if($arrayList){
+            
+//            return $arrayList;
+            for($i=0;$i<sizeof($arrayList);$i++){
+              
+                 $mention1 = $arrayList[$i]["mention"];
+            $mention2 = $arrayList[$i]["mention2"];
+            $mention3 = $arrayList[$i]["mention3"];
+              $room = Rooms::find()
+                        ->where(['id'=>$arrayList[$i]["id"]])
+                        ->one();
+       
+                
+                
+              
+                if($room){
+                    
+                if($mention3==null && $mention2==null){
+                    
+                    $room->challenge_winner = $mention1;
+                    $room->is_challenge_finished= "1";
+                    $room->save();
+                }
+                
+                elseif($mention3==null){
+                    
+                    
+               $sql_count_mention1query= " SELECT COUNT(*) AS count  FROM `challenge_voting`  WHERE r_streamer_voted = ".$mention1." and post_id=".$arrayList[$i]["id"]."";
+                $sql_count_mention2query= " SELECT COUNT(*) AS count  FROM `challenge_voting`  WHERE r_streamer_voted = ".$mention2." and post_id=".$arrayList[$i]["id"]."";
+                
+                      $command = Yii::$app->db->createCommand($sql_count_mention1query);
+        $sql_count_mention1 = $command->queryOne();
+                 $command = Yii::$app->db->createCommand($sql_count_mention2query);
+        $sql_count_mention2 = $command->queryOne();
+                
+                if($sql_count_mention2["count"]>$sql_count_mention1["count"]){
+                    $room->challenge_winner=$mention2;
+                    $room->is_challenge_finished= "1";
+                        $room->save();
+//                           return $sql_count_mention1;
+                    
+                }
+                
+                elseif($sql_count_mention2["count"]<$sql_count_mention1["count"]) {
+                     $room->challenge_winner=$mention1;
+                    $room->is_challenge_finished= "1";
+                        $room->save();
+//                           return $sql_count_mention1;
+                }
+                    
+                }
+                
+                  elseif($mention3!=null && $mention2!=null && $mention1!=null){
+                      
+                       $sql_count_mention1query= " SELECT COUNT(*) As count  FROM `challenge_voting`  WHERE r_streamer_voted = ".$mention1." and post_id=".$arrayList[$i]["id"]."";
+                $sql_count_mention2query= " SELECT COUNT(*) As count   FROM `challenge_voting`  WHERE r_streamer_voted = ".$mention2." and post_id=".$arrayList[$i]["id"]."";
+                $sql_count_mention3query= " SELECT COUNT(*) As count  FROM `challenge_voting`  WHERE r_streamer_voted = ".$mention3." and post_id=".$arrayList[$i]["id"]."";
+                
+                      $command = Yii::$app->db->createCommand($sql_count_mention1query);
+        $sql_count_mention1 = $command->queryOne();
+                 $command = Yii::$app->db->createCommand($sql_count_mention2query);
+        $sql_count_mention2 = $command->queryOne();
+        
+            $command = Yii::$app->db->createCommand($sql_count_mention3query);
+        $sql_count_mention3 = $command->queryOne();
+                
+                if($sql_count_mention2["count"]>$sql_count_mention1["count"] && $sql_count_mention2["count"]>$sql_count_mention3["count"] ){
+                    $room->challenge_winner=$mention2;
+                    $room->is_challenge_finished= "1";
+                        $room->save();
+                    
+                }
+                
+                elseif($sql_count_mention2["count"]<$sql_count_mention1["count"] && $sql_count_mention3["count"]<$sql_count_mention1["count"]) {
+                     $room->challenge_winner=$mention1;
+                    $room->is_challenge_finished= "1";
+                        $room->save();
+                }
+                
+                  elseif($sql_count_mention2["count"]<$sql_count_mention3["count"] && $sql_count_mention1["count"]<$sql_count_mention3["count"]) {
+                     $room->challenge_winner=$mention3;
+                    $room->is_challenge_finished= "1";
+                        $room->save();
+                }
+                
+                  }
+                
+                
+            }
+                
+                
+            }
+            
+           
+           
+            return $mention1.$mention2.$mention3;
+            
+           
+        }
+        
+        
+        
+      $sql_count= " SELECT COUNT(*)  FROM `challenge_voting`  WHERE r_streamer_voted = 4 and post_id = 175";
+           
+           
+       }
+       
        
        public function actionMakeDonation() {
         $post = Yii::$app->request->post();
@@ -1823,7 +1940,7 @@ FROM users
         $visitorId = $post["visitorId"];
 //        $userId = 13;
         $userProfile = Users::find()
-                ->select("username,fullname,role,link_facebook,link_youtube,link_instagram,link_tiktok,profile_picture,address,email,phone,gender")
+                ->select("username,fullname,role,link_facebook,link_youtube,link_instagram,link_tiktok,profile_picture,address,email,phone,gender,coins")
                 ->where(['id' => $userId])
                 ->asArray()
                 ->one();
