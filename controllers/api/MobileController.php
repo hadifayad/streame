@@ -42,21 +42,17 @@ class MobileController extends ApiController {
 //        return $thumbnail;
 //        $video = $ffmpeg->open("http://theleader.team/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4");
     }
-    
-    
-    
-       public function actionGetCoins() {
+
+    public function actionGetCoins() {
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
-         $user = Users::findOne([
+        $user = Users::findOne([
                     'id' => $userId,
-                    
 //                    'role' => $role
         ]);
-         
-         return $user->coins;
-        
-       }
+
+        return $user->coins;
+    }
 
     public function actionCreateRoom() {
         $post = Yii::$app->request->post();
@@ -503,6 +499,9 @@ class MobileController extends ApiController {
                 } else {
                     $challengeVideos = MobileController::getChallengesVideosMentioned($item["id"], $item["mention"], $item["mention2"], $item["mention3"]);
                     $arrayList[$i]["challengesVideos"] = $challengeVideos;
+                    if ($challengeVideos[0]["isChallenge"] == "0" && $challengeVideos[1]["isChallenge"] == "0" && $challengeVideos[2]["isChallenge"] == "0") {
+                        array_splice($arrayList, $i, 1);
+                    }
                 }
             } else {
                 $arrayList[$i]["challengesVideos"] = null;
@@ -2110,7 +2109,8 @@ FROM users
 //        );
 //        $fields = array
 //            (
-//            'registration_ids' => ["eWG5U4bYST60ryg-NYIfFN:APA91bG9jlSW84MVGvO3Xz4tHC6xpto1Szgtz_bfkLLsyLPHqzWtk_lkjjbFyzCVPlhKLf_Bu4x4u5C7Nc1FAnI3fR_fAaSrV-_XaALDvkfsb9ZIq3eNZuTlp9Hx1-CcKgD5aihc6d7z"],
+////            'registration_ids' => ["eWG5U4bYST60ryg-NYIfFN:APA91bG9jlSW84MVGvO3Xz4tHC6xpto1Szgtz_bfkLLsyLPHqzWtk_lkjjbFyzCVPlhKLf_Bu4x4u5C7Nc1FAnI3fR_fAaSrV-_XaALDvkfsb9ZIq3eNZuTlp9Hx1-CcKgD5aihc6d7z"],
+//            'registration_ids' => ["dGu5pLuDSDaTLcmLqzL27r:APA91bFn1g7i2fUwICs8mIwqxwzmJUsor9DhrF5IUKS-ElCzpG7oB-LEXfLCOerDx9fWdgtxh9wNWq47TQmxR50s4v7X5cn6JHYICGnee1CRwVCUpzCl3_D1Ct5kPiMGoM2anJ6H9WC1"],
 //            'data' => $msg
 //        );
 //
@@ -2130,4 +2130,5 @@ FROM users
 //        curl_close($ch);
 //        return true;
 //    }
+
 }
