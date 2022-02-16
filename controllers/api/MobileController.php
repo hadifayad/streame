@@ -80,6 +80,10 @@ and challenge_date < CURDATE();";
               $room = Rooms::find()
                         ->where(['id'=>$arrayList[$i]["id"]])
                         ->one();
+              
+             $ids =array();
+             array_push($ids,$room->r_admin);
+             
        
                 
                 
@@ -91,9 +95,12 @@ and challenge_date < CURDATE();";
                     $room->challenge_winner = $mention1;
                     $room->is_challenge_finished= "1";
                     $room->save();
+                       array_push($ids,$room->mention);
                 }
                 
                 elseif($mention3==null){
+                       array_push($ids,$room->mention);
+                       array_push($ids,$room->mention2);
                     
                     
                $sql_count_mention1query= " SELECT COUNT(*) AS count  FROM `challenge_voting`  WHERE r_streamer_voted = ".$mention1." and post_id=".$arrayList[$i]["id"]."";
@@ -122,6 +129,10 @@ and challenge_date < CURDATE();";
                 }
                 
                   elseif($mention3!=null && $mention2!=null && $mention1!=null){
+                      
+                          array_push($ids,$room->mention);
+                       array_push($ids,$room->mention2);
+                       array_push($ids,$room->mention3);
                       
                        $sql_count_mention1query= " SELECT COUNT(*) As count  FROM `challenge_voting`  WHERE r_streamer_voted = ".$mention1." and post_id=".$arrayList[$i]["id"]."";
                 $sql_count_mention2query= " SELECT COUNT(*) As count   FROM `challenge_voting`  WHERE r_streamer_voted = ".$mention2." and post_id=".$arrayList[$i]["id"]."";
@@ -158,9 +169,43 @@ and challenge_date < CURDATE();";
                 
                 
             }
+            
+            
+            $tokens= \app\models\Users::find()
+                    ->select("token")
+                    ->where(["id"=>$ids])
+                       ->asArray()
+                    ->all();
+                 
+              
+            
+            $votersTokens = "SELECT  users.token as token FROM `challenge_voting`
+left join users on users.id = challenge_voting.r_user
+WHERE challenge_voting.post_id=".$room->id;
+            
+               
+                
+                 $command = Yii::$app->db->createCommand($votersTokens);
+        $votersTokensArray = $command->queryAll();
+        
+        for($i=0;$i<sizeof($votersTokensArray);$i++){
+            
+             array_push($tokens,$votersTokensArray[$i]);
+            
+            
+        }
+        
+        
+//           array_push($tokens,$votersTokensArray);
+//        return $tokens;
+        return $tokens ;
+        
+//                  array_push($ids,$tokens);
                 
                 
             }
+            
+            
             
            
            
@@ -170,8 +215,7 @@ and challenge_date < CURDATE();";
         }
         
         
-        
-      $sql_count= " SELECT COUNT(*)  FROM `challenge_voting`  WHERE r_streamer_voted = 4 and post_id = 175";
+
            
            
        }
