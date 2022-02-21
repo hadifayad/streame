@@ -115,6 +115,9 @@ and challenge_date < CURDATE();";
                     $room->challenge_winner=$mention2;
                     $room->is_challenge_finished= "1";
                         $room->save();
+                           array_push($ids,$room->mention);
+                     $winner = $mention2;
+                       
 //                           return $sql_count_mention1;
                     
                 }
@@ -123,6 +126,9 @@ and challenge_date < CURDATE();";
                      $room->challenge_winner=$mention1;
                     $room->is_challenge_finished= "1";
                         $room->save();
+                           array_push($ids,$room->mention2);
+                     $winner = $mention1;
+                 
 //                           return $sql_count_mention1;
                 }
                     
@@ -130,9 +136,7 @@ and challenge_date < CURDATE();";
                 
                   elseif($mention3!=null && $mention2!=null && $mention1!=null){
                       
-                          array_push($ids,$room->mention);
-                       array_push($ids,$room->mention2);
-                       array_push($ids,$room->mention3);
+                       
                       
                        $sql_count_mention1query= " SELECT COUNT(*) As count  FROM `challenge_voting`  WHERE r_streamer_voted = ".$mention1." and post_id=".$arrayList[$i]["id"]."";
                 $sql_count_mention2query= " SELECT COUNT(*) As count   FROM `challenge_voting`  WHERE r_streamer_voted = ".$mention2." and post_id=".$arrayList[$i]["id"]."";
@@ -150,18 +154,27 @@ and challenge_date < CURDATE();";
                     $room->challenge_winner=$mention2;
                     $room->is_challenge_finished= "1";
                         $room->save();
+                           array_push($ids,$room->mention);
+                     $winner = $mention2;
+                       array_push($ids,$room->mention3);
                     
                 }
                 
                 elseif($sql_count_mention2["count"]<$sql_count_mention1["count"] && $sql_count_mention3["count"]<$sql_count_mention1["count"]) {
                      $room->challenge_winner=$mention1;
                     $room->is_challenge_finished= "1";
+                       array_push($ids,$room->mention2);
+                     $winner = $mention1;
+                       array_push($ids,$room->mention3);
                         $room->save();
                 }
                 
                   elseif($sql_count_mention2["count"]<$sql_count_mention3["count"] && $sql_count_mention1["count"]<$sql_count_mention3["count"]) {
                      $room->challenge_winner=$mention3;
                     $room->is_challenge_finished= "1";
+                       array_push($ids,$room->mention1);
+                     $winner = $mention3;
+                       array_push($ids,$room->mention2);
                         $room->save();
                 }
                 
@@ -176,6 +189,14 @@ and challenge_date < CURDATE();";
                     ->where(["id"=>$ids])
                        ->asArray()
                     ->all();
+             $winnerUser
+                     = \app\models\Users::find()
+                  
+                    ->where(["id"=>$winner])
+                       ->asArray()
+                    ->one();
+             
+           
                  
               
             
@@ -188,19 +209,20 @@ WHERE challenge_voting.post_id=".$room->id;
                  $command = Yii::$app->db->createCommand($votersTokens);
         $votersTokensArray = $command->queryAll();
         
-        for($i=0;$i<sizeof($votersTokensArray);$i++){
+        for($j=0;$j<sizeof($votersTokensArray);$j++){
             
-             array_push($tokens,$votersTokensArray[$i]);
+             array_push($tokens,$votersTokensArray[$j]);
             
             
         }
         
+
+
+        return ["tokens"=>$tokens,
+            "winner"=>$winnerUser,
+            "room"=>$arrayList[$i]] ;
         
-//           array_push($tokens,$votersTokensArray);
-//        return $tokens;
-        return $tokens ;
-        
-//                  array_push($ids,$tokens);
+
                 
                 
             }
@@ -209,7 +231,7 @@ WHERE challenge_voting.post_id=".$room->id;
             
            
            
-            return $mention1.$mention2.$mention3;
+       
             
            
         }
