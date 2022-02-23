@@ -133,53 +133,93 @@ class NotificationForm extends Model {
         return true;
     }
 
-//    public static function notifyStreamersForChallenge($room) {
-//        $mentions = [];
-//        if ($room) {
-//            if ($room["mention"]) {
-//                array_push($mentions, $room["mention"]);
-//            }
-//            if ($room["mention2"]) {
-//                array_push($mentions, $room["mention2"]);
-//            }
-//            if ($room["mention3"]) {
-//                array_push($mentions, $room["mention3"]);
-//            }
-//
-//            for ($i = 0; $i < sizeof($mentions); $i++) {
-//                $userId = $mentions[$i];
-//                $user = Users::findOne(["id" => $userId]);
-//                $msg = array
-//                    (
-//                    'title' => "some subject",
-//                    'body' => "some body",
-//                    "userId" => $userId,
-//                    "challengeId" => $room["id"],
-//                );
-//                $fields = array
-//                    (
-//                    'registration_ids' => [$user["token"]],
-////                    'registration_ids' => ["eWG5U4bYST60ryg-NYIfFN:APA91bG9jlSW84MVGvO3Xz4tHC6xpto1Szgtz_bfkLLsyLPHqzWtk_lkjjbFyzCVPlhKLf_Bu4x4u5C7Nc1FAnI3fR_fAaSrV-_XaALDvkfsb9ZIq3eNZuTlp9Hx1-CcKgD5aihc6d7z"],
-//                    'data' => $msg
-//                );
-//
-//                $headers = array
-//                    (
-//                    'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
-//                    'Content-Type: application/json'
-//                );
-//                $ch = curl_init();
-//                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-//                curl_setopt($ch, CURLOPT_POST, true);
-//                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-//                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-//                $result = curl_exec($ch);
-//                curl_close($ch);
-//                return true;
-//            }
-//        }
-//    }
+    public static function notifyStreamersForChallenge($room) {
+        $mentions = [];
+        if ($room) {
+            if ($room["mention"]) {
+                array_push($mentions, $room["mention"]);
+            }
+            if ($room["mention2"]) {
+                array_push($mentions, $room["mention2"]);
+            }
+            if ($room["mention3"]) {
+                array_push($mentions, $room["mention3"]);
+            }
+
+            for ($i = 0; $i < sizeof($mentions); $i++) {
+                $userId = $mentions[$i];
+                $user = Users::findOne(["id" => $userId]);
+                $msg = array
+                    (
+                    'title' => "some subject",
+                    'body' => "some body",
+                    "userId" => $userId,
+                    "challengeId" => $room["id"],
+                );
+                $fields = array
+                    (
+                    'registration_ids' => [$user["token"]],
+//                    'registration_ids' => ["eWG5U4bYST60ryg-NYIfFN:APA91bG9jlSW84MVGvO3Xz4tHC6xpto1Szgtz_bfkLLsyLPHqzWtk_lkjjbFyzCVPlhKLf_Bu4x4u5C7Nc1FAnI3fR_fAaSrV-_XaALDvkfsb9ZIq3eNZuTlp9Hx1-CcKgD5aihc6d7z"],
+                    'data' => $msg
+                );
+
+                $headers = array
+                    (
+                    'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
+                    'Content-Type: application/json'
+                );
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+                $result = curl_exec($ch);
+                curl_close($ch);
+            }
+            return true;
+        }
+    }
+
+    public static function notifyVotersTheWinner($tokens, $winnerName, $challengeTitle) {
+
+        $msg = array
+            (
+            'title' => "",
+            'challengeTitle' => $challengeTitle,
+            'body' => "",
+            'winnerName' => $winnerName,
+            'isWinner' => "0",
+        );
+//        $msg = array
+//            (
+//            'title' => $challengeTitle,
+//            'body' => "",
+//            'winnerName' => $winnerName,
+//            'isWinner' => "1",
+//        );
+        $fields = array
+            (
+            'registration_ids' => [$tokens],
+            'data' => $msg
+        );
+
+        $headers = array
+            (
+            'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
+            'Content-Type: application/json'
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return true;
+    }
 
 }
