@@ -985,7 +985,7 @@ FROM users
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
                LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
-             WHERE  rooms.mention = $userId OR rooms.r_admin = $userId AND rooms.category = 'challenge' AND rooms.invitation_response is NULL  OR rooms.invitation_response=1";
+             WHERE  rooms.mention = $userId OR rooms.r_admin = $userId AND rooms.category = 'challenge'ORDER BY rooms.creation_date DESC ";
 
 
 
@@ -1023,21 +1023,21 @@ FROM users
             }
         }
     }
-
-    public function actionUserWinChallenge() {
-        $post = Yii::$app->request->post();
-        $roomId = $post["roomId"];
-        $room = Rooms::find()
-                ->where(['id' => $roomId])
-                ->one();
-        if ($room) {
-            $room->challenge_result = 1;
-            $room->challenge_user_result = 1;
-            if ($room->save()) {
-                return true;
-            }
-        }
-    }
+//
+//    public function actionUserWinChallenge() {
+//        $post = Yii::$app->request->post();
+//        $roomId = $post["roomId"];
+//        $room = Rooms::find()
+//                ->where(['id' => $roomId])
+//                ->one();
+//        if ($room) {
+//            $room->challenge_result = 1;
+//            $room->challenge_user_result = 1;
+//            if ($room->save()) {
+//                return true;
+//            }
+//        }
+//    }
 
     public function actionUserLoseChallenge() {
         $post = Yii::$app->request->post();
@@ -1054,21 +1054,21 @@ FROM users
         }
     }
 
-    public function actionStreamerAcceptLoseChallenge() {
-        $post = Yii::$app->request->post();
-        $roomId = $post["roomId"];
-        $room = Rooms::find()
-                ->where(['id' => $roomId])
-                ->one();
-        if ($room) {
-
-            $room->streamer_response = 1;
-            $room->challenge_result = $room->challenge_user_result;
-            if ($room->save()) {
-                return true;
-            }
-        }
-    }
+//    public function actionStreamerAcceptLoseChallenge() {
+//        $post = Yii::$app->request->post();
+//        $roomId = $post["roomId"];
+//        $room = Rooms::find()
+//                ->where(['id' => $roomId])
+//                ->one();
+//        if ($room) {
+//
+//            $room->streamer_response = 1;
+//            $room->challenge_result = $room->challenge_user_result;
+//            if ($room->save()) {
+//                return true;
+//            }
+//        }
+//    }
 
     public function actionStreamerDeclineLoseChallenge() {
         $post = Yii::$app->request->post();
