@@ -177,9 +177,88 @@ class NotificationForm extends Model {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
                 $result = curl_exec($ch);
                 curl_close($ch);
-                return true;
+            }
+            return true;
+        }
+    }
+
+    public static function notifyVotersTheWinner($tokens, $winnerUser, $challenge) {
+
+        $newTokens = [];
+        for ($i = 0; $i < sizeof($tokens); $i++) {
+            $token = $tokens[$i];
+            if ($winnerUser["token"] == $token) {
+                
+            } else {
+                array_push($newTokens, $token);
             }
         }
+
+        $winnerName = $winnerUser["fullname"];
+        $challengeTitle = $challenge["title"];
+
+
+        $msgWinner = array
+            (
+            'title' => $challengeTitle,
+            'body' => "",
+            'winnerName' => $winnerName,
+            'isWinner' => "1",
+        );
+
+        $fieldsWinner = array
+            (
+            'registration_ids' => [$winnerUser["token"]],
+            'data' => $msgWinner
+        );
+
+        $headersWinner = array
+            (
+            'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
+            'Content-Type: application/json'
+        );
+        $ch1 = curl_init();
+        curl_setopt($ch1, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch1, CURLOPT_POST, true);
+        curl_setopt($ch1, CURLOPT_HTTPHEADER, $headersWinner);
+        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch1, CURLOPT_POSTFIELDS, json_encode($fieldsWinner));
+        $result1 = curl_exec($ch1);
+        curl_close($ch1);
+
+
+        $msg = array
+            (
+            'title' => "",
+            'challengeTitle' => $challengeTitle,
+            'body' => "",
+            'winnerName' => $winnerName,
+            'isWinner' => "0",
+        );
+
+
+        $fields = array
+            (
+            'registration_ids' => [$newTokens],
+            'data' => $msg
+        );
+
+        $headers = array
+            (
+            'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
+            'Content-Type: application/json'
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return true;
     }
 
 }

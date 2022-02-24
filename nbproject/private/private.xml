@@ -5,9 +5,7 @@
         <group>
             <file>file:/C:/xampp/htdocs/streame/models/Users.php</file>
             <file>file:/C:/xampp/htdocs/streame/models/NotificationForm.php</file>
-            <file>file:/C:/xampp/htdocs/streame/models/ChallengesVideos.php</file>
             <file>file:/C:/xampp/htdocs/streame/models/Rooms.php</file>
-            <file>file:/C:/xampp/htdocs/streame/models/ChallengeVoting.php</file>
             <file>file:/C:/xampp/htdocs/streame/controllers/api/MobileController.php</file>
         </group>
     </open-files>

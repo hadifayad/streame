@@ -88,6 +88,7 @@ class SiteController extends Controller {
 //            'pagination' => false,
 //        ]);
 
+        return "myIndex";
 
         return $this->render('index', [
 //                    'lastPrice' => $lastPrice,
