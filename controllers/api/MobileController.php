@@ -940,6 +940,35 @@ FROM users
 
         return $arrayList;
     }
+     public function actionGetWinnedChallenges() {
+
+        $post = Yii::$app->request->post();
+        $userId = $post["userId"];
+
+//        $rooms = Rooms::find()
+//                ->where(['r_admin' => $userId])
+//                ->all();
+
+
+
+
+
+        $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
+            (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
+            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
+             FROM rooms
+             JOIN users ON rooms.r_admin = users.id
+               LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
+             WHERE  rooms.challenge_winner = $userId  AND rooms.category = 'challenge'ORDER BY rooms.creation_date DESC ";
+
+
+
+        $command = Yii::$app->db->createCommand($sql);
+        $arrayList = $command->queryAll();
+
+
+        return $arrayList;
+    }
 
     public function actionAcceptChallenge() {
         $post = Yii::$app->request->post();
