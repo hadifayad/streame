@@ -155,6 +155,8 @@ class NotificationForm extends Model {
                     'body' => "some body",
                     "userId" => $userId,
                     "challengeId" => $room["id"],
+                    "challengeTitle" => $room["title"],
+                    "challengeText" => $room["c_text"]
                 );
                 $fields = array
                     (
@@ -240,7 +242,7 @@ class NotificationForm extends Model {
 
         $fields = array
             (
-            'registration_ids' => [$newTokens],
+            'registration_ids' => $newTokens,
             'data' => $msg
         );
 
