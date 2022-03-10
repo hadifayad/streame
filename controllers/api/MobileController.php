@@ -937,6 +937,22 @@ FROM users
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
 
+        for($i=0;$i<sizeof($arrayList);$i++){
+            $item = $arrayList[$i];
+            if ($item["category"] == "challenge") {
+                if ($item["accept1"] == 0 && $item["accept2"] == 0 && $item["accept3"] == 0) {
+//                    array_splice($arrayList, $i, 1);
+                    $arrayList[$i]["challengesVideos"] = null;
+                } else {
+                    $challengeVideos = MobileController::getChallengesVideosMentioned($item["id"], $item["mention"], $item["mention2"], $item["mention3"]);
+                    $arrayList[$i]["challengesVideos"] = $challengeVideos;
+                    if ($challengeVideos[0]["isChallenge"] == "0" && $challengeVideos[1]["isChallenge"] == "0" && $challengeVideos[2]["isChallenge"] == "0") {
+//                        array_splice($arrayList, $i, 1);
+                        $arrayList[$i]["challengesVideos"] = null;
+                    }
+                }
+            }
+        }
 
         return $arrayList;
     }
