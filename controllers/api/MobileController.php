@@ -281,7 +281,25 @@ WHERE challenge_voting.post_id=" . $room->id;
         $room->game = $gameId;
         $room->creation_date = date("Y-m-d H:i:s");
 
-        if ($type == "video") {
+
+
+        if ($type == "text" || $category == "challenge") {
+            $color1 = $post["color1"];
+            $color2 = $post["color2"];
+            $room->color1 = $color1;
+            $room->color2 = $color2;
+//            return $room;
+//            return $room;
+//            return $room->getErrors();
+            if ($room->save()) {
+                if ($category == "challenge") {
+                    NotificationForm::notifyStreamersForChallenge($room);
+                }
+                return "true";
+            } else {
+                return $room->getErrors();
+            }
+        } else if ($type == "video") {
 
 
 
@@ -334,9 +352,6 @@ WHERE challenge_voting.post_id=" . $room->id;
                         //////
                     } else {
                         return $postFiles->getErrors();
-                    }
-                    if ($category == "challenge") {
-                        NotificationForm::notifyStreamersForChallenge($room);
                     }
                     return "true";
 //                    return "good post only saved";
@@ -392,26 +407,7 @@ WHERE challenge_voting.post_id=" . $room->id;
             } else {
                 return $room->getErrors();
             }
-            if ($category == "challenge") {
-                NotificationForm::notifyStreamersForChallenge($room);
-            }
             return "true";
-        } else if ($type == "text") {
-            $color1 = $post["color1"];
-            $color2 = $post["color2"];
-            $room->color1 = $color1;
-            $room->color2 = $color2;
-//            return $room;
-//            return $room;
-//            return $room->getErrors();
-            if ($room->save()) {
-                if ($category == "challenge") {
-                    NotificationForm::notifyStreamersForChallenge($room);
-                }
-                return "true";
-            } else {
-                return $room->getErrors();
-            }
         } else {
             if ($room->save()) {
                 return "true";
@@ -937,7 +933,7 @@ FROM users
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
 
-        for($i=0;$i<sizeof($arrayList);$i++){
+        for ($i = 0; $i < sizeof($arrayList); $i++) {
             $item = $arrayList[$i];
             if ($item["category"] == "challenge") {
                 if ($item["accept1"] == 0 && $item["accept2"] == 0 && $item["accept3"] == 0) {
@@ -956,7 +952,8 @@ FROM users
 
         return $arrayList;
     }
-     public function actionGetWinnedChallenges() {
+
+    public function actionGetWinnedChallenges() {
 
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
@@ -1013,6 +1010,7 @@ FROM users
             }
         }
     }
+
 //
 //    public function actionUserWinChallenge() {
 //        $post = Yii::$app->request->post();
@@ -2383,5 +2381,4 @@ FROM users
 //        curl_close($ch);
 //        return true;
 //    }
-
 }
