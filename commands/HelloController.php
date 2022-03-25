@@ -32,13 +32,6 @@ class HelloController extends Controller {
      */
     public function actionIndex() {
 //        echo $message . "\n";
-//        $model = new \app\models\Text();
-//        $model->name = "aa";
-//        if ($model->save()) {
-//            echo 'saved';
-//        } else {
-//            echo 'error';
-//        }
 //        $msg = array
 //            (
 //            'title' => "some subject",
@@ -68,21 +61,38 @@ class HelloController extends Controller {
 //        $result = curl_exec($ch);
 //        curl_close($ch);
 ////        return true;
+//        $model = new Text();
+//        $model->name = "asda";
+//        if ($model->save()) {
+//            echo 'saved';
+//        } else {
+//            echo 'error';
+//        }
+//        $post = Yii::$app->request->post();
+//        $userId = $post["userId"];
 
 
 
-
-        $post = Yii::$app->request->post();
-        $userId = $post["userId"];
         $sql = "SELECT * FROM `rooms` WHERE is_challenge_finished= 0
-and challenge_date < CURDATE();";
+        and challenge_date < NOW();";
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
+
+
 
         if ($arrayList) {
 
 //            return $arrayList;
             for ($i = 0; $i < sizeof($arrayList); $i++) {
+
+//                $model = new Text();
+//                $model->name = "size: " . $arrayList[$i]["id"];
+//                if ($model->save()) {
+//                    echo 'saved';
+//                } else {
+//                    echo 'error';
+//                }
+//                return;
 
                 $mention1 = $arrayList[$i]["mention"];
                 $mention2 = $arrayList[$i]["mention2"];
@@ -182,7 +192,7 @@ and challenge_date < CURDATE();";
                         ->select("token")
                         ->where(["id" => $ids])
                         ->asArray()
-                        ->all();
+                        ->column();
                 $winnerUser = Users::find()
                         ->where(["id" => $winner])
                         ->asArray()
@@ -193,8 +203,8 @@ and challenge_date < CURDATE();";
 
 
                 $votersTokens = "SELECT  users.token as token FROM `challenge_voting`
-left join users on users.id = challenge_voting.r_user
-WHERE challenge_voting.post_id=" . $room->id;
+                                left join users on users.id = challenge_voting.r_user
+                                WHERE challenge_voting.post_id=" . $room->id;
 
 
 
@@ -203,7 +213,7 @@ WHERE challenge_voting.post_id=" . $room->id;
 
                 for ($j = 0; $j < sizeof($votersTokensArray); $j++) {
 
-                    array_push($tokens, $votersTokensArray[$j]);
+                    array_push($tokens, $votersTokensArray[$j]["token"]);
                 }
 
 //                  return ["tokens" => $tokens,
