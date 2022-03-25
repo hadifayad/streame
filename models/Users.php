@@ -15,10 +15,12 @@ use Yii;
  * @property string $work
  * @property string $hashtags
  * @property int $id
+ * @property int $role
  * @property string $fullname
  * @property string $password
  * @property string $username
  * @property int $role
+ * @property int $mandoobId
  * @property int $is_approved
  * @property string|null $token
  * @property string|null $link_facebook
@@ -51,7 +53,7 @@ class Users extends \yii\db\ActiveRecord {
         return [
             [['fullname', 'password', 'username'], 'required'],
             [['password'], 'string'],
-            [['role', 'is_approved'], 'integer'],
+            [['role', 'is_approved','role','mandoobId'], 'integer'],
             [['fullname', 'link_facebook', 'link_youtube', 'link_instagram', 'link_tiktok'], 'string', 'max' => 200],
             [['username'], 'string', 'max' => 100],
             [['token'], 'string', 'max' => 300],
