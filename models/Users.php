@@ -20,6 +20,7 @@ use Yii;
  * @property string $username
  * @property int $role
  * @property int $is_approved
+ * @property int $coins
  * @property string|null $token
  * @property string|null $link_facebook
  * @property string|null $link_youtube

@@ -2072,7 +2072,7 @@ FROM users
         $acknowledged = $post["acknowledged"];
 
 
-        if ($productId == "remove_ads" || $productId == "elite") {
+        if ($productId == "remove_ads" || $productId == "elite" || $productId == "pro_user") {
             $userPurchace = new UserPurchaseDetails();
             $userPurchace->user_id = $userId;
             $userPurchace->orderId = $orderId;
@@ -2096,34 +2096,32 @@ FROM users
             }
         } else {
 
-            $addNotificationsRemaining = 0;
-            $addNotificationsToAllUsersRemaining = 0;
-            if ($productId == "30_notifications") {
-                $addNotificationsRemaining = 30;
-            } else if ($productId == "60_notifications") {
-                $addNotificationsRemaining = 60;
-            } else if ($productId == "90_notifications_3_toall") {
-                $addNotificationsRemaining = 90;
-                $addNotificationsToAllUsersRemaining = 3;
-            } else if ($productId == "120_notifications_10_toall") {
-                $addNotificationsRemaining = 120;
-                $addNotificationsToAllUsersRemaining = 10;
-            }
-//        else if ($productId == "") {
-//            $addNotificationsRemaining = ;
-//        }
-
-            $userNotifications = UserNotifications::findOne(["user_id" => $userId]);
-            if ($userNotifications) {
-                $userNotifications->number_remaining = $userNotifications->number_remaining + $addNotificationsRemaining;
-                $userNotifications->number_remaining_for_all_users = $userNotifications->number_remaining_for_all_users + $addNotificationsToAllUsersRemaining;
+            $coinsToAdd = 0;
+            if ($productId == "tlc_1200") {
+                $coinsToAdd = 1200;
+            } else if ($productId == "tlc_145") {
+                $coinsToAdd = 145;
+            } else if ($productId == "tlc_3000") {
+                $coinsToAdd = 3000;
+            } else if ($productId == "tlc_310") {
+                $coinsToAdd = 310;
+            } else if ($productId == "tlc_45") {
+                $coinsToAdd = 45;
+            } else if ($productId == "tlc_530") {
+                $coinsToAdd = 530;
+            } else if ($productId == "tlc_6400") {
+                $coinsToAdd = 6400;
             } else {
-                $userNotifications = new UserNotifications();
-                $userNotifications->user_id = $userId;
-                $userNotifications->number_remaining = $addNotificationsRemaining;
-                $userNotifications->number_remaining_for_all_users = $addNotificationsToAllUsersRemaining;
+                return [
+                    "status" => "0",
+                    "message" => "error in adding coins",
+                ];
             }
-            if ($userNotifications->save()) {
+
+            $userModel = Users::findOne(["id" => $userId]);
+            $oldCoins = $userModel->coins;
+            $userModel->coins = $oldCoins + $coinsToAdd;
+            if ($userModel->save()) {
                 $userPurchace = new UserPurchaseDetails();
                 $userPurchace->user_id = $userId;
                 $userPurchace->orderId = $orderId;
@@ -2142,12 +2140,63 @@ FROM users
                     "message" => "Success",
                 ];
             } else {
-
                 return [
                     "status" => "0",
-                    "message" => "error in saving notifications",
+                    "message" => "error in adding coins",
                 ];
             }
+//            $addNotificationsRemaining = 0;
+//            $addNotificationsToAllUsersRemaining = 0;
+//            if ($productId == "30_notifications") {
+//                $addNotificationsRemaining = 30;
+//            } else if ($productId == "60_notifications") {
+//                $addNotificationsRemaining = 60;
+//            } else if ($productId == "90_notifications_3_toall") {
+//                $addNotificationsRemaining = 90;
+//                $addNotificationsToAllUsersRemaining = 3;
+//            } else if ($productId == "120_notifications_10_toall") {
+//                $addNotificationsRemaining = 120;
+//                $addNotificationsToAllUsersRemaining = 10;
+//            }
+////        else if ($productId == "") {
+////            $addNotificationsRemaining = ;
+////        }
+//
+//            $userNotifications = UserNotifications::findOne(["user_id" => $userId]);
+//            if ($userNotifications) {
+//                $userNotifications->number_remaining = $userNotifications->number_remaining + $addNotificationsRemaining;
+//                $userNotifications->number_remaining_for_all_users = $userNotifications->number_remaining_for_all_users + $addNotificationsToAllUsersRemaining;
+//            } else {
+//                $userNotifications = new UserNotifications();
+//                $userNotifications->user_id = $userId;
+//                $userNotifications->number_remaining = $addNotificationsRemaining;
+//                $userNotifications->number_remaining_for_all_users = $addNotificationsToAllUsersRemaining;
+//            }
+//            if ($userNotifications->save()) {
+//                $userPurchace = new UserPurchaseDetails();
+//                $userPurchace->user_id = $userId;
+//                $userPurchace->orderId = $orderId;
+//                $userPurchace->packageName = $packageName;
+//                $userPurchace->productId = $productId;
+//                $userPurchace->purchaseTime = $purchaseTime;
+//                $userPurchace->purchaseState = $purchaseState;
+//                $userPurchace->purchaseToken = $purchaseToken;
+//                $userPurchace->quantity = $quantity;
+//                $userPurchace->acknowledged = $acknowledged;
+//                if ($userPurchace->save()) {
+//                    
+//                }
+//                return [
+//                    "status" => "1",
+//                    "message" => "Success",
+//                ];
+//            } else {
+//
+//                return [
+//                    "status" => "0",
+//                    "message" => "error in saving notifications",
+//                ];
+//            }
         }
     }
 
