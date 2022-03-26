@@ -20,6 +20,7 @@ use app\models\Users;
 use app\models\UsersSpinSilver;
 use app\models\UserTransactions;
 use Yii;
+use yii\db\Expression;
 use yii\db\Query;
 use yii\web\Response;
 use function contains;
@@ -164,12 +165,12 @@ and challenge_date < CURDATE();";
                 }
 
 
-                $tokens = \app\models\Users::find()
+                $tokens = Users::find()
                         ->select("token")
                         ->where(["id" => $ids])
                         ->asArray()
                         ->all();
-                $winnerUser = \app\models\Users::find()
+                $winnerUser = Users::find()
                         ->where(["id" => $winner])
                         ->asArray()
                         ->one();
@@ -1097,18 +1098,18 @@ FROM users
                     COUNT(pro_user_posts.id) as count,
                     (SELECT COUNT(pro_user_posts_views.id) as count
                           FROM pro_user_posts_views 
-                          JOIN pro_user_posts pup ON pup.id = pro_user_posts_views.pro_post_id
+                          JOIN pro_user_posts  pup ON pup.id = pro_user_posts_views.pro_post_id
                           WHERE pro_user_posts_views.user_id = $userId  AND pup.user_id = pro_user_posts.user_id
-                          ORDER BY pro_user_posts_views.creation_date DESC
-                          ) as viewed_count")
+                          ORDER BY pro_user_posts_views.creation_date DESC) as viewed_count")
                 ->from("pro_user_posts")
                 ->join('join', 'users', 'users.id = pro_user_posts.user_id')
-//                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
-                ->where('creation_date >= now() - INTERVAL 1 DAY')
+                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
+//                ->where('creation_date >= now() - INTERVAL 1 DAY')
                 ->groupBy('pro_user_posts.user_id')
                 ->orderBy('creation_date DESC')
                 ->all();
-
+        
+      
         $temp_array1 = [];
         $temp_array2 = [];
         for ($i = 0; $i < sizeof($posts); $i++) {
@@ -1125,7 +1126,9 @@ FROM users
 
 //        return $temp_array1;
 //        return json_decode(json_encode($temp_array1), FALSE);
-        return $posts;
+             return $posts;
+
+     
     }
 
     public function actionGetProUserPosts() {
