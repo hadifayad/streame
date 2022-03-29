@@ -22,6 +22,7 @@ use Yii;
  * @property int $role
  * @property int $mandoobId
  * @property int $is_approved
+ * @property int $coins
  * @property string|null $token
  * @property string|null $link_facebook
  * @property string|null $link_youtube
