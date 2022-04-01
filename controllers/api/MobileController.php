@@ -1103,8 +1103,8 @@ FROM users
                           ORDER BY pro_user_posts_views.creation_date DESC) as viewed_count")
                 ->from("pro_user_posts")
                 ->join('join', 'users', 'users.id = pro_user_posts.user_id')
-                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
-//                ->where('creation_date >= now() - INTERVAL 1 DAY')
+//                ->where(['>=', 'creation_date', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
+                ->where('creation_date >= now() - INTERVAL 1 DAY')
                 ->groupBy('pro_user_posts.user_id')
                 ->orderBy('creation_date DESC')
                 ->all();
