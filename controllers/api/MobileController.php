@@ -288,6 +288,10 @@ WHERE challenge_voting.post_id=" . $room->id;
             $color2 = $post["color2"];
             $room->color1 = $color1;
             $room->color2 = $color2;
+            if($color1 == null || $color2== null || $color1 == "" || $color2== "" ){
+                $color1 = "#CE2E6F";
+                $color2 = "#671738";
+            }
 //            return $room;
 //            return $room;
 //            return $room->getErrors();
@@ -669,7 +673,11 @@ WHERE challenge_voting.post_id=" . $room->id;
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
         $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
-            (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
+            (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,
+            (SELECT COUNT(id) FROM comment WHERE r_room = rooms.id) as number_of_comments,
+            (SELECT c_text FROM comment WHERE r_room = rooms.id ORDER BY id DESC LIMIT 1) as last_comment,
+            
+type,
             (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
@@ -803,7 +811,9 @@ WHERE roomId =" . $item["id"];
 
         $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
             (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
-            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
+            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files,
+               (SELECT COUNT(id) FROM comment WHERE r_room = rooms.id) as number_of_comments,
+            (SELECT c_text FROM comment WHERE r_room = rooms.id ORDER BY id DESC LIMIT 1) as last_comment
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
              LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
@@ -922,7 +932,9 @@ FROM users
 
         $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
             (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
-            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
+            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files,
+               (SELECT COUNT(id) FROM comment WHERE r_room = rooms.id) as number_of_comments,
+            (SELECT c_text FROM comment WHERE r_room = rooms.id ORDER BY id DESC LIMIT 1) as last_comment
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
                LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
