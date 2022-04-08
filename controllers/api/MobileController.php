@@ -20,7 +20,6 @@ use app\models\Users;
 use app\models\UsersSpinSilver;
 use app\models\UserTransactions;
 use Yii;
-use yii\db\Expression;
 use yii\db\Query;
 use yii\web\Response;
 use function contains;
@@ -1108,8 +1107,8 @@ FROM users
                 ->groupBy('pro_user_posts.user_id')
                 ->orderBy('creation_date DESC')
                 ->all();
-        
-      
+
+
         $temp_array1 = [];
         $temp_array2 = [];
         for ($i = 0; $i < sizeof($posts); $i++) {
@@ -1126,7 +1125,7 @@ FROM users
 
 //        return $temp_array1;
 //        return json_decode(json_encode($temp_array1), FALSE);
-             return $posts;
+        return $posts;
 
      
     }
@@ -1138,9 +1137,19 @@ FROM users
         $userId = $post["userId"];
 
         $posts = ProUserPosts::find()
+                ->select("pro_user_posts.*,users.fullname,users.profile_picture,
+                    COUNT(pro_user_posts.id) as count,
+                    (SELECT COUNT(pro_user_posts_views.id) as count
+                          FROM pro_user_posts_views 
+                          JOIN pro_user_posts  pup ON pup.id = pro_user_posts_views.pro_post_id
+                          WHERE pro_user_posts_views.user_id = $userId  AND pup.user_id = pro_user_posts.user_id
+                          ORDER BY pro_user_posts_views.creation_date DESC) as viewed_count")
+                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
                 ->where(['user_id' => $userId])
                 ->andWhere('creation_date >= now() - INTERVAL 1 DAY')
+                ->groupBy('pro_user_posts.user_id')
                 ->orderBy('creation_date ASC')
+                ->asArray()
                 ->all();
         return $posts;
     }
@@ -2399,9 +2408,24 @@ FROM users
         }
     }
 
-//    public function actionSs() {
-//
-//
+    public function actionSs() {
+
+        $notification = new NotificationForm();
+        $notification->subject = "subject sad asd ";
+        $notification->message = "aaaa";
+
+        $commentsUsers = Users::find()
+                ->select("DISTINCT(users.token)")
+                ->where([
+                    "id" => 20,
+                ])
+                ->asArray()
+                ->column();
+
+
+
+        $notification->notifyToUserGoToAd($commentsUsers, "292");
+
 //        $msg = array
 //            (
 //            'title' => "some subject",
@@ -2432,5 +2456,6 @@ FROM users
 //        $result = curl_exec($ch);
 //        curl_close($ch);
 //        return true;
-//    }
+    }
+
 }
