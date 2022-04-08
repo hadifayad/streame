@@ -288,7 +288,7 @@ WHERE challenge_voting.post_id=" . $room->id;
             $color2 = $post["color2"];
             $room->color1 = $color1;
             $room->color2 = $color2;
-            if($color1 == null || $color2== null || $color1 == "" || $color2== "" ){
+            if ($color1 == null || $color2 == null || $color1 == "" || $color2 == "") {
                 $color1 = "#CE2E6F";
                 $color2 = "#671738";
             }
@@ -1138,8 +1138,6 @@ FROM users
 //        return $temp_array1;
 //        return json_decode(json_encode($temp_array1), FALSE);
         return $posts;
-
-     
     }
 
     public function actionGetProUserPosts() {
@@ -1149,17 +1147,8 @@ FROM users
         $userId = $post["userId"];
 
         $posts = ProUserPosts::find()
-                ->select("pro_user_posts.*,users.fullname,users.profile_picture,
-                    COUNT(pro_user_posts.id) as count,
-                    (SELECT COUNT(pro_user_posts_views.id) as count
-                          FROM pro_user_posts_views 
-                          JOIN pro_user_posts  pup ON pup.id = pro_user_posts_views.pro_post_id
-                          WHERE pro_user_posts_views.user_id = $userId  AND pup.user_id = pro_user_posts.user_id
-                          ORDER BY pro_user_posts_views.creation_date DESC) as viewed_count")
-                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
                 ->where(['user_id' => $userId])
                 ->andWhere('creation_date >= now() - INTERVAL 1 DAY')
-                ->groupBy('pro_user_posts.user_id')
                 ->orderBy('creation_date ASC')
                 ->asArray()
                 ->all();
