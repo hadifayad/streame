@@ -1155,6 +1155,54 @@ FROM users
         return $posts;
     }
 
+    public function actionGetOneProUserPost() {
+        $post = Yii::$app->request->post();
+
+        $postId = $post["proPostId"];
+
+        $posts = (new Query)
+                ->select("pro_user_posts.*,users.fullname,users.profile_picture")
+                ->from("pro_user_posts")
+                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
+                ->where('creation_date >= now() - INTERVAL 1 DAY')
+                ->andWhere(["pro_user_posts.id" => $postId])
+                ->all();
+
+        return $posts;
+    }
+
+    public function actionGetProUserPostsForProfile() {
+        $post = Yii::$app->request->post();
+
+        $userId = $post["userId"];
+
+        $posts = ProUserPosts::find()
+                ->select("pro_user_posts.*,users.fullname,users.profile_picture")
+                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
+                ->where(['user_id' => $userId])
+                ->andWhere('creation_date >= now() - INTERVAL 1 DAY')
+                ->orderBy('creation_date DESC')
+                ->asArray()
+                ->all();
+
+//        $posts = (new Query)
+//                ->select("pro_user_posts.*,users.fullname,users.profile_picture,
+//                    COUNT(pro_user_posts.id) as count,
+//                    (SELECT COUNT(pro_user_posts_views.id) as count
+//                          FROM pro_user_posts_views 
+//                          JOIN pro_user_posts  pup ON pup.id = pro_user_posts_views.pro_post_id
+//                          WHERE pro_user_posts_views.user_id = $userId  AND pup.user_id = pro_user_posts.user_id
+//                          ORDER BY pro_user_posts_views.creation_date DESC) as viewed_count")
+//                ->from("pro_user_posts")
+//                ->join('join', 'users', 'users.id = pro_user_posts.user_id')
+//                ->where('creation_date >= now() - INTERVAL 1 DAY')
+//                ->orderBy('creation_date DESC')
+//                ->all();
+
+
+        return $posts;
+    }
+
     public function actionCreateProUserPost() {
         $post = Yii::$app->request->post();
         $userId = $post["userId"];
