@@ -281,7 +281,18 @@ WHERE challenge_voting.post_id=" . $room->id;
         $room->game = $gameId;
         $room->creation_date = date("Y-m-d H:i:s");
 
-
+        if ($category == "challenge") {
+            $creatorUser = Users::findOne(["id" => $user]);
+            if ($creatorUser) {
+                if ($creatorUser->coins >= $coins) {
+                    
+                } else {
+                    return "nocoins";
+                }
+            } else {
+                return "nouser";
+            }
+        }
 
         if ($type == "text" || $category == "challenge") {
             $color1 = $post["color1"];
