@@ -812,7 +812,7 @@ WHERE roomId =" . $item["id"];
         $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
             (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
             (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files,
-               (SELECT COUNT(id) FROM comment WHERE r_room = rooms.id) as number_of_comments,
+            (SELECT COUNT(id) FROM comment WHERE r_room = rooms.id) as number_of_comments,
             (SELECT c_text FROM comment WHERE r_room = rooms.id ORDER BY id DESC LIMIT 1) as last_comment
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
@@ -839,7 +839,9 @@ WHERE roomId =" . $item["id"];
 
         $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
             (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,type,
-            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
+            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files,
+            (SELECT COUNT(id) FROM comment WHERE r_room = rooms.id) as number_of_comments,
+            (SELECT c_text FROM comment WHERE r_room = rooms.id ORDER BY id DESC LIMIT 1) as last_comment
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
              LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
