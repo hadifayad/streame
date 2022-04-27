@@ -189,16 +189,34 @@ class NotificationForm extends Model {
         $newTokens = [];
         for ($i = 0; $i < sizeof($tokens); $i++) {
             $token = $tokens[$i];
-            if ($winnerUser["token"] == $token) {
-                
-            } else {
-                array_push($newTokens, $token);
+            if ($winnerUser) {
+                if ($winnerUser["token"] == $token) {
+                    continue;
+                }
             }
+            array_push($newTokens, $token);
         }
 
         $challengeTitle = $challenge["title"];
         $winnerName = "";
         if ($winnerUser) {
+
+            $userWinnerrrModel = Users::findOne(["id" => $winnerUser["id"]]);
+            if ($userWinnerrrModel) {
+                $userWinnerrrModel->coins = $userWinnerrrModel->coins + $challenge["challenge_coins"];
+                $userTransaction = new UserTransactions();
+                $userTransaction->fromUser = $challenge["r_admin"];
+                $userTransaction->userId = $winnerUser["id"];
+                $userTransaction->coins = $challenge["challenge_coins"];
+                $userTransaction->type = "challenge";
+                $userTransaction->roomId = $challenge["id"];
+                $userTransaction->save();
+                if ($userWinnerrrModel->save()) {
+                    
+                }
+            }
+
+
             $winnerName = $winnerUser["fullname"];
 
             $msgWinner = array
@@ -232,6 +250,24 @@ class NotificationForm extends Model {
 
             $isWinner = "0"; // there is a winner 0 means sent to not winner user
         } else {
+
+
+            $userWinnerrrModel = Users::findOne(["id" => $challenge["r_admin"]]);
+            if ($userWinnerrrModel) {
+                $userWinnerrrModel->coins = $userWinnerrrModel->coins + $challenge["challenge_coins"];
+                $userTransaction = new UserTransactions();
+                $userTransaction->fromUser = $challenge["r_admin"];
+                $userTransaction->userId = $challenge["r_admin"];
+                $userTransaction->coins = $challenge["challenge_coins"];
+                $userTransaction->type = "challenge";
+                $userTransaction->roomId = $challenge["id"];
+                $userTransaction->save();
+                if ($userWinnerrrModel->save()) {
+                    
+                }
+            }
+
+
             $isWinner = "2"; // there is a tie
         }
 

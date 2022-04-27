@@ -308,6 +308,15 @@ WHERE challenge_voting.post_id=" . $room->id;
 //            return $room->getErrors();
             if ($room->save()) {
                 if ($category == "challenge") {
+
+                    $userTransaction = new UserTransactions();
+                    $userTransaction->fromUser = $user;
+                    $userTransaction->coins = $coins;
+                    $userTransaction->type = "challenge";
+                    $userTransaction->roomId = $room->id;
+                    $userTransaction->save();
+                    $creatorUser->coins = $creatorUser->coins - $coins;
+                    $creatorUser->save();
                     NotificationForm::notifyStreamersForChallenge($room);
                 }
                 return "true";
