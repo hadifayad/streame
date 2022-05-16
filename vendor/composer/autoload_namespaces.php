@@ -6,12 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Neutron' => array($vendorDir . '/neutron/temporary-filesystem/src'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
-    'FFMpeg' => array($vendorDir . '/php-ffmpeg/php-ffmpeg/src'),
-    'Evenement' => array($vendorDir . '/evenement/evenement/src'),
+    'ElephantIO' => array($vendorDir . '/oncesk/elephant.io/lib'),
     'Diff' => array($vendorDir . '/phpspec/php-diff/lib'),
     'Codeception\\' => array($vendorDir . '/codeception/specify/src'),
     'Behat\\Gherkin' => array($vendorDir . '/behat/gherkin/src'),
-    'Alchemy' => array($vendorDir . '/alchemy/binary-driver/src'),
 );

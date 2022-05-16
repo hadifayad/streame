@@ -1,6 +1,6 @@
 # Codeception\Stub
 
-[![Build Status](https://travis-ci.org/Codeception/Stub.svg?branch=master)](https://travis-ci.org/Codeception/Stub)
+![CI](https://github.com/Codeception/Stub/workflows/CI/badge.svg)
 [![Latest Stable Version](https://poser.pugx.org/codeception/stub/v/stable)](https://packagist.org/packages/codeception/stub)
 [![Total Downloads](https://poser.pugx.org/codeception/stub/downloads)](https://packagist.org/packages/codeception/stub)
 [![License](https://poser.pugx.org/codeception/stub/license)](https://packagist.org/packages/codeception/stub)
@@ -68,7 +68,7 @@ $this->constructEmpty(UserRepositry::class);
 ## Mocks
 
 Mocks should be created by including [`Codeception\Test\Feature\Stub` trait](https://github.com/Codeception/Stub/blob/master/docs/StubTrait.md) into a test case.
-Execution expectation are set with [`Codescption\Stub\Expected`](https://github.com/Codeception/Stub/blob/master/docs/Expected.md):
+Execution expectation are set with [`Codeception\Stub\Expected`](https://github.com/Codeception/Stub/blob/master/docs/Expected.md):
 
 ```php
 <?php

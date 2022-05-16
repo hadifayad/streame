@@ -17,22 +17,13 @@ use yii\web\AssetBundle;
  */
 class DebugAsset extends AssetBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public $sourcePath = '@yii/debug/assets';
-    /**
-     * {@inheritdoc}
-     */
     public $css = [
-        'css/main.css',
-        'css/toolbar.css',
+        'main.css',
+        'toolbar.css',
     ];
-    /**
-     * {@inheritdoc}
-     */
-    public $js = [
-        'js/polyfill.min.js',
-        'js/bs4-native.min.js'
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
     ];
 }
