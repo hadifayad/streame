@@ -9,21 +9,7 @@ if ($panel->data['rolesProvider']) {
 
     echo GridView::widget([
         'dataProvider' => $panel->data['rolesProvider'],
-        'pager' => [
-            'linkContainerOptions' => [
-                'class' => 'page-item'
-            ],
-            'linkOptions' => [
-                'class' => 'page-link'
-            ],
-            'disabledListItemSubTagOptions' => [
-                'tag' => 'a',
-                'href' => 'javascript:;',
-                'tabindex' => '-1',
-                'class' => 'page-link'
-            ]
-        ],
-        'columns' => [
+        'columns'      => [
             'name',
             'description',
             'ruleName',
@@ -39,21 +25,7 @@ if ($panel->data['permissionsProvider']) {
 
     echo GridView::widget([
         'dataProvider' => $panel->data['permissionsProvider'],
-        'pager' => [
-            'linkContainerOptions' => [
-                'class' => 'page-item'
-            ],
-            'linkOptions' => [
-                'class' => 'page-link'
-            ],
-            'disabledListItemSubTagOptions' => [
-                'tag' => 'a',
-                'href' => 'javascript:;',
-                'tabindex' => '-1',
-                'class' => 'page-link'
-            ]
-        ],
-        'columns' => [
+        'columns'      => [
             'name',
             'description',
             'ruleName',

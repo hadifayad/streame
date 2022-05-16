@@ -11,13 +11,14 @@ use Yii;
 use yii\base\Event;
 use yii\debug\models\search\Mail;
 use yii\debug\Panel;
-use yii\helpers\FileHelper;
 use yii\mail\BaseMailer;
+use yii\helpers\FileHelper;
+use yii\mail\MessageInterface;
 
 /**
  * Debugger panel that collects and displays the generated emails.
  *
- * @property-read array $messagesFileName This property is read-only.
+ * @property array $messagesFileName This property is read-only.
  *
  * @author Mark Jebri <mark.github@yandex.ru>
  * @since 2.0
@@ -43,9 +44,8 @@ class MailPanel extends Panel
         parent::init();
 
         Event::on('yii\mail\BaseMailer', BaseMailer::EVENT_AFTER_SEND, function ($event) {
-            /* @var $event \yii\mail\MailEvent */
+            /* @var $message MessageInterface */
             $message = $event->message;
-            /* @var $message \yii\mail\MessageInterface */
             $messageData = [
                 'isSuccessful' => $event->isSuccessful,
                 'from' => $this->convertParams($message->getFrom()),
@@ -80,6 +80,7 @@ class MailPanel extends Panel
                 $messageData['body'] = $body;
                 $messageData['time'] = $swiftMessage->getDate();
                 $messageData['headers'] = $swiftMessage->getHeaders();
+
             }
 
             // store message as file
@@ -108,7 +109,7 @@ class MailPanel extends Panel
     {
         return Yii::$app->view->render('panels/mail/summary', [
             'panel' => $this,
-            'mailCount' => is_array($this->data) ? count($this->data) : '⚠'
+            'mailCount' => count($this->data),
         ]);
     }
 

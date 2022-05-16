@@ -53,7 +53,7 @@ class Rooms extends \yii\db\ActiveRecord
     {
         return 'rooms';
     }
-
+ public $file;
     /**
      * {@inheritdoc}
      */
@@ -66,6 +66,10 @@ class Rooms extends \yii\db\ActiveRecord
             [['creation_date', 'challenge_date'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 50],
+             [['file'], 'file', 'skipOnEmpty' => true,
+                'extensions' => 'png, jpg,mp4',
+                'maxFiles' => 5,
+            ],
             [['category', 'video_thumbnail'], 'string', 'max' => 200],
             [['color1', 'color2'], 'string', 'max' => 20],
             [['r_admin'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['r_admin' => 'id']],

@@ -64,12 +64,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::end(); ?>
 </div>
 
-<?php
-JSRegister::begin([
-    'id' => '1',
-    'position' => static::POS_END
-]);
-?>
+//<?php
+//JSRegister::begin([
+//    'id' => '1',
+//    'position' => static::POS_END
+//]);
+//?>
 
 <script>
 
@@ -105,5 +105,5 @@ JSRegister::begin([
     });
 </script>
 <?php
-JSRegister::end();
+//JSRegister::end();
 ?>

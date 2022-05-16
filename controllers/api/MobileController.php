@@ -80,10 +80,6 @@ and challenge_date < CURDATE();";
                 $ids = array();
                 array_push($ids, $room->r_admin);
 
-
-
-
-
                 if ($room) {
 
                     if ($mention3 == null && $mention2 == null) {
@@ -95,7 +91,6 @@ and challenge_date < CURDATE();";
                     } elseif ($mention3 == null) {
                         array_push($ids, $room->mention);
                         array_push($ids, $room->mention2);
-
 
                         $sql_count_mention1query = " SELECT COUNT(*) AS count  FROM `challenge_voting`  WHERE r_streamer_voted = " . $mention1 . " and post_id=" . $arrayList[$i]["id"] . "";
                         $sql_count_mention2query = " SELECT COUNT(*) AS count  FROM `challenge_voting`  WHERE r_streamer_voted = " . $mention2 . " and post_id=" . $arrayList[$i]["id"] . "";
@@ -174,15 +169,9 @@ and challenge_date < CURDATE();";
                         ->asArray()
                         ->one();
 
-
-
-
-
                 $votersTokens = "SELECT  users.token as token FROM `challenge_voting`
 left join users on users.id = challenge_voting.r_user
 WHERE challenge_voting.post_id=" . $room->id;
-
-
 
                 $command = Yii::$app->db->createCommand($votersTokens);
                 $votersTokensArray = $command->queryAll();
@@ -260,12 +249,8 @@ WHERE challenge_voting.post_id=" . $room->id;
         $challengeTime = $post["challengeTime"];
         $gameId = $post["game"];
 
-
-
-
         $imageString = $post["imageString"];
         $coins = $post["challengeCoins"];
-
 
         $room = new Rooms();
         $room->title = $title;
@@ -728,7 +713,6 @@ type,
 FROM user_transactions
 WHERE roomId =" . $item["id"];
 
-
                 $command1 = Yii::$app->db->createCommand($donations);
 //              return  $command1->queryOne()["value_sum"]; 
                 $itemDonate = $command1->queryOne();
@@ -815,8 +799,6 @@ WHERE roomId =" . $item["id"];
                 ->where(['follow.r_user' => $userId])
                 ->all();
 
-
-
         return $streamers;
     }
 
@@ -841,7 +823,6 @@ WHERE roomId =" . $item["id"];
 
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
-
 
         return $arrayList;
     }
@@ -870,7 +851,6 @@ WHERE roomId =" . $item["id"];
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
 
-
         return $arrayList;
     }
 
@@ -896,15 +876,8 @@ FROM users
  LEFT JOIN follow ON follow.r_page = users.id AND follow.r_user = $userId
    WHERE  LOWER(users.fullname) like LOWER($searchText) ;";
 
-
-
-
-
-
-
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
-
 
         return $arrayList;
     }
@@ -930,11 +903,8 @@ FROM users
                LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
              WHERE  rooms.mention = $userId AND rooms.category = 'challenge' AND rooms.invitation_response is NULL  OR rooms.invitation_response=1";
 
-
-
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
-
 
         return $arrayList;
     }
@@ -961,8 +931,6 @@ FROM users
              JOIN users ON rooms.r_admin = users.id
                LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
              WHERE  rooms.mention = $userId OR rooms.r_admin = $userId AND rooms.category = 'challenge'ORDER BY rooms.creation_date DESC ";
-
-
 
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
@@ -1008,11 +976,8 @@ FROM users
                LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
              WHERE  rooms.challenge_winner = $userId  AND rooms.category = 'challenge'ORDER BY rooms.creation_date DESC ";
 
-
-
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
-
 
         return $arrayList;
     }
@@ -1342,7 +1307,6 @@ FROM users
         $user->link_instagram = $linkInstagram;
         $user->link_tiktok = $linkTiktok;
 
-
         if ($user->save()) {
             for ($i = 0; $i < sizeof($userGamesDecode); $i++) {
                 $userGame = $userGamesDecode[$i];
@@ -1484,7 +1448,6 @@ FROM users
         $roomId = $post["roomId"];
         $userId = $post["userId"];
 
-
         $tokens = (new Query)
                 ->select("users.token  ")
                 ->from(Follow::tableName())
@@ -1528,14 +1491,11 @@ FROM users
         $roomId = $post["roomId"];
         $userId = $post["userId"];
 
-
         $room = Rooms::find()
                 ->where(['id' => $roomId])
                 ->one();
 
         $pageName = $room["page_name"];
-
-
 
         $tokens = (new Query)
                 ->select("token")
@@ -1574,9 +1534,6 @@ FROM users
 
         $userId = $post["userId"];
 
-
-
-
         $userNotifications = UserNotifications::find()->where(["user_id" => $userId])->one();
 
         if ($userNotifications) {
@@ -1596,9 +1553,6 @@ FROM users
 
         $userId = $post["userId"];
 
-
-
-
         $userNotifications = UserNotifications::find()->where(["user_id" => $userId])->one();
 
         if ($userNotifications) {
@@ -1617,7 +1571,6 @@ FROM users
         $roomId = $post["r_room"];
 
         $userId = $post["r_user"];
-
 
         $unfollow = Followrooms::find()
                 ->where(["r_room" => $roomId])
@@ -1695,7 +1648,6 @@ FROM users
         $follow = Followrooms::find()
                 ->where(["r_room" => $adId])
                 ->one();
-
 
         while ($follow) {
             $follow->delete();
@@ -1863,8 +1815,6 @@ FROM users
         $follow->r_user = $r_user;
         $follow->r_page = $r_page;
 
-
-
         if ($follow->save()) {
             return true;
         } else {
@@ -1883,9 +1833,6 @@ FROM users
         $reward->prizedId = $prizeId;
         $reward->date = date("Y-m-d H:i:s");
 
-
-
-
         if ($reward->save()) {
             return true;
         } else {
@@ -1900,7 +1847,6 @@ FROM users
         $userId = $post["userId"];
         $date = date("Y-m-d H:i:s");
         $timestamp1 = strtotime($date);
-
 
         $reward = (new Query)
                 ->select("*")
@@ -1941,9 +1887,6 @@ FROM users
                 ->andWhere(['r_page' => $r_page])
                 ->one();
 
-
-
-
         if ($follow->delete()) {
             return true;
         } else {
@@ -1957,7 +1900,6 @@ FROM users
         $post = Yii::$app->request->post();
 
         $r_user = $post["r_user"];
-
 
         $count = Follow::find()
                 ->where(['r_page' => $r_user])
@@ -2036,9 +1978,6 @@ FROM users
                 ->asArray()
                 ->one();
 
-
-
-
         $games = (new Query)
                 ->select("games.id,games.name,streamer_games.user_id,streamer_games.game_id,streamer_games.game_account_id,streamer_games.id as streamerGameId")
                 ->from("games")
@@ -2066,7 +2005,6 @@ FROM users
                 ->asArray()
                 ->one();
 
-
         return $myPost;
     }
 
@@ -2081,7 +2019,6 @@ FROM users
                 ->where(['id' => $userId])
                 ->asArray()
                 ->one();
-
 
         $games = (new Query)
                 ->select("games.id,games.name,streamer_games.user_id,streamer_games.game_id,streamer_games.game_account_id,streamer_games.id as streamerGameId")
@@ -2108,12 +2045,10 @@ FROM users
 
         $userProfile["numberOfPosts"] = sizeof($countposts);
 
-
         $count = Follow::find()
                 ->where(['r_page' => $userId])
                 ->asArray()
                 ->all();
-
 
         $userProfile["numberOfFollowers"] = sizeof($count);
 
@@ -2153,7 +2088,6 @@ FROM users
         $purchaseToken = $post["purchaseToken"];
         $quantity = $post["quantity"];
         $acknowledged = $post["acknowledged"];
-
 
         if ($productId == "remove_ads" || $productId == "elite" || $productId == "pro_user") {
             $userPurchace = new UserPurchaseDetails();
@@ -2324,9 +2258,7 @@ FROM users
             $randomFileName = Yii::$app->security->generateRandomString() . "." . $ext;
             $location = "postVideos/";
 
-
             move_uploaded_file($temp_name, $location . $randomFileName);
-
 
             return "https://www.theleader.team/postVideos/" . $randomFileName;
         } else {
@@ -2340,7 +2272,6 @@ FROM users
 
         $userId = $post["userId"];
         $proPostId = $post["proPostId"];
-
 
         $model = new ProUserPostsViews();
         $model->user_id = $userId;
@@ -2421,7 +2352,6 @@ FROM users
         $postId = $post["postId"];
         $streamerId = $post["streamerId"];
 
-
         $room = Rooms::findOne(["id" => $postId]);
         if ($room) {
             if ($room["mention"] == $streamerId) {
@@ -2464,7 +2394,6 @@ FROM users
 
         $userId = $post["userId"];
         $token = $post["token"];
-
 
         $user = Users::findOne(["id" => $userId]);
         if ($user) {

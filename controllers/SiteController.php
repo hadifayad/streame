@@ -2,12 +2,13 @@
 
 namespace app\controllers;
 
+use app\controllers\api\MobileController;
+use app\models\Comment;
 use app\models\ContactForm;
 use app\models\LoginForm;
-use app\models\NotificationForm;
 use app\models\Rooms;
-use app\models\Users;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -87,11 +88,74 @@ class SiteController extends Controller {
 ////            'pagination' => array('pageSize' => 10),
 //            'pagination' => false,
 //        ]);
-
 //        return "myIndex";
 
+        $rooms = new ActiveDataProvider(['query' => Rooms::find(),
+//            'pagination'=> [
+//                'pageSize'=>3, 
+//            ]
+        ]);
+        $userId = Yii::$app->user->id;
+        $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
+            (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,
+            (SELECT COUNT(id) FROM comment WHERE r_room = rooms.id) as number_of_comments,
+            (SELECT c_text FROM comment WHERE r_room = rooms.id ORDER BY id DESC LIMIT 1) as last_comment,
+          
+            
+type,
+            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
+             FROM rooms
+             JOIN users ON rooms.r_admin = users.id
+             LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = '20'
+          
+             ORDER BY rooms.creation_date DESC;";
+        $command = Yii::$app->db->createCommand($sql);
+        $arrayList = $command->queryAll();
+// WHERE rooms.creation_date >= CURDATE()
+//          where rooms.category = 'share'
+
+
+
+        for ($i = 0; $i < sizeof($arrayList); $i++) {
+            $item = $arrayList[$i];
+//            
+//            if($arrayList[$i]["last_comment"]!=null && $arrayList[$i]["last_comment"]!="" ){
+//                      $arrayList[$i]["comments"] = Comment::find()->where(["r_room"=>$arrayList[$i]["id"]])->asArray->all();  
+//            }
+
+
+
+
+            if ($item["category"] == "challenge") {
+                if ($item["accept1"] == 0 && $item["accept2"] == 0 && $item["accept3"] == 0) {
+                    array_splice($arrayList, $i, 1);
+                } else {
+                    $challengeVideos = MobileController::getChallengesVideosMentioned($item["id"], $item["mention"], $item["mention2"], $item["mention3"]);
+                    $arrayList[$i]["challengesVideos"] = $challengeVideos;
+                    if ($challengeVideos[0]["isChallenge"] == "0" && $challengeVideos[1]["isChallenge"] == "0" && $challengeVideos[2]["isChallenge"] == "0") {
+                        array_splice($arrayList, $i, 1);
+                    }
+                }
+            } else if ($item["category"] == "donate") {
+
+//                $arrayList[$i]["challengesVideos"] = null;
+//                
+                $donations = "SELECT  SUM(user_transactions.coins) AS value_sum 
+FROM user_transactions
+WHERE roomId =" . $item["id"];
+
+                $command1 = Yii::$app->db->createCommand($donations);
+//              return  $command1->queryOne()["value_sum"]; 
+                $itemDonate = $command1->queryOne();
+                $arrayList[$i]["number_of_donates"] = $itemDonate["value_sum"];
+//              
+            } else {
+                $arrayList[$i]["challengesVideos"] = null;
+            }
+        }
+//        return $arrayList;
         return $this->render('index', [
-//                    'lastPrice' => $lastPrice,
+                    'rooms' => $arrayList,
 //                    'dataProvider' => $dataProvider,
         ]);
     }
@@ -311,5 +375,4 @@ class SiteController extends Controller {
 //            }
 //        }
 //    }
-
 }

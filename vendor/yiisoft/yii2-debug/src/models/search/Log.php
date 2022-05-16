@@ -52,7 +52,6 @@ class Log extends Base
             'level' => 'Level',
             'category' => 'Category',
             'message' => 'Message',
-            'time_since_previous' => 'Since previous',
         ];
     }
 
@@ -69,15 +68,7 @@ class Log extends Base
             'allModels' => $models,
             'pagination' => false,
             'sort' => [
-                'attributes' => [
-                    'time',
-                    'time_since_previous' => [
-                        'default' => SORT_DESC,
-                    ],
-                    'level',
-                    'category',
-                    'message'
-                ],
+                'attributes' => ['time', 'level', 'category', 'message'],
                 'defaultOrder' => [
                     'time' => SORT_ASC,
                 ],
