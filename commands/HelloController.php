@@ -106,7 +106,7 @@ class HelloController extends Controller {
 
 
 
-
+                $winner = null;
 
                 if ($room) {
 
@@ -134,7 +134,6 @@ class HelloController extends Controller {
                             $room->challenge_winner = $mention2;
                             $room->is_challenge_finished = "1";
                             $room->save();
-                            array_push($ids, $room->mention);
                             $winner = $mention2;
 
 //                           return $sql_count_mention1;
@@ -142,19 +141,18 @@ class HelloController extends Controller {
                             $room->challenge_winner = $mention1;
                             $room->is_challenge_finished = "1";
                             $room->save();
-                            array_push($ids, $room->mention2);
                             $winner = $mention1;
 
 //                           return $sql_count_mention1;
                         } else { // tie
-                            $room->challenge_winner = $mention1;
+//                            $room->challenge_winner = ;
                             $room->is_challenge_finished = "1";
                             $room->save();
-                            array_push($ids, $room->mention2);
-                            $winner = $mention1;
                         }
                     } else if ($mention3 != null && $mention2 != null && $mention1 != null) {
-
+                        array_push($ids, $room->mention);
+                        array_push($ids, $room->mention2);
+                        array_push($ids, $room->mention3);
 
                         $sql_count_mention1query = " SELECT COUNT(*) As count  FROM `challenge_voting`  WHERE r_streamer_voted = " . $mention1 . " and post_id=" . $arrayList[$i]["id"] . "";
                         $sql_count_mention2query = " SELECT COUNT(*) As count   FROM `challenge_voting`  WHERE r_streamer_voted = " . $mention2 . " and post_id=" . $arrayList[$i]["id"] . "";
@@ -168,66 +166,64 @@ class HelloController extends Controller {
                         $command = Yii::$app->db->createCommand($sql_count_mention3query);
                         $sql_count_mention3 = $command->queryOne();
 
-                        if ($sql_count_mention2["count"] >= $sql_count_mention1["count"] && $sql_count_mention2["count"] >= $sql_count_mention3["count"]) {
+                        if ($sql_count_mention2["count"] > $sql_count_mention1["count"] && $sql_count_mention2["count"] > $sql_count_mention3["count"]) {
                             $room->challenge_winner = $mention2;
                             $room->is_challenge_finished = "1";
                             $room->save();
-                            array_push($ids, $room->mention);
                             $winner = $mention2;
-                            array_push($ids, $room->mention3);
-                        } else if ($sql_count_mention2["count"] <= $sql_count_mention1["count"] && $sql_count_mention3["count"] <= $sql_count_mention1["count"]) {
+                        } else if ($sql_count_mention2["count"] < $sql_count_mention1["count"] && $sql_count_mention3["count"] < $sql_count_mention1["count"]) {
                             $room->challenge_winner = $mention1;
                             $room->is_challenge_finished = "1";
-                            array_push($ids, $room->mention2);
                             $winner = $mention1;
-                            array_push($ids, $room->mention3);
                             $room->save();
-                        } else if ($sql_count_mention2["count"] <= $sql_count_mention3["count"] && $sql_count_mention1["count"] <= $sql_count_mention3["count"]) {
+                        } else if ($sql_count_mention2["count"] < $sql_count_mention3["count"] && $sql_count_mention1["count"] < $sql_count_mention3["count"]) {
                             $room->challenge_winner = $mention3;
                             $room->is_challenge_finished = "1";
-                            array_push($ids, $room->mention1);
                             $winner = $mention3;
-                            array_push($ids, $room->mention2);
+                            $room->save();
+                        } else { // some tie happened
+                            $room->is_challenge_finished = "1";
                             $room->save();
                         }
                     }
                 }
-
+                $winnerUser = null;
                 if ($winner) {
-                    $tokens = Users::find()
-                            ->select("token")
-                            ->where(["id" => $ids])
-                            ->asArray()
-                            ->column();
                     $winnerUser = Users::find()
                             ->where(["id" => $winner])
                             ->asArray()
                             ->one();
+                }
+                $tokens = Users::find()
+                        ->select("token")
+                        ->where(["id" => $ids])
+                        ->asArray()
+                        ->column();
 
 
 
 
 
-                    $votersTokens = "SELECT  users.token as token FROM `challenge_voting`
+
+                $votersTokens = "SELECT  users.token as token FROM `challenge_voting`
                                 left join users on users.id = challenge_voting.r_user
                                 WHERE challenge_voting.post_id=" . $room->id;
 
 
 
-                    $command = Yii::$app->db->createCommand($votersTokens);
-                    $votersTokensArray = $command->queryAll();
+                $command = Yii::$app->db->createCommand($votersTokens);
+                $votersTokensArray = $command->queryAll();
 
-                    for ($j = 0; $j < sizeof($votersTokensArray); $j++) {
+                for ($j = 0; $j < sizeof($votersTokensArray); $j++) {
 
-                        array_push($tokens, $votersTokensArray[$j]["token"]);
-                    }
+                    array_push($tokens, $votersTokensArray[$j]["token"]);
+                }
 
 //                  return ["tokens" => $tokens,
 //                    "winner" => $winnerUser,
 //                    "room" => $arrayList[$i]];
 
-                    NotificationForm::notifyVotersTheWinner($tokens, $winnerUser, $arrayList[$i]);
-                }
+                NotificationForm::notifyVotersTheWinner($tokens, $winnerUser, $arrayList[$i]);
             }
         }
 

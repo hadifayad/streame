@@ -189,45 +189,87 @@ class NotificationForm extends Model {
         $newTokens = [];
         for ($i = 0; $i < sizeof($tokens); $i++) {
             $token = $tokens[$i];
-            if ($winnerUser["token"] == $token) {
-                
-            } else {
-                array_push($newTokens, $token);
+            if ($winnerUser) {
+                if ($winnerUser["token"] == $token) {
+                    continue;
+                }
             }
+            array_push($newTokens, $token);
         }
 
-        $winnerName = $winnerUser["fullname"];
         $challengeTitle = $challenge["title"];
+        $winnerName = "";
+        if ($winnerUser) {
+
+            $userWinnerrrModel = Users::findOne(["id" => $winnerUser["id"]]);
+            if ($userWinnerrrModel) {
+                $userWinnerrrModel->coins = $userWinnerrrModel->coins + $challenge["challenge_coins"];
+                $userTransaction = new UserTransactions();
+                $userTransaction->fromUser = $challenge["r_admin"];
+                $userTransaction->userId = $winnerUser["id"];
+                $userTransaction->coins = $challenge["challenge_coins"];
+                $userTransaction->type = "challenge";
+                $userTransaction->roomId = $challenge["id"];
+                $userTransaction->save();
+                if ($userWinnerrrModel->save()) {
+                    
+                }
+            }
 
 
-        $msgWinner = array
-            (
-            'title' => $challengeTitle,
-            'body' => "",
-            'winnerName' => $winnerName,
-            'isWinner' => "1",
-        );
+            $winnerName = $winnerUser["fullname"];
 
-        $fieldsWinner = array
-            (
-            'registration_ids' => [$winnerUser["token"]],
-            'data' => $msgWinner
-        );
+            $msgWinner = array
+                (
+                'title' => $challengeTitle,
+                'body' => "",
+                'winnerName' => $winnerName,
+                'isWinner' => "1",
+            );
 
-        $headersWinner = array
-            (
-            'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
-            'Content-Type: application/json'
-        );
-        $ch1 = curl_init();
-        curl_setopt($ch1, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-        curl_setopt($ch1, CURLOPT_POST, true);
-        curl_setopt($ch1, CURLOPT_HTTPHEADER, $headersWinner);
-        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch1, CURLOPT_POSTFIELDS, json_encode($fieldsWinner));
-        $result1 = curl_exec($ch1);
-        curl_close($ch1);
+            $fieldsWinner = array
+                (
+                'registration_ids' => [$winnerUser["token"]],
+                'data' => $msgWinner
+            );
+
+            $headersWinner = array
+                (
+                'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
+                'Content-Type: application/json'
+            );
+            $ch1 = curl_init();
+            curl_setopt($ch1, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+            curl_setopt($ch1, CURLOPT_POST, true);
+            curl_setopt($ch1, CURLOPT_HTTPHEADER, $headersWinner);
+            curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch1, CURLOPT_POSTFIELDS, json_encode($fieldsWinner));
+            $result1 = curl_exec($ch1);
+            curl_close($ch1);
+
+            $isWinner = "0"; // there is a winner 0 means sent to not winner user
+        } else {
+
+
+            $userWinnerrrModel = Users::findOne(["id" => $challenge["r_admin"]]);
+            if ($userWinnerrrModel) {
+                $userWinnerrrModel->coins = $userWinnerrrModel->coins + $challenge["challenge_coins"];
+                $userTransaction = new UserTransactions();
+                $userTransaction->fromUser = $challenge["r_admin"];
+                $userTransaction->userId = $challenge["r_admin"];
+                $userTransaction->coins = $challenge["challenge_coins"];
+                $userTransaction->type = "challenge";
+                $userTransaction->roomId = $challenge["id"];
+                $userTransaction->save();
+                if ($userWinnerrrModel->save()) {
+                    
+                }
+            }
+
+
+            $isWinner = "2"; // there is a tie
+        }
 
 
         $msg = array
@@ -236,7 +278,7 @@ class NotificationForm extends Model {
             'challengeTitle' => $challengeTitle,
             'body' => "",
             'winnerName' => $winnerName,
-            'isWinner' => "0",
+            'isWinner' => $isWinner,
         );
 
 
