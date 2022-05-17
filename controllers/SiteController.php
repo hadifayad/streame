@@ -4,11 +4,11 @@ namespace app\controllers;
 
 use app\controllers\api\MobileController;
 use app\models\Comment;
-use app\models\ContactForm;
 use app\models\LoginForm;
 use app\models\Rooms;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -96,6 +96,7 @@ class SiteController extends Controller {
 //            ]
         ]);
         $userId = Yii::$app->user->id;
+        $userId = 20; // for testing
         $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
             (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,
             (SELECT COUNT(id) FROM comment WHERE r_room = rooms.id) as number_of_comments,
@@ -106,7 +107,7 @@ type,
             (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
-             LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = '20'
+             LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = '$userId'
           
              ORDER BY rooms.creation_date DESC;";
         $command = Yii::$app->db->createCommand($sql);
@@ -153,6 +154,7 @@ WHERE roomId =" . $item["id"];
                 $arrayList[$i]["challengesVideos"] = null;
             }
         }
+
 //        return $arrayList;
         return $this->render('index', [
                     'rooms' => $arrayList,
@@ -191,32 +193,6 @@ WHERE roomId =" . $item["id"];
         Yii::$app->user->logout();
 
         return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact() {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-                    'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout() {
-        return $this->render('about');
     }
 
 //    public function actionHello() {
@@ -375,4 +351,70 @@ WHERE roomId =" . $item["id"];
 //            }
 //        }
 //    }
+
+    public function actionPost($postId) {
+
+        $userId = Yii::$app->user->id;
+        $userId = 20; // for testing
+        $sql = "SELECT rooms.*, users.profile_picture,users.fullname,followrooms.r_room as room_id_liked,
+            (SELECT COUNT(id) FROM followrooms WHERE r_room = rooms.id) as number_of_likes,
+            (SELECT COUNT(id) FROM comment WHERE r_room = rooms.id) as number_of_comments,
+            (SELECT c_text FROM comment WHERE r_room = rooms.id ORDER BY id DESC LIMIT 1) as last_comment,
+          
+            
+type,
+            (SELECT GROUP_CONCAT(file_name SEPARATOR ',') FROM post_files WHERE post_id = rooms.id) as files
+             FROM rooms
+             JOIN users ON rooms.r_admin = users.id
+             LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = '$userId'
+             WHERE rooms.id = '$postId'
+             ORDER BY rooms.creation_date DESC;";
+        $command = Yii::$app->db->createCommand($sql);
+        $arrayList = $command->queryAll();
+
+        if (sizeof($arrayList) > 0) {
+
+            $item = $arrayList[0];
+
+            if ($item["category"] == "challenge") {
+                if ($item["accept1"] == 0 && $item["accept2"] == 0 && $item["accept3"] == 0) {
+                    array_splice($arrayList, $i, 1);
+                } else {
+                    $challengeVideos = MobileController::getChallengesVideosMentioned($item["id"], $item["mention"], $item["mention2"], $item["mention3"]);
+                    $arrayList[$i]["challengesVideos"] = $challengeVideos;
+                    if ($challengeVideos[0]["isChallenge"] == "0" && $challengeVideos[1]["isChallenge"] == "0" && $challengeVideos[2]["isChallenge"] == "0") {
+                        array_splice($arrayList, $i, 1);
+                    }
+                }
+            } else if ($item["category"] == "donate") {
+
+                $donations = "SELECT  SUM(user_transactions.coins) AS value_sum 
+FROM user_transactions
+WHERE roomId =" . $item["id"];
+
+                $command1 = Yii::$app->db->createCommand($donations);
+                $itemDonate = $command1->queryOne();
+                $item["number_of_donates"] = $itemDonate["value_sum"];
+            } else {
+                $item["challengesVideos"] = null;
+            }
+
+            $commentsByPost = (new Query)
+                    ->select(Comment::tableName() . ".*,users.fullname,users.profile_picture")
+                    ->from(Comment::tableName())
+                    ->where([
+                        "r_room" => $postId
+                    ])
+                    ->join("join", "users", Comment::tableName() . ".r_user = users.id")
+                    ->orderBy("creation_date Desc")
+                    ->all();
+
+
+            return $this->render('post', [
+                        'room' => $item,
+                        'commentsByPost' => $commentsByPost,
+            ]);
+        }
+    }
+
 }

@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 , 'format' => 'raw'
             ],
-//            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]);
     ?>
@@ -69,7 +69,8 @@ $this->params['breadcrumbs'][] = $this->title;
 //    'id' => '1',
 //    'position' => static::POS_END
 //]);
-//?>
+//
+?>
 
 <script>
 
