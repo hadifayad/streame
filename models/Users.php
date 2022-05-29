@@ -20,7 +20,7 @@ use Yii;
  * @property string $password
  * @property string $username
  * @property int $role
- * @property int $mandoobId
+
  * @property int $is_approved
  * @property int $coins
  * @property string|null $token
@@ -54,7 +54,7 @@ class Users extends \yii\db\ActiveRecord {
         return [
             [['fullname', 'password', 'username'], 'required'],
             [['password'], 'string'],
-            [['role', 'is_approved','role','mandoobId'], 'integer'],
+            [['role', 'is_approved','role'], 'integer'],
             [['fullname', 'link_facebook', 'link_youtube', 'link_instagram', 'link_tiktok'], 'string', 'max' => 200],
             [['username'], 'string', 'max' => 100],
             [['token'], 'string', 'max' => 300],

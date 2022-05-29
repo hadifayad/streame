@@ -52,7 +52,11 @@ $this->title = 'My Yii Application';
 //       echo $roomss[$i]['files'];
                 ?>
 
-                <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">view post</a>
+                <!--<a href="-->
+                    <?php 
+//                Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) 
+                ?>
+                   <!--">view post</a>-->
                 <?php
                 if ($rooms[$i]["type"] == "pictures") {
                     $imagesArray = explode(',', $rooms[$i]["files"]);
@@ -193,7 +197,7 @@ $this->title = 'My Yii Application';
         ?>
 
 
-
+     <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
                             <svg
                                 style="position: absolute;
                                 bottom: 60;
@@ -219,7 +223,7 @@ $this->title = 'My Yii Application';
                             </svg>
 
 
-
+</a>
                         </section>
 
 
@@ -536,7 +540,7 @@ $this->title = 'My Yii Application';
 
 
 
-
+     <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
 
 
                                 <svg
@@ -563,7 +567,7 @@ $this->title = 'My Yii Application';
                                     </g>
                                 </svg>
 
-
+</a>
 
                             </section>
 
@@ -743,6 +747,8 @@ $this->title = 'My Yii Application';
                 <?php
             } else if ($rooms[$i]["category"] == "challenge") {
                 ?>
+                                
+                                     <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
                                     <svg
                                         style="position: absolute;
                                         bottom: 60;
@@ -765,7 +771,7 @@ $this->title = 'My Yii Application';
                                         </g>
                                     </svg>
 
-
+</a>
 
 
 
@@ -798,7 +804,7 @@ $this->title = 'My Yii Application';
 
 
 
-
+     <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
 
                                 <svg
                                     style="position: absolute;
@@ -825,7 +831,7 @@ $this->title = 'My Yii Application';
                                 </svg>
 
 
-
+</a>
                             </div>
 
 
