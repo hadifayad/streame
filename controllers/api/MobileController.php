@@ -930,7 +930,7 @@ FROM users
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
                LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = $userId
-             WHERE  rooms.mention = $userId OR rooms.r_admin = $userId AND rooms.category = 'challenge'ORDER BY rooms.creation_date DESC ";
+             WHERE  rooms.mention = $userId OR rooms.r_admin = $userId OR rooms.mention2 = $userId OR rooms.mention3 = $userId AND rooms.category = 'challenge'ORDER BY rooms.creation_date DESC ";
 
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
