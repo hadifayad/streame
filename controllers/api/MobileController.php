@@ -1293,6 +1293,8 @@ FROM users
         $user->fullname = $fullname;
 //        $user->pubgId = $pubgId;
         $user->password = $password;
+        $hash = Yii::$app->getSecurity()->generatePasswordHash($password);
+        $user->password_hash = $hash;
 //        $user->link = $link;
         $user->role = $role;
 
