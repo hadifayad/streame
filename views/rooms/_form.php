@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 /* @var $form ActiveForm */
 ?>
 
-<div class="rooms-form">
+<div class="rooms-form " style="width: 100px">
     
     <div class="portlet-body">   
 

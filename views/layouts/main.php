@@ -32,7 +32,9 @@ Yii::$app->name = "The Leader World of Talents";
 <header>
   <?php $this->head() ?>
             <div class="container">
-                <div style="background: rgb(127,71,221);
+                <div style="height: 70px
+
+;background: rgb(127,71,221);
      background: linear-gradient(184deg, rgba(127,71,221,1) 45%, rgba(47,15,101,1) 100%, rgba(218,238,225,1) 100%);padding: 10px;border-radius: 10px;margin-top: 30px;margin-bottom: 10px;">
                     <div class="col-lg-12">
 

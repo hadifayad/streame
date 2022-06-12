@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'Droid Arabic Kufi';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../../../../../css/DroidKufi/DroidKufi-Regular.ttf) format('truetype');
+}
+
+body, h1, h2, h3, h4, h5, h6, li {
+    font-family: 'Droid Arabic Kufi' !important;
+}
