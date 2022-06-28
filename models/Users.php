@@ -17,6 +17,8 @@ use Yii;
  * @property int $id
  * @property int $role
  * @property string $fullname
+ * @property string $tags
+ * @property string $bio
  * @property string $password
  * @property string $username
  * @property int $role
@@ -55,7 +57,7 @@ class Users extends \yii\db\ActiveRecord {
             [['fullname', 'password', 'username'], 'required'],
             [['password'], 'string'],
             [['role', 'is_approved','role'], 'integer'],
-            [['fullname', 'link_facebook', 'link_youtube', 'link_instagram', 'link_tiktok'], 'string', 'max' => 200],
+            [['fullname', 'link_facebook', 'link_youtube', 'link_instagram', 'link_tiktok','tags','bio  '], 'string', 'max' => 200],
             [['username'], 'string', 'max' => 100],
             [['token'], 'string', 'max' => 300],
             [['profile_picture'], 'string', 'max' => 2000],
@@ -88,6 +90,8 @@ class Users extends \yii\db\ActiveRecord {
             'profile_picture' => Yii::t('app', 'Profile Picture'),
             'is_approved' => Yii::t('app', 'Is Approved'),
             'coins' => Yii::t('app', 'Coins'),
+            'tags' => Yii::t('app', 'tags'),
+            'bio' => Yii::t('app', 'bio'),
         ];
     }
 
