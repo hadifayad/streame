@@ -11,7 +11,7 @@ body {
 }
 
 .wrap > .container {
-    padding: 70px 15px 20px;
+    padding: 15px 15px 20px;
 }
 
 .footer {
@@ -112,4 +112,16 @@ a.desc:after {
 
 .nav > li > form > button.logout:focus {
     outline: none;
+}
+
+.navbar .navbar-brand {
+    color: #ffffff!important;
+}
+
+.navbar a {
+    color: #ffffff!important;
+}
+
+.navbar .active a {
+    color: black!important;
 }

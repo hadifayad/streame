@@ -4,19 +4,35 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/streame/models/Users.php</file>
-            <file>file:/C:/xampp/htdocs/streame/views/users/index.php</file>
+            <file>file:/C:/xampp/htdocs/streame/config/web.php</file>
             <file>file:/C:/xampp/htdocs/streame/controllers/SiteController.php</file>
             <file>file:/C:/xampp/htdocs/streame/views/site/post.php</file>
             <file>file:/C:/xampp/htdocs/streame/models/UserTransactions.php</file>
-            <file>file:/C:/xampp/htdocs/streame/views/site/index.php</file>
+            <file>file:/C:/xampp/htdocs/streame/models/base/Users1111.php</file>
             <file>file:/C:/xampp/htdocs/streame/controllers/api/Mobile2Controller.php</file>
-            <file>file:/C:/xampp/htdocs/streame/models/UserPurchaseDetails.php</file>
+            <file>file:/C:/xampp/htdocs/streame/models/LoginForm.php</file>
+            <file>file:/C:/xampp/htdocs/streame/vendor/mdmsoft/yii2-admin/migrations/schema-mysql.sql</file>
+            <file>file:/C:/xampp/htdocs/streame/models/base/Users.php</file>
+            <file>file:/C:/xampp/htdocs/streame/controllers/RoomsController.php</file>
             <file>file:/C:/xampp/htdocs/streame/models/Rooms.php</file>
+            <file>file:/C:/xampp/htdocs/streame/vendor/yiisoft/yii2/db/BaseActiveRecord.php</file>
+            <file>file:/C:/xampp/htdocs/streame/vendor/yiisoft/yii2/web/User.php</file>
             <file>file:/C:/xampp/htdocs/streame/controllers/api/MobileController.php</file>
+            <file>file:/C:/xampp/htdocs/streame/composer.json</file>
             <file>file:/C:/xampp/htdocs/streame/commands/HelloController.php</file>
+            <file>file:/C:/xampp/htdocs/streame/models/User.php</file>
             <file>file:/C:/xampp/htdocs/streame/models/NotificationForm.php</file>
-            <file>file:/C:/xampp/htdocs/streame/config/db.php</file>
+            <file>file:/C:/xampp/htdocs/streame/vendor/yiisoft/yii2/base/Security.php</file>
             <file>file:/C:/xampp/htdocs/streame/controllers/UsersController.php</file>
+            <file>file:/C:/xampp/htdocs/streame/models/Users123.php</file>
+            <file>file:/C:/xampp/htdocs/streame/views/users/index.php</file>
+            <file>file:/C:/xampp/htdocs/streame/views/layouts/main.php</file>
+            <file>file:/C:/xampp/htdocs/streame/views/site/index.php</file>
+            <file>file:/C:/xampp/htdocs/streame/views/rooms/view.php</file>
+            <file>file:/C:/xampp/htdocs/streame/models/UserPurchaseDetails.php</file>
+            <file>file:/C:/xampp/htdocs/streame/vendor/yiisoft/yii2/helpers/BaseArrayHelper.php</file>
+            <file>file:/C:/xampp/htdocs/streame/vendor/mdmsoft/yii2-admin/models/User.php</file>
+            <file>file:/C:/xampp/htdocs/streame/config/db.php</file>
         </group>
     </open-files>
 </project-private>
