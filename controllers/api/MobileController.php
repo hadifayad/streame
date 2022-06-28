@@ -1293,6 +1293,8 @@ FROM users
         $user->fullname = $fullname;
 //        $user->pubgId = $pubgId;
         $user->password = $password;
+        $hash = Yii::$app->getSecurity()->generatePasswordHash($password);
+        $user->password_hash = $hash;
 //        $user->link = $link;
         $user->role = $role;
 
@@ -1359,32 +1361,38 @@ FROM users
 //                    'role' => $role
         ]);
 
+
+        if (Yii::$app->security->validatePassword($password, $user->password_hash)) {
 //        return $user;
 
-        if ($user) {
-            $user->token = $token;
-            $user->save();
+            if ($user) {
+                $user->token = $token;
+                $user->save();
 
-            return $user;
-        } else
-            return $user->errors;
+                return $user;
+            } else {
+                return $user->errors;
+            }
+        } else {
+            return "wrong password";
+        }
     }
 
-    public function actionLogin2() {
-        $post = Yii::$app->request->post();
-
-        $password = $post["password"];
-        $username = $post["username"];
-
-        $user = Users::find()
-                ->where(['username' => $username])
-                ->andWhere(['password' => $password])
-                ->one();
-        if ($user)
-            return $user;
-        else
-            return $user->errors;
-    }
+//    public function actionLogin2() {
+//        $post = Yii::$app->request->post();
+//
+//        $password = $post["password"];
+//        $username = $post["username"];
+//
+//        $user = Users::find()
+//                ->where(['username' => $username])
+//                ->andWhere(['password' => $password])
+//                ->one();
+//        if ($user)
+//            return $user;
+//        else
+//            return $user->errors;
+//    }
 
     public function actionAddComment() {
         $post = Yii::$app->request->post();

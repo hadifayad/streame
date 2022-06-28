@@ -22,23 +22,23 @@ class SiteController extends Controller {
      */
     public function behaviors() {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'only' => ['logout'],
+//                'rules' => [
+//                    [
+//                        'actions' => ['logout'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                    ],
+//                ],
+//            ],
+//            'verbs' => [
+//                'class' => VerbFilter::className(),
+//                'actions' => [
+//                    'logout' => ['post'],
+//                ],
+//            ],
         ];
     }
 
@@ -175,7 +175,7 @@ WHERE roomId =" . $item["id"];
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 //            return $this->goBack();
-            return $this->redirect(['price-in-lebanese/index']);
+            return $this->redirect(['site/index']);
         }
 
         $model->password = '';
@@ -190,7 +190,9 @@ WHERE roomId =" . $item["id"];
      * @return Response
      */
     public function actionLogout() {
+//        die   ();
         Yii::$app->user->logout();
+
 
         return $this->goHome();
     }

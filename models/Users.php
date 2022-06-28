@@ -2,7 +2,10 @@
 
 namespace app\models;
 
+use app\models\base\Users as BaseUsers;
 use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "users".
@@ -40,18 +43,23 @@ use Yii;
  * @property StreamerGames[] $streamerGames
  * @property Games[] $games
  */
-class Users extends \yii\db\ActiveRecord {
+class Users extends BaseUsers {
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName() {
-        return 'users';
+    const ROLE_ADMIN = 'Administrator';
+    const ROLE_SUPERVISOR = 'Supervisor';
+
+    public $role;
+
+//    public $password;
+
+    public function behaviors() {
+        return ArrayHelper::merge(
+                        parent::behaviors(), [
+                        # custom behaviors
+                        ]
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules() {
         return [
             [['fullname', 'password', 'username'], 'required'],
@@ -65,10 +73,43 @@ class Users extends \yii\db\ActiveRecord {
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels() {
+        return ArrayHelper::merge(parent::attributeLabels(), [
+                    'role' => Yii::t('user', 'Role'),
+//                    'password' => Yii::t('user', 'Password'),
+                    'actions' => Yii::t('user', 'Actions'),
+                    'branch' => 'Branch',
+        ]);
+    }
+
+    public static function getUser($id) {
+        $model = Users::find()
+                        ->select('user.*,auth_item.name as role')
+                        ->leftJoin('auth_assignment', 'auth_assignment.user_id=user.id')
+                        ->leftJoin('auth_item', 'auth_item.name = auth_assignment.item_name')
+                        ->where(['user.id' => $id])->all();
+        return $model[0];
+    }
+
+    public function signup() {
+        if ($this->validate()) {
+            $this->setPassword($this->password);
+            $this->generateAuthKey();
+            if ($this->save()) {
+                return $this;
+            }
+        } else {
+            VarDumper::dump($this->getErrors(), 3, true);
+            die();
+        }
+        return null;
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null) {
+        return self::findOne(['auth_key' => $token]);
+    }
+
+    public static function getRoles() {
         return [
             'id' => Yii::t('app', 'ID'),
             'fullname' => Yii::t('app', 'Fullname'),
@@ -95,67 +136,74 @@ class Users extends \yii\db\ActiveRecord {
         ];
     }
 
-    /**
-     * Gets query for [[Comments]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getComments() {
-        return $this->hasMany(Comment::className(), ['r_user' => 'id']);
+    public static function isAdminRole() {
+        $model = Users::find()
+                        ->select('user.*,auth_item.name as role')
+                        ->leftJoin('auth_assignment', 'auth_assignment.user_id=user.id')
+                        ->leftJoin('auth_item', 'auth_item.name = auth_assignment.item_name')
+                        ->where(['auth_item.type' => 1,
+                            'user.id' => Yii::$app->user->id])->asArray()->all();
+
+
+        if (isset($model) && isset($model[0]) && $model[0]['role'] == Users::ROLE_ADMIN) {
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * Gets query for [[Follows]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFollows() {
-        return $this->hasMany(Follow::className(), ['r_page' => 'id']);
+//    public static function isBranchRole() {
+//        $model = Users::find()
+//                        ->select('user.*,auth_item.name as role')
+//                        ->leftJoin('auth_assignment', 'auth_assignment.user_id=user.id')
+//                        ->leftJoin('auth_item', 'auth_item.name = auth_assignment.item_name')
+//                        ->where(['auth_item.type' => 1,
+//                            'user.id' => Yii::$app->user->id])->asArray()->all();
+//
+//        if (isset($model) && isset($model[0]) && $model[0]['role'] == Users::ROLE_BRANCH) {
+//            return true;
+//        }
+//        return false;
+//    }
+
+    public static function isSupervisorRole() {
+        $model = Users::find()
+                        ->select('user.*,auth_item.name as role')
+                        ->leftJoin('auth_assignment', 'auth_assignment.user_id=user.id')
+                        ->leftJoin('auth_item', 'auth_item.name = auth_assignment.item_name')
+                        ->where(['auth_item.type' => 1,
+                            'user.id' => Yii::$app->user->id])->asArray()->all();
+
+        if (isset($model) && isset($model[0]) && $model[0]['role'] == Users::ROLE_SUPERVISOR) {
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * Gets query for [[Follows0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFollows0() {
-        return $this->hasMany(Follow::className(), ['r_user' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Followrooms]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFollowrooms() {
-        return $this->hasMany(Followrooms::className(), ['r_user' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Rooms]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRooms() {
-        return $this->hasMany(Rooms::className(), ['r_admin' => 'id']);
-    }
-
-    /**
-     * Gets query for [[StreamerGames]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStreamerGames() {
-        return $this->hasMany(StreamerGames::className(), ['user_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Games]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGames() {
-        return $this->hasMany(Games::className(), ['id' => 'game_id'])->viaTable('streamer_games', ['user_id' => 'id']);
-    }
-
+//    public static function isServiceRole() {
+//        $model = Users::find()
+//                        ->select('user.*,auth_item.name as role')
+//                        ->leftJoin('auth_assignment', 'auth_assignment.user_id=user.id')
+//                        ->leftJoin('auth_item', 'auth_item.name = auth_assignment.item_name')
+//                        ->where(['auth_item.type' => 1,
+//                            'user.id' => Yii::$app->user->id])->asArray()->all();
+//
+//        if (isset($model) && isset($model[0]) && $model[0]['role'] == Users::ROLE_SERVICE_CENTER) {
+//            return true;
+//        }
+//        return false;
+//    }
+//    public static function isAdminRole() {
+//        $model = User::find()
+//                        ->select('user.*,auth_item.name as role')
+//                        ->leftJoin('auth_assignment', 'auth_assignment.user_id=user.id')
+//                        ->leftJoin('auth_item', 'auth_item.name = auth_assignment.item_name')
+//                        ->where(['auth_item.type' => 1,
+//                            'user.id' => Yii::$app->user->id])->asArray()->all();
+//
+//
+//        if (isset($model) && isset($model[0]) && $model[0]['role'] == User::ROLE_ADMIN) {
+//            return true;
+//        }
+//        return false;
+//    }
 }
