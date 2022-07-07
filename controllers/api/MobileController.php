@@ -1704,6 +1704,8 @@ FROM users
         $linkYoutube = $post["linkYoutube"];
         $linkInstagram = $post["linkInstagram"];
         $linkTiktok = $post["linkTiktok"];
+        $tags = $post["tags"];
+        $bio = $post["bio"];
 
         $userGames = $post["userGames"];
         $userGamesDecode = json_decode($userGames);
@@ -1728,6 +1730,8 @@ FROM users
             $model->link_youtube = $linkYoutube;
             $model->link_instagram = $linkInstagram;
             $model->link_tiktok = $linkTiktok;
+            $model->bio = $bio;
+            $model->tags = $tags;
 
             if ($model->save()) {
 
@@ -1981,7 +1985,7 @@ FROM users
         $userId = $post["userId"];
 //        $userId = 13;
         $userProfile = Users::find()
-                ->select("username,fullname,role,link_facebook,link_youtube,link_instagram,link_tiktok,profile_picture")
+                ->select("username,fullname,role,link_facebook,link_youtube,link_instagram,link_tiktok,profile_picture,tags,bio")
                 ->where(['id' => $userId])
                 ->asArray()
                 ->one();
@@ -2023,7 +2027,7 @@ FROM users
         $visitorId = $post["visitorId"];
 //        $userId = 13;
         $userProfile = Users::find()
-                ->select("username,fullname,role,link_facebook,link_youtube,link_instagram,link_tiktok,profile_picture,address,email,phone,gender,coins")
+                ->select("username,fullname,role,link_facebook,link_youtube,link_instagram,link_tiktok,profile_picture,address,email,phone,gender,coins,tags,bio")
                 ->where(['id' => $userId])
                 ->asArray()
                 ->one();
