@@ -53,16 +53,16 @@ $this->title = 'My Yii Application';
                 ?>
 
                 <!--<a href="-->
-                    <?php 
+                <?php
 //                Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) 
                 ?>
-                   <!--">view post</a>-->
+                <!--">view post</a>-->
                 <?php
                 if ($rooms[$i]["type"] == "pictures") {
                     $imagesArray = explode(',', $rooms[$i]["files"]);
                     ?>
 
-                    <div class="col-lg-10 offset-lg-1" style="background: white; padding: 2px;border-radius: 10px; margin-bottom: 10px;" >
+                    <div class="col-lg-6 offset-lg-3" style="background: white; padding: 2px;border-radius: 10px; margin-bottom: 10px;" >
 
                         <div
                             style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;
@@ -95,7 +95,7 @@ $this->title = 'My Yii Application';
                             <div class="splide__track">
                                 <ul class="splide__list">
 
-        <?php for ($j = 0; $j < sizeof($imagesArray); $j++) { ?>
+                                    <?php for ($j = 0; $j < sizeof($imagesArray); $j++) { ?>
                                         <li class="splide__slide">
                                             <img
                                                 style="background: black;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;"
@@ -103,15 +103,15 @@ $this->title = 'My Yii Application';
                                                 src="<?= "http://www.theleader.team/postPictures/" . $imagesArray[$j] ?>"
                                                 />
                                         </li>
-        <?php } ?>
+                                    <?php } ?>
                                 </ul>
                             </div>
 
 
 
-        <?php
-        if ($rooms[$i]["category"] == "donate") {
-            ?>
+                            <?php
+                            if ($rooms[$i]["category"] == "donate") {
+                                ?>
                                 <svg     style="position: absolute;
                                          bottom: 60 ;
                                          left: 30 ;"     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
@@ -141,9 +141,9 @@ $this->title = 'My Yii Application';
                                     </g>
                                 </svg>
 
-            <?php
-        } else if ($rooms[$i]["category"] == "challenge") {
-            ?>
+                                <?php
+                            } else if ($rooms[$i]["category"] == "challenge") {
+                                ?>
 
                                 <svg style="position: absolute;
                                      bottom: 60;
@@ -169,9 +169,9 @@ $this->title = 'My Yii Application';
 
 
 
-            <?php
-        } else {
-            ?>
+                                <?php
+                            } else {
+                                ?>
 
                                 <svg
                                     style="position: absolute;
@@ -192,38 +192,38 @@ $this->title = 'My Yii Application';
                                     </g>
                                     <path id="Union_1" data-name="Union 1" d="M5.555,10.271C2.868,8.591,0,6.575,0,3.907,0,1.342,1.674,0,3.327,0A3.2,3.2,0,0,1,5.866,1.269,3.2,3.2,0,0,1,8.4,0c1.653,0,3.327,1.342,3.327,3.907,0,2.668-2.867,4.684-5.555,6.363a.587.587,0,0,1-.621,0Z" transform="translate(24.018 21.239)" fill="#fff"/>
                                 </svg>
-            <?php
-        }
-        ?>
+                                <?php
+                            }
+                            ?>
 
 
-     <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
-                            <svg
-                                style="position: absolute;
-                                bottom: 60;
-                                right: 30 ;"
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
-                                <defs>
-                                    <filter id="Ellipse_20" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
-                                        <feOffset dy="3" input="SourceAlpha"/>
-                                        <feGaussianBlur stdDeviation="5" result="blur"/>
-                                        <feFlood flood-opacity="0.212"/>
-                                        <feComposite operator="in" in2="blur"/>
-                                        <feComposite in="SourceGraphic"/>
-                                    </filter>
-                                </defs>
-                                <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_20)">
-                                    <circle id="Ellipse_20-2" data-name="Ellipse 20" cx="14.5" cy="14.5" r="14.5" transform="translate(15 12)" fill="#fff"/>
-                                </g>
-                                <g id="noun_chat_1079099" transform="translate(22.655 19.191)">
-                                    <g id="Group_40" data-name="Group 40">
-                                        <path id="Path_3" data-name="Path 3" d="M15.374,11A6.779,6.779,0,0,0,8.4,17.538a6.779,6.779,0,0,0,6.974,6.538,7.331,7.331,0,0,0,3.319-.788l2.23,1.207a.752.752,0,0,0,.319.084.723.723,0,0,0,.4-.134.682.682,0,0,0,.251-.671l-.6-2.783a6.246,6.246,0,0,0,1.056-3.454A6.779,6.779,0,0,0,15.374,11Zm4.661,9.456a.679.679,0,0,0-.117.536l.352,1.643L19,21.948a.652.652,0,0,0-.654.017,5.976,5.976,0,0,1-2.967.771,5.437,5.437,0,0,1-5.633-5.2,5.437,5.437,0,0,1,5.633-5.2,5.437,5.437,0,0,1,5.633,5.2A4.917,4.917,0,0,1,20.035,20.456Z" transform="translate(-8.4 -11)" fill="#181818"/>
+                            <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
+                                <svg
+                                    style="position: absolute;
+                                    bottom: 60;
+                                    right: 30 ;"
+                                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                    <defs>
+                                        <filter id="Ellipse_20" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
+                                            <feOffset dy="3" input="SourceAlpha"/>
+                                            <feGaussianBlur stdDeviation="5" result="blur"/>
+                                            <feFlood flood-opacity="0.212"/>
+                                            <feComposite operator="in" in2="blur"/>
+                                            <feComposite in="SourceGraphic"/>
+                                        </filter>
+                                    </defs>
+                                    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_20)">
+                                        <circle id="Ellipse_20-2" data-name="Ellipse 20" cx="14.5" cy="14.5" r="14.5" transform="translate(15 12)" fill="#fff"/>
                                     </g>
-                                </g>
-                            </svg>
+                                    <g id="noun_chat_1079099" transform="translate(22.655 19.191)">
+                                        <g id="Group_40" data-name="Group 40">
+                                            <path id="Path_3" data-name="Path 3" d="M15.374,11A6.779,6.779,0,0,0,8.4,17.538a6.779,6.779,0,0,0,6.974,6.538,7.331,7.331,0,0,0,3.319-.788l2.23,1.207a.752.752,0,0,0,.319.084.723.723,0,0,0,.4-.134.682.682,0,0,0,.251-.671l-.6-2.783a6.246,6.246,0,0,0,1.056-3.454A6.779,6.779,0,0,0,15.374,11Zm4.661,9.456a.679.679,0,0,0-.117.536l.352,1.643L19,21.948a.652.652,0,0,0-.654.017,5.976,5.976,0,0,1-2.967.771,5.437,5.437,0,0,1-5.633-5.2,5.437,5.437,0,0,1,5.633-5.2,5.437,5.437,0,0,1,5.633,5.2A4.917,4.917,0,0,1,20.035,20.456Z" transform="translate(-8.4 -11)" fill="#181818"/>
+                                        </g>
+                                    </g>
+                                </svg>
 
 
-</a>
+                            </a>
                         </section>
 
 
@@ -235,37 +235,37 @@ $this->title = 'My Yii Application';
                                 style="font-weight: bold;font-family:'Myriad Pro Regular';"><?= $rooms[$i]['title'] ?></label>
                             <br/>
                             <label style="font-family:'Myriad Pro Regular';"><?= $rooms[$i]['c_text'] ?></label>
-        <?php if ($rooms[$i]['last_comment'] != null) {
-            ?>
+                            <?php if ($rooms[$i]['last_comment'] != null) {
+                                ?>
                                 <br/>
                                 <label style="font-family:'Myriad Pro Regular';"><?= $rooms[$i]['last_comment'] ?></label>
-            <?php
-        }
-        ?>
+                                <?php
+                            }
+                            ?>
                         </div>
 
 
                     </div>
 
 
-        <?php
-        JSRegister::begin([
-            'id' => $i,
-            'position' => View::POS_READY
-        ])
-        ?>
+                    <?php
+                    JSRegister::begin([
+                        'id' => $i,
+                        'position' => View::POS_READY
+                    ])
+                    ?>
                     <script>
                         //            new Splide('.splide').mount();
                         new Splide('#splideId<?= $i ?>').mount();
                     </script>
-        <?php JSRegister::end() ?>
+                    <?php JSRegister::end() ?>
 
                     <?php
                 }
                 if ($rooms[$i]["type"] == "video") {
                     ?>
 
-                    <div class="col-lg-10 offset-lg-1" style="background: white; padding: 2px;border-radius: 10px; margin-bottom: 10px;">
+                    <div class="col-lg-6 offset-lg-3" style="background: white; padding: 2px;border-radius: 10px; margin-bottom: 10px;">
 
                         <div
                             style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;
@@ -307,9 +307,9 @@ $this->title = 'My Yii Application';
 
 
 
-        <?php
-        if ($rooms[$i]["category"] == "donate") {
-            ?>
+                            <?php
+                            if ($rooms[$i]["category"] == "donate") {
+                                ?>
                                 <svg
                                     style="position: absolute;
                                     bottom: 60 ;
@@ -338,9 +338,9 @@ $this->title = 'My Yii Application';
                                     </g>
                                 </svg>
 
-            <?php
-        } else if ($rooms[$i]["category"] == "challenge") {
-            ?>
+                                <?php
+                            } else if ($rooms[$i]["category"] == "challenge") {
+                                ?>
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                     <defs>
                                         <filter id="Path_140" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
@@ -363,9 +363,9 @@ $this->title = 'My Yii Application';
 
 
 
-            <?php
-        } else {
-            ?>
+                                <?php
+                            } else {
+                                ?>
 
                                 <svg
                                     style="position: absolute;
@@ -386,9 +386,9 @@ $this->title = 'My Yii Application';
                                     </g>
                                     <path id="Union_1" data-name="Union 1" d="M5.555,10.271C2.868,8.591,0,6.575,0,3.907,0,1.342,1.674,0,3.327,0A3.2,3.2,0,0,1,5.866,1.269,3.2,3.2,0,0,1,8.4,0c1.653,0,3.327,1.342,3.327,3.907,0,2.668-2.867,4.684-5.555,6.363a.587.587,0,0,1-.621,0Z" transform="translate(24.018 21.239)" fill="#fff"/>
                                 </svg>
-            <?php
-        }
-        ?>
+                                <?php
+                            }
+                            ?>
 
 
 
@@ -430,20 +430,20 @@ $this->title = 'My Yii Application';
                                 style="font-weight: bold;font-family:'Myriad Pro Regular';"><?= $rooms[$i]['title'] ?></label>
                             <br/>
                             <label style="font-family:'Myriad Pro Regular';"><?= $rooms[$i]['c_text'] ?></label>
-        <?php if ($rooms[$i]['last_comment'] != null) {
-            ?>
+                            <?php if ($rooms[$i]['last_comment'] != null) {
+                                ?>
                                 <br/>
                                 <label style="font-family:'Myriad Pro Regular';"><?= $rooms[$i]['last_comment'] ?></label>
-            <?php
-        }
-        ?>
+                                <?php
+                            }
+                            ?>
 
                         </div>
 
 
                     </div>
-    <?php }
-    ?>
+                <?php }
+                ?>
 
                 <?php
                 if ($rooms[$i]["type"] == "text") {
@@ -462,7 +462,7 @@ $this->title = 'My Yii Application';
                             }
                         }
                         ?>
-                        <div class="col-lg-10 offset-lg-1" style="background: white; padding: 2px;border-radius: 10px; margin-bottom: 10px;">
+                        <div class="col-lg-6 offset-lg-3" style="background: white; padding: 2px;border-radius: 10px; margin-bottom: 10px;">
 
                             <div
                                 style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;
@@ -495,7 +495,7 @@ $this->title = 'My Yii Application';
                                 <div class="splide__track">
                                     <ul class="splide__list">
 
-            <?php for ($j = 0; $j < sizeof($videosArray); $j++) { ?>
+                                        <?php for ($j = 0; $j < sizeof($videosArray); $j++) { ?>
                                             <li class="splide__slide">
 
                                                 <video   style="background: black;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;" controls>
@@ -504,7 +504,7 @@ $this->title = 'My Yii Application';
                                                         Your browser does not support the video tag.
                                                 </video>
                                             </li>
-            <?php } ?>
+                                        <?php } ?>
                                     </ul>
                                 </div>
 
@@ -540,34 +540,34 @@ $this->title = 'My Yii Application';
 
 
 
-     <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
+                                <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
 
 
-                                <svg
-                                    style="position: absolute;
-                                    bottom: 60;
-                                    right: 30;"
-                                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
-                                    <defs>
-                                        <filter id="Ellipse_20" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
-                                            <feOffset dy="3" input="SourceAlpha"/>
-                                            <feGaussianBlur stdDeviation="5" result="blur"/>
-                                            <feFlood flood-opacity="0.212"/>
-                                            <feComposite operator="in" in2="blur"/>
-                                            <feComposite in="SourceGraphic"/>
-                                        </filter>
-                                    </defs>
-                                    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_20)">
-                                        <circle id="Ellipse_20-2" data-name="Ellipse 20" cx="14.5" cy="14.5" r="14.5" transform="translate(15 12)" fill="#fff"/>
-                                    </g>
-                                    <g id="noun_chat_1079099" transform="translate(22.655 19.191)">
-                                        <g id="Group_40" data-name="Group 40">
-                                            <path id="Path_3" data-name="Path 3" d="M15.374,11A6.779,6.779,0,0,0,8.4,17.538a6.779,6.779,0,0,0,6.974,6.538,7.331,7.331,0,0,0,3.319-.788l2.23,1.207a.752.752,0,0,0,.319.084.723.723,0,0,0,.4-.134.682.682,0,0,0,.251-.671l-.6-2.783a6.246,6.246,0,0,0,1.056-3.454A6.779,6.779,0,0,0,15.374,11Zm4.661,9.456a.679.679,0,0,0-.117.536l.352,1.643L19,21.948a.652.652,0,0,0-.654.017,5.976,5.976,0,0,1-2.967.771,5.437,5.437,0,0,1-5.633-5.2,5.437,5.437,0,0,1,5.633-5.2,5.437,5.437,0,0,1,5.633,5.2A4.917,4.917,0,0,1,20.035,20.456Z" transform="translate(-8.4 -11)" fill="#181818"/>
+                                    <svg
+                                        style="position: absolute;
+                                        bottom: 60;
+                                        right: 30;"
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                        <defs>
+                                            <filter id="Ellipse_20" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
+                                                <feOffset dy="3" input="SourceAlpha"/>
+                                                <feGaussianBlur stdDeviation="5" result="blur"/>
+                                                <feFlood flood-opacity="0.212"/>
+                                                <feComposite operator="in" in2="blur"/>
+                                                <feComposite in="SourceGraphic"/>
+                                            </filter>
+                                        </defs>
+                                        <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_20)">
+                                            <circle id="Ellipse_20-2" data-name="Ellipse 20" cx="14.5" cy="14.5" r="14.5" transform="translate(15 12)" fill="#fff"/>
                                         </g>
-                                    </g>
-                                </svg>
+                                        <g id="noun_chat_1079099" transform="translate(22.655 19.191)">
+                                            <g id="Group_40" data-name="Group 40">
+                                                <path id="Path_3" data-name="Path 3" d="M15.374,11A6.779,6.779,0,0,0,8.4,17.538a6.779,6.779,0,0,0,6.974,6.538,7.331,7.331,0,0,0,3.319-.788l2.23,1.207a.752.752,0,0,0,.319.084.723.723,0,0,0,.4-.134.682.682,0,0,0,.251-.671l-.6-2.783a6.246,6.246,0,0,0,1.056-3.454A6.779,6.779,0,0,0,15.374,11Zm4.661,9.456a.679.679,0,0,0-.117.536l.352,1.643L19,21.948a.652.652,0,0,0-.654.017,5.976,5.976,0,0,1-2.967.771,5.437,5.437,0,0,1-5.633-5.2,5.437,5.437,0,0,1,5.633-5.2,5.437,5.437,0,0,1,5.633,5.2A4.917,4.917,0,0,1,20.035,20.456Z" transform="translate(-8.4 -11)" fill="#181818"/>
+                                            </g>
+                                        </g>
+                                    </svg>
 
-</a>
+                                </a>
 
                             </section>
 
@@ -581,79 +581,79 @@ $this->title = 'My Yii Application';
                                 <br/>
                                 <label style="font-family:'Myriad Pro Regular';"><?= $rooms[$i]['c_text'] ?></label>
 
-            <?php if ($rooms[$i]['last_comment'] != null) {
-                ?>
+                                <?php if ($rooms[$i]['last_comment'] != null) {
+                                    ?>
                                     <br/>
                                     <label style="font-family:'Myriad Pro Regular';"><?= $rooms[$i]['last_comment'] ?></label>
-                <?php
-            }
-            ?>
+                                    <?php
+                                }
+                                ?>
                             </div>
 
 
                         </div>
 
 
-            <?php
-            JSRegister::begin([
-                'id' => $i,
-                'position' => View::POS_READY
-            ])
-            ?>
+                        <?php
+                        JSRegister::begin([
+                            'id' => $i,
+                            'position' => View::POS_READY
+                        ])
+                        ?>
                         <script>
                             //            new Splide('.splide').mount();
                             new Splide('#splideId<?= $i ?>').mount();
                         </script>
-            <?php JSRegister::end() ?>
+                        <?php JSRegister::end() ?>
 
 
 
 
-            <?php
-        } else {
+                        <?php
+                    } else {
 
-            $color = $rooms[$i]["color1"];
+                        $color = $rooms[$i]["color1"];
 
-            if ($color[0] == '#') {
-                $color = substr($color, 1);
-            }
+                        if ($color[0] == '#') {
+                            $color = substr($color, 1);
+                        }
 
-            //Check if color has 6 or 3 characters and get values
-            if (strlen($color) == 6) {
-                $hex = array($color[0] . $color[1], $color[2] . $color[3], $color[4] . $color[5]);
-            } elseif (strlen($color) == 3) {
-                $hex = array($color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2]);
-            }
+                        //Check if color has 6 or 3 characters and get values
+                        if (strlen($color) == 6) {
+                            $hex = array($color[0] . $color[1], $color[2] . $color[3], $color[4] . $color[5]);
+                        } elseif (strlen($color) == 3) {
+                            $hex = array($color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2]);
+                        }
 
-            //Convert hexadec to rgb
-            $rgb = array_map('hexdec', $hex);
+                        //Convert hexadec to rgb
+                        $rgb = array_map('hexdec', $hex);
 
-            //Check if opacity is set(rgba or rgb)
+                        //Check if opacity is set(rgba or rgb)
 
-            $output = 'rgb(' . implode(",", $rgb) . ')';
+                        $output = 'rgb(' . implode(",", $rgb) . ')';
 
-            $color2 = $rooms[$i]["color2"];
+                        $color2 = $rooms[$i]["color2"];
 
-            if ($color2[0] == '#') {
-                $color2 = substr($color2, 1);
-            }
+                        if ($color2[0] == '#') {
+                            $color2 = substr($color2, 1);
+                        }
 
-            //Check if color has 6 or 3 characters and get values
-            if (strlen($color2) == 6) {
-                $hex2 = array($color2[0] . $color2[1], $color2[2] . $color2[3], $color2[4] . $color2[5]);
-            } elseif (strlen($color) == 3) {
-                $hex2 = array($color2[0] . $color2[0], $color2[1] . $color2[1], $color2[2] . $color2[2]);
-            }
+                        //Check if color has 6 or 3 characters and get values
+                        if (strlen($color2) == 6) {
+                            $hex2 = array($color2[0] . $color2[1], $color2[2] . $color2[3], $color2[4] . $color2[5]);
+                        } elseif (strlen($color) == 3) {
+                            $hex2 = array($color2[0] . $color2[0], $color2[1] . $color2[1], $color2[2] . $color2[2]);
+                        }
 
-            //Convert hexadec to rgb
-            $rgb2 = array_map('hexdec', $hex2);
+                        //Convert hexadec to rgb
+                        $rgb2 = array_map('hexdec', $hex2);
 
-            //Check if opacity is set(rgba or rgb)
+                        //Check if opacity is set(rgba or rgb)
 
-            $output2 = 'rgb(' . implode(",", $rgb2) . ')';
-            ?>
+                        $output2 = 'rgb(' . implode(",", $rgb2) . ')';
+                        ?>
 
-                        <div class="col-lg-10 offset-lg-1" style="background: white; padding: 2px;border-radius: 10px; margin-bottom: 10px;">
+                        <div class="col-lg-6 offset-lg-3" style="background: white; padding: 2px;border-radius: 10px; margin-bottom: 10px;">
 
                             <div
                                 style="margin-top: 10px;margin-bottom: 10px; margin-left: 10px;
@@ -682,9 +682,9 @@ $this->title = 'My Yii Application';
 
                             </div>
 
-            <?php
-            /* Convert hexdec color string to rgb(a) string */
-            ?>
+                            <?php
+                            /* Convert hexdec color string to rgb(a) string */
+                            ?>
 
                             <div>
 
@@ -709,9 +709,9 @@ $this->title = 'My Yii Application';
 
 
 
-            <?php
-            if ($rooms[$i]["category"] == "donate") {
-                ?>
+                                <?php
+                                if ($rooms[$i]["category"] == "donate") {
+                                    ?>
 
 
                                     <svg     style="position: relative;
@@ -744,40 +744,40 @@ $this->title = 'My Yii Application';
                                     </svg>
 
 
-                <?php
-            } else if ($rooms[$i]["category"] == "challenge") {
-                ?>
-                                
-                                     <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
-                                    <svg
-                                        style="position: absolute;
-                                        bottom: 60;
-                                        right: 30;"
-                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
-                                        <defs>
-                                            <filter id="Path_140" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
-                                                <feOffset dy="3" input="SourceAlpha"/>
-                                                <feGaussianBlur stdDeviation="5" result="blur"/>
-                                                <feFlood flood-opacity="0.212"/>
-                                                <feComposite operator="in" in2="blur"/>
-                                                <feComposite in="SourceGraphic"/>
-                                            </filter>
-                                        </defs>
-                                        <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_140)">
-                                            <path id="Path_140-2" data-name="Path 140" d="M14.5,0A14.5,14.5,0,1,1,0,14.5,14.5,14.5,0,0,1,14.5,0Z" transform="translate(15 12)" fill="#f15a24"/>
-                                        </g>
-                                        <g id="Group_161" data-name="Group 161" transform="translate(20.99 16.99)">
-                                            <path id="Path_134" data-name="Path 134" d="M133.756,273.412c-.063-.141-.127-.264-.173-.393a1.684,1.684,0,0,1,.124-1.475c.5-.846,1-1.686,1.512-2.525a1.755,1.755,0,0,1,.921-.735q2.154-.805,4.306-1.615l.059-.024a.97.97,0,0,1-.125-.283.42.42,0,0,1,.082-.272c.456-.583.921-1.159,1.385-1.737a.352.352,0,0,1,.462-.115l4.911,2.1a.369.369,0,0,1,.241.374c0,.539,0,1.078,0,1.616a1.062,1.062,0,0,1-1.527,1l-.05-.021c-.056.134-.11.267-.167.4a24.332,24.332,0,0,1-2.127,3.951,6.778,6.778,0,0,1-1.738,1.761.155.155,0,0,0-.064.1q0,1.616,0,3.233,0,.8,0,1.606c0,.146,0,.146.141.146h.893a.356.356,0,1,1,0,.708H130.832a.361.361,0,0,1-.387-.292.351.351,0,0,1,.232-.4.519.519,0,0,1,.157-.02c.3,0,.6-.006.893,0,.108,0,.136-.026.136-.135q-.005-3.265,0-6.53a.694.694,0,0,1,.015-.179.357.357,0,0,1,.375-.253h1.5Zm2.293,0a1.29,1.29,0,0,0-.1-.208c-.143-.2-.288-.4-.441-.595a.37.37,0,0,1-.086-.374.347.347,0,0,1,.3-.238.937.937,0,0,0,.234-.065,6.185,6.185,0,0,0,1.342-.79.561.561,0,0,0,.26-.359.294.294,0,0,1,.119-.155.34.34,0,0,1,.44.035,3.263,3.263,0,0,0,1.844.621.366.366,0,0,1,.266.652,7.469,7.469,0,0,0-1.168,1.6,1.55,1.55,0,0,0-.113.317.356.356,0,0,1-.252.261,1.2,1.2,0,0,0-.263.106c-.689.415-1.377.829-2.06,1.253a.942.942,0,1,0,.993,1.6q.862-.515,1.722-1.033a4.337,4.337,0,0,1,1.25-.615.193.193,0,0,0,.029-.013,5.825,5.825,0,0,0,2.658-2.193,22.969,22.969,0,0,0,2.094-3.932c.042-.1.08-.2.121-.3l-.059-.032q-1.848-.924-3.7-1.846a.22.22,0,0,0-.157,0q-2.482.926-4.963,1.859a1.051,1.051,0,0,0-.549.449q-.742,1.233-1.48,2.469a.869.869,0,0,0-.123.714,7.507,7.507,0,0,0,.332.778.087.087,0,0,0,.066.038C135.08,273.412,135.551,273.412,136.048,273.412Zm5.025,2.473c-.042.018-.07.032-.1.043-.241.093-.482.184-.723.278a1.4,1.4,0,0,0-.212.094q-1.149.686-2.3,1.377a1.655,1.655,0,0,1-1.764-2.8c.358-.229.72-.452,1.08-.678.025-.016.048-.034.088-.064h-4.572V280.5h8.5Zm.207-9.686c.033.019.053.033.074.044l4.852,2.426a.356.356,0,0,0,.544-.341c0-.436,0-.872,0-1.307a.136.136,0,0,0-.1-.147q-1.28-.544-2.557-1.095l-1.757-.752c-.044-.019-.083-.049-.129.009C141.906,265.421,141.6,265.8,141.28,266.2Zm-4.456,7.215h1.511a7.411,7.411,0,0,1,.945-1.482c-.041-.012-.067-.022-.094-.028a4.069,4.069,0,0,1-.967-.348c-.069-.035-.144-.1-.207-.094s-.114.1-.171.149a5.375,5.375,0,0,1-1.358.862l-.078.038Z" transform="translate(-130.44 -264.196)" fill="#fff"/>
-                                        </g>
-                                    </svg>
+                                    <?php
+                                } else if ($rooms[$i]["category"] == "challenge") {
+                                    ?>
 
-</a>
+                                    <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
+                                        <svg
+                                            style="position: absolute;
+                                            bottom: 60;
+                                            right: 30;"
+                                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                            <defs>
+                                                <filter id="Path_140" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
+                                                    <feOffset dy="3" input="SourceAlpha"/>
+                                                    <feGaussianBlur stdDeviation="5" result="blur"/>
+                                                    <feFlood flood-opacity="0.212"/>
+                                                    <feComposite operator="in" in2="blur"/>
+                                                    <feComposite in="SourceGraphic"/>
+                                                </filter>
+                                            </defs>
+                                            <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_140)">
+                                                <path id="Path_140-2" data-name="Path 140" d="M14.5,0A14.5,14.5,0,1,1,0,14.5,14.5,14.5,0,0,1,14.5,0Z" transform="translate(15 12)" fill="#f15a24"/>
+                                            </g>
+                                            <g id="Group_161" data-name="Group 161" transform="translate(20.99 16.99)">
+                                                <path id="Path_134" data-name="Path 134" d="M133.756,273.412c-.063-.141-.127-.264-.173-.393a1.684,1.684,0,0,1,.124-1.475c.5-.846,1-1.686,1.512-2.525a1.755,1.755,0,0,1,.921-.735q2.154-.805,4.306-1.615l.059-.024a.97.97,0,0,1-.125-.283.42.42,0,0,1,.082-.272c.456-.583.921-1.159,1.385-1.737a.352.352,0,0,1,.462-.115l4.911,2.1a.369.369,0,0,1,.241.374c0,.539,0,1.078,0,1.616a1.062,1.062,0,0,1-1.527,1l-.05-.021c-.056.134-.11.267-.167.4a24.332,24.332,0,0,1-2.127,3.951,6.778,6.778,0,0,1-1.738,1.761.155.155,0,0,0-.064.1q0,1.616,0,3.233,0,.8,0,1.606c0,.146,0,.146.141.146h.893a.356.356,0,1,1,0,.708H130.832a.361.361,0,0,1-.387-.292.351.351,0,0,1,.232-.4.519.519,0,0,1,.157-.02c.3,0,.6-.006.893,0,.108,0,.136-.026.136-.135q-.005-3.265,0-6.53a.694.694,0,0,1,.015-.179.357.357,0,0,1,.375-.253h1.5Zm2.293,0a1.29,1.29,0,0,0-.1-.208c-.143-.2-.288-.4-.441-.595a.37.37,0,0,1-.086-.374.347.347,0,0,1,.3-.238.937.937,0,0,0,.234-.065,6.185,6.185,0,0,0,1.342-.79.561.561,0,0,0,.26-.359.294.294,0,0,1,.119-.155.34.34,0,0,1,.44.035,3.263,3.263,0,0,0,1.844.621.366.366,0,0,1,.266.652,7.469,7.469,0,0,0-1.168,1.6,1.55,1.55,0,0,0-.113.317.356.356,0,0,1-.252.261,1.2,1.2,0,0,0-.263.106c-.689.415-1.377.829-2.06,1.253a.942.942,0,1,0,.993,1.6q.862-.515,1.722-1.033a4.337,4.337,0,0,1,1.25-.615.193.193,0,0,0,.029-.013,5.825,5.825,0,0,0,2.658-2.193,22.969,22.969,0,0,0,2.094-3.932c.042-.1.08-.2.121-.3l-.059-.032q-1.848-.924-3.7-1.846a.22.22,0,0,0-.157,0q-2.482.926-4.963,1.859a1.051,1.051,0,0,0-.549.449q-.742,1.233-1.48,2.469a.869.869,0,0,0-.123.714,7.507,7.507,0,0,0,.332.778.087.087,0,0,0,.066.038C135.08,273.412,135.551,273.412,136.048,273.412Zm5.025,2.473c-.042.018-.07.032-.1.043-.241.093-.482.184-.723.278a1.4,1.4,0,0,0-.212.094q-1.149.686-2.3,1.377a1.655,1.655,0,0,1-1.764-2.8c.358-.229.72-.452,1.08-.678.025-.016.048-.034.088-.064h-4.572V280.5h8.5Zm.207-9.686c.033.019.053.033.074.044l4.852,2.426a.356.356,0,0,0,.544-.341c0-.436,0-.872,0-1.307a.136.136,0,0,0-.1-.147q-1.28-.544-2.557-1.095l-1.757-.752c-.044-.019-.083-.049-.129.009C141.906,265.421,141.6,265.8,141.28,266.2Zm-4.456,7.215h1.511a7.411,7.411,0,0,1,.945-1.482c-.041-.012-.067-.022-.094-.028a4.069,4.069,0,0,1-.967-.348c-.069-.035-.144-.1-.207-.094s-.114.1-.171.149a5.375,5.375,0,0,1-1.358.862l-.078.038Z" transform="translate(-130.44 -264.196)" fill="#fff"/>
+                                            </g>
+                                        </svg>
+
+                                    </a>
 
 
 
-                <?php
-            } else {
-                ?>
+                                    <?php
+                                } else {
+                                    ?>
 
                                     <svg
                                         style="position: absolute;
@@ -798,40 +798,40 @@ $this->title = 'My Yii Application';
                                         </g>
                                         <path id="Union_1" data-name="Union 1" d="M5.555,10.271C2.868,8.591,0,6.575,0,3.907,0,1.342,1.674,0,3.327,0A3.2,3.2,0,0,1,5.866,1.269,3.2,3.2,0,0,1,8.4,0c1.653,0,3.327,1.342,3.327,3.907,0,2.668-2.867,4.684-5.555,6.363a.587.587,0,0,1-.621,0Z" transform="translate(24.018 21.239)" fill="#fff"/>
                                     </svg>
-                <?php
-            }
-            ?>
+                                    <?php
+                                }
+                                ?>
 
 
 
-     <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
+                                <a href="<?= Url::to(['/site/post', 'postId' => $rooms[$i]["id"]]) ?>">
 
-                                <svg
-                                    style="position: absolute;
-                                    bottom: 141px;
-                                    right: 30;"
-                                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
-                                    <defs>
-                                        <filter id="Ellipse_20" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
-                                            <feOffset dy="3" input="SourceAlpha"/>
-                                            <feGaussianBlur stdDeviation="5" result="blur"/>
-                                            <feFlood flood-opacity="0.212"/>
-                                            <feComposite operator="in" in2="blur"/>
-                                            <feComposite in="SourceGraphic"/>
-                                        </filter>
-                                    </defs>
-                                    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_20)">
-                                        <circle id="Ellipse_20-2" data-name="Ellipse 20" cx="14.5" cy="14.5" r="14.5" transform="translate(15 12)" fill="#fff"/>
-                                    </g>
-                                    <g id="noun_chat_1079099" transform="translate(22.655 19.191)">
-                                        <g id="Group_40" data-name="Group 40">
-                                            <path id="Path_3" data-name="Path 3" d="M15.374,11A6.779,6.779,0,0,0,8.4,17.538a6.779,6.779,0,0,0,6.974,6.538,7.331,7.331,0,0,0,3.319-.788l2.23,1.207a.752.752,0,0,0,.319.084.723.723,0,0,0,.4-.134.682.682,0,0,0,.251-.671l-.6-2.783a6.246,6.246,0,0,0,1.056-3.454A6.779,6.779,0,0,0,15.374,11Zm4.661,9.456a.679.679,0,0,0-.117.536l.352,1.643L19,21.948a.652.652,0,0,0-.654.017,5.976,5.976,0,0,1-2.967.771,5.437,5.437,0,0,1-5.633-5.2,5.437,5.437,0,0,1,5.633-5.2,5.437,5.437,0,0,1,5.633,5.2A4.917,4.917,0,0,1,20.035,20.456Z" transform="translate(-8.4 -11)" fill="#181818"/>
+                                    <svg
+                                        style="position: absolute;
+                                        bottom: 141px;
+                                        right: 30;"
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                        <defs>
+                                            <filter id="Ellipse_20" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
+                                                <feOffset dy="3" input="SourceAlpha"/>
+                                                <feGaussianBlur stdDeviation="5" result="blur"/>
+                                                <feFlood flood-opacity="0.212"/>
+                                                <feComposite operator="in" in2="blur"/>
+                                                <feComposite in="SourceGraphic"/>
+                                            </filter>
+                                        </defs>
+                                        <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_20)">
+                                            <circle id="Ellipse_20-2" data-name="Ellipse 20" cx="14.5" cy="14.5" r="14.5" transform="translate(15 12)" fill="#fff"/>
                                         </g>
-                                    </g>
-                                </svg>
+                                        <g id="noun_chat_1079099" transform="translate(22.655 19.191)">
+                                            <g id="Group_40" data-name="Group 40">
+                                                <path id="Path_3" data-name="Path 3" d="M15.374,11A6.779,6.779,0,0,0,8.4,17.538a6.779,6.779,0,0,0,6.974,6.538,7.331,7.331,0,0,0,3.319-.788l2.23,1.207a.752.752,0,0,0,.319.084.723.723,0,0,0,.4-.134.682.682,0,0,0,.251-.671l-.6-2.783a6.246,6.246,0,0,0,1.056-3.454A6.779,6.779,0,0,0,15.374,11Zm4.661,9.456a.679.679,0,0,0-.117.536l.352,1.643L19,21.948a.652.652,0,0,0-.654.017,5.976,5.976,0,0,1-2.967.771,5.437,5.437,0,0,1-5.633-5.2,5.437,5.437,0,0,1,5.633-5.2,5.437,5.437,0,0,1,5.633,5.2A4.917,4.917,0,0,1,20.035,20.456Z" transform="translate(-8.4 -11)" fill="#181818"/>
+                                            </g>
+                                        </g>
+                                    </svg>
 
 
-</a>
+                                </a>
                             </div>
 
 
@@ -843,24 +843,24 @@ $this->title = 'My Yii Application';
                                 <label
                                     style="font-weight: bold;"><?= $rooms[$i]['title'] ?></label>
 
-            <?php if ($rooms[$i]['last_comment'] != null) {
-                ?>
+                                <?php if ($rooms[$i]['last_comment'] != null) {
+                                    ?>
                                     <br/>
                                     <label style="font-family:'Myriad Pro Regular';"><?= $rooms[$i]['last_comment'] ?></label>
-                <?php
-            }
-            ?>
+                                    <?php
+                                }
+                                ?>
 
 
                             </div>
 
 
                         </div>
-            <?php
-        }
-    }
-}
-?>
+                        <?php
+                    }
+                }
+            }
+            ?>
 
 
 
