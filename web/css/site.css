@@ -121,7 +121,16 @@ a.desc:after {
 .navbar a {
     color: #ffffff!important;
 }
-
-.navbar .active a {
+.navbar a:hover{
     color: black!important;
+    background-color: transparent!important;
+    background: transparent!important;
 }
+
+.btn.btn-link.logout{
+    color: #ffffff!important;
+}
+
+/*.navbar .active a {
+    color: black!important;
+}*/
