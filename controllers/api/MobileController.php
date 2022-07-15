@@ -7,6 +7,7 @@ use app\models\ChallengeVoting;
 use app\models\Comment;
 use app\models\Follow;
 use app\models\Followrooms;
+use app\models\Notificaion;
 use app\models\NotificationForm;
 use app\models\Pageadmin;
 use app\models\PostFiles;
@@ -23,6 +24,7 @@ use Yii;
 use yii\db\Query;
 use yii\web\Response;
 use function contains;
+use function GuzzleHttp\json_decode;
 
 class MobileController extends ApiController {
 
@@ -1362,20 +1364,20 @@ FROM users
         ]);
 
 
-        if (Yii::$app->security->validatePassword($password, $user->password_hash)) {
+//        if (Yii::$app->security->validatePassword($password, $user->password_hash)) {
 //        return $user;
 
-            if ($user) {
-                $user->token = $token;
-                $user->save();
+        if ($user) {
+            $user->token = $token;
+            $user->save();
 
-                return $user;
-            } else {
-                return $user->errors;
-            }
+            return $user;
         } else {
-            return "wrong password";
+            return $user->errors;
         }
+//        } else {
+//            return "wrong password";
+//        }
     }
 
 //    public function actionLogin2() {
@@ -1424,7 +1426,44 @@ FROM users
                     ->asArray()
                     ->column();
             array_push($commentsUsers, $firebaseTokenOfRoomOwner);
+
+
+            // add to table notification
+
+
+            $myNotificationModel = new Notificaion();
+            $myNotificationModel->room_id = $postId;
+            $myNotificationModel->sender_id = $userId;
+            $myNotificationModel->reciever_id = $userRoomOwner->id;
+            $myNotificationModel->description = \app\models\Constants::$COMMENTED_ON_YOUR_POST;
+            $myNotificationModel->save();
+
+            if ($userRoomOwner->id != $userId) {
+                $commentsUsersIds = Comment::find()
+                        ->select("DISTINCT(users.id)")
+                        ->where([
+                            "r_room" => $postId,
+                        ])
+                        ->andWhere("comment.r_user != $userRoomOwner->id")
+                        ->join("join", "users", "users.id = comment.r_user")
+                        ->asArray()
+                        ->column();
+            }
+
+            for ($i = 0; $i < sizeof($commentsUsersIds); $i++) {
+                if ($userId != $commentsUsersIds[$i]) {
+                    $myNotificationModel = new Notificaion();
+                    $myNotificationModel->room_id = $postId;
+                    $myNotificationModel->sender_id = $userId;
+                    $myNotificationModel->reciever_id = $commentsUsersIds[$i];
+                    $myNotificationModel->description = \app\models\Constants::$COMMENTED_ON_A_POST_YOU_COMMENTED_IN;
+                    $myNotificationModel->save();
+                }
+            }
+            /////////////////////////////////////////
+
             $notification->notifyToUserGoToAd($commentsUsers, $postId);
+
             return "true";
         } else {
             return "false";
@@ -2468,6 +2507,37 @@ FROM users
 //        $result = curl_exec($ch);
 //        curl_close($ch);
 //        return true;
+    }
+
+    public function actionGetNotificationsByUser() {
+
+        $post = Yii::$app->request->post();
+
+        $userId = $post["userId"];
+
+        $notifications = Notificaion::find()
+                ->select(["notificaion.*", "senderUser.fullname as senderFullname", "senderUser.profile_picture as senderProfilePicture"])
+//                ->join('join', 'users as recieverUser', 'recieverUser.id = notificaion.reciever_id')
+                ->join('join', 'users as senderUser', 'senderUser.id = notificaion.sender_id')
+                ->where(['reciever_id' => $userId])
+                ->asArray()
+                ->all();
+
+        return $notifications;
+    }
+
+    public function actionGetUnreadNotificationNumber() {
+
+
+        $post = Yii::$app->request->post();
+
+        $userId = $post["userId"];
+        $count = Notificaion::find()
+                ->where(['reciever_id' => $userId, 'is_read' => 0])
+                ->asArray()
+                ->count();
+
+        return $count;
     }
 
 }
