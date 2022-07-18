@@ -5,6 +5,7 @@ namespace app\controllers\api;
 use app\models\ChallengesVideos;
 use app\models\ChallengeVoting;
 use app\models\Comment;
+use app\models\Constants;
 use app\models\Follow;
 use app\models\Followrooms;
 use app\models\Notificaion;
@@ -222,6 +223,13 @@ WHERE challenge_voting.post_id=" . $room->id;
 
                 if ($user->save()) {
                     if ($donator->save()) {
+
+                        $myNotificationModel = new Notificaion();
+                        $myNotificationModel->room_id = $roomId;
+                        $myNotificationModel->sender_id = $donatorId;
+                        $myNotificationModel->reciever_id = $userId;
+                        $myNotificationModel->description = Constants::$MADE_A_DONATION_TO_YOU;
+                        $myNotificationModel->save();
 
                         return $donator->coins;
                     } else {
@@ -1435,7 +1443,7 @@ FROM users
             $myNotificationModel->room_id = $postId;
             $myNotificationModel->sender_id = $userId;
             $myNotificationModel->reciever_id = $userRoomOwner->id;
-            $myNotificationModel->description = \app\models\Constants::$COMMENTED_ON_YOUR_POST;
+            $myNotificationModel->description = Constants::$COMMENTED_ON_YOUR_POST;
             $myNotificationModel->save();
 
             if ($userRoomOwner->id != $userId) {
@@ -1456,7 +1464,7 @@ FROM users
                     $myNotificationModel->room_id = $postId;
                     $myNotificationModel->sender_id = $userId;
                     $myNotificationModel->reciever_id = $commentsUsersIds[$i];
-                    $myNotificationModel->description = \app\models\Constants::$COMMENTED_ON_A_POST_YOU_COMMENTED_IN;
+                    $myNotificationModel->description = Constants::$COMMENTED_ON_A_POST_YOU_COMMENTED_IN;
                     $myNotificationModel->save();
                 }
             }
@@ -1483,6 +1491,20 @@ FROM users
         $follow->user_token = $token;
 
         if ($follow->save()) {
+
+            $room = Rooms::findOne(["id" => $roomId]);
+            if ($room) {
+
+                $myNotificationModel = new Notificaion();
+                $myNotificationModel->room_id = $room["id"];
+                $myNotificationModel->sender_id = $userId;
+                $myNotificationModel->reciever_id = $room["r_admin"];
+                $myNotificationModel->description = Constants::$LIKED_YOUR_POST;
+                $myNotificationModel->save();
+            }
+
+
+
             return true;
         } else {
             return $follow->errors;
@@ -1867,6 +1889,15 @@ FROM users
         $follow->r_page = $r_page;
 
         if ($follow->save()) {
+
+
+            $myNotificationModel = new Notificaion();
+            $myNotificationModel->sender_id = $r_user;
+            $myNotificationModel->reciever_id = $r_page;
+            $myNotificationModel->description = Constants::$FOLLOWED_YOU;
+            $myNotificationModel->save();
+
+
             return true;
         } else {
             return $follow->errors;
@@ -2419,6 +2450,14 @@ FROM users
                 ];
             }
             if ($room->save()) {
+
+                $myNotificationModel = new Notificaion();
+                $myNotificationModel->room_id = $room["id"];
+                $myNotificationModel->sender_id = $streamerId;
+                $myNotificationModel->reciever_id = $room["r_admin"];
+                $myNotificationModel->description = Constants::$ACCEPTED_YOUR_CHALLENGE;
+                $myNotificationModel->save();
+
                 return [
                     'status' => true,
                     'message' => 'challenge accepted',
