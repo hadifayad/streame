@@ -13,5 +13,6 @@ class Constants {
     public static $MADE_A_DONATION_TO_YOU = "made a donation to you";
     public static $ACCEPTED_YOUR_CHALLENGE = "accepted your challenge";
     public static $DECLINED_YOUR_CHALLENGE = "declined your challenge";
+    public static $VOTED_FOR_YOU = "voted for you";
 
 }

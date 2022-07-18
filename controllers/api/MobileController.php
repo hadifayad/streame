@@ -231,6 +231,18 @@ WHERE challenge_voting.post_id=" . $room->id;
                         $myNotificationModel->description = Constants::$MADE_A_DONATION_TO_YOU;
                         $myNotificationModel->save();
 
+                        $user = \app\models\Users::findOne(["id" => $donatorId]);
+
+                        $senderName = "";
+                        if ($user) {
+                            $senderName = $user->fullname;
+                        }
+
+                        $notification = new NotificationForm();
+                        $notification->subject = $senderName;
+                        $notification->message = Constants::$MADE_A_DONATION_TO_YOU;
+                        $notification->notifyToUserGoToAd([$user->token], $roomId);
+
                         return $donator->coins;
                     } else {
 
@@ -1501,6 +1513,18 @@ FROM users
                 $myNotificationModel->reciever_id = $room["r_admin"];
                 $myNotificationModel->description = Constants::$LIKED_YOUR_POST;
                 $myNotificationModel->save();
+
+                $user = \app\models\Users::findOne(["id" => $userId]);
+
+                $senderName = "";
+                if ($user) {
+                    $senderName = $user->fullname;
+                }
+
+                $notification = new NotificationForm();
+                $notification->subject = $senderName;
+                $notification->message = Constants::$FOLLOWED_YOU;
+                $notification->notifyToUserGoToAd([$user->token], $room["id"]);
             }
 
 
@@ -1896,6 +1920,18 @@ FROM users
             $myNotificationModel->reciever_id = $r_page;
             $myNotificationModel->description = Constants::$FOLLOWED_YOU;
             $myNotificationModel->save();
+
+            $user = \app\models\Users::findOne(["id" => $r_user]);
+
+            $senderName = "";
+            if ($user) {
+                $senderName = $user->fullname;
+            }
+
+            $notification = new NotificationForm();
+            $notification->subject = $senderName;
+            $notification->message = Constants::$FOLLOWED_YOU;
+            $notification->notifyToUserGoToAd([$user->token], 0);
 
 
             return true;
@@ -2405,6 +2441,28 @@ FROM users
                     $vote->post_id = $postId;
                     $vote->r_streamer_voted = $streamerId;
                     if ($vote->save()) {
+
+                        $user = \app\models\Users::findOne(["id" => $voterId]);
+
+                        $senderName = "";
+                        if ($user) {
+                            $senderName = $user->fullname;
+                        }
+
+                        $myNotificationModel = new Notificaion();
+                        $myNotificationModel->room_id = $postId;
+                        $myNotificationModel->sender_id = $voterId;
+                        $myNotificationModel->reciever_id = $streamerId;
+                        $myNotificationModel->description = Constants::$VOTED_FOR_YOU;
+                        $myNotificationModel->save();
+
+
+                        $notification = new NotificationForm();
+                        $notification->subject = $senderName;
+                        $notification->message = Constants::$VOTED_FOR_YOU;
+                        $notification->notifyToUserGoToAd([$user->token], $postId);
+
+
                         return [
                             'status' => true,
                             'message' => 'successfully voted',
@@ -2514,7 +2572,7 @@ FROM users
 
 
 
-        $notification->notifyToUserGoToAd($commentsUsers, "292");
+        $notification->notifyToUserGoToAd($commentsUsers, "369");
 
 //        $msg = array
 //            (
