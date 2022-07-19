@@ -31,15 +31,7 @@ $this->title = 'My Yii Application';
     ]);
     ?>
 </div>
-<div class="btn-group btn-group-xs btn-group-solid caption-subject actions ">
-    <?php
-    echo Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('app', 'استيراد الكشفيين'), ['rooms/create'], [
-        'class' => 'my-ajax  btn btn-default btn-sm ',
-        'style' => 'margin-top: 2px;',
-        'title' => Yii::t('app', 'استيراد الكشفيين')
-    ]);
-    ?>
-</div>
+
 
 
 <?= Html::a(Yii::t('app', 'Post'), ['rooms/create'], ['class' => 'btn btn-success my-ajax']) ?>
