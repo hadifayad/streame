@@ -231,7 +231,7 @@ WHERE challenge_voting.post_id=" . $room->id;
                         $myNotificationModel->description = Constants::$MADE_A_DONATION_TO_YOU;
                         $myNotificationModel->save();
 
-                        $user = \app\models\Users::findOne(["id" => $donatorId]);
+                        $user = \app\models\Users::findOne(["id" => $userId]);
 
                         $senderName = "";
                         if ($user) {
@@ -2556,55 +2556,55 @@ FROM users
         }
     }
 
-    public function actionSs() {
-
-        $notification = new NotificationForm();
-        $notification->subject = "subject sad asd ";
-        $notification->message = "aaaa";
-
-        $commentsUsers = Users::find()
-                ->select("DISTINCT(users.token)")
-                ->where([
-                    "id" => 20,
-                ])
-                ->asArray()
-                ->column();
-
-
-
-        $notification->notifyToUserGoToAd($commentsUsers, "369");
-
-//        $msg = array
-//            (
-//            'title' => "some subject",
-//            'body' => "some body",
-//            "userId" => 1,
-//            "challengeId" => 1,
-//        );
-//        $fields = array
-//            (
-////            'registration_ids' => ["eWG5U4bYST60ryg-NYIfFN:APA91bG9jlSW84MVGvO3Xz4tHC6xpto1Szgtz_bfkLLsyLPHqzWtk_lkjjbFyzCVPlhKLf_Bu4x4u5C7Nc1FAnI3fR_fAaSrV-_XaALDvkfsb9ZIq3eNZuTlp9Hx1-CcKgD5aihc6d7z"],
-////            'registration_ids' => ["dGu5pLuDSDaTLcmLqzL27r:APA91bFn1g7i2fUwICs8mIwqxwzmJUsor9DhrF5IUKS-ElCzpG7oB-LEXfLCOerDx9fWdgtxh9wNWq47TQmxR50s4v7X5cn6JHYICGnee1CRwVCUpzCl3_D1Ct5kPiMGoM2anJ6H9WC1"],
-//            'registration_ids' => ["e61sbzugSSGhRTuxwJNy3I:APA91bGOPahE89Smy-sDObv64N5kFn9NsqianHWrKsVXJSe1kB7oXixdCiGFvQw1vYeF60iFGqGWRqu8pQ5ITvpIklEqlFX4ba8eh-wfkSq03zdnHinve44QNbLV4sNJ6D8FijaPhkBV"],
-//            'data' => $msg
-//        );
+//    public function actionSs() {
 //
-//        $headers = array
-//            (
-//            'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
-//            'Content-Type: application/json'
-//        );
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-//        curl_setopt($ch, CURLOPT_POST, true);
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-//        $result = curl_exec($ch);
-//        curl_close($ch);
-//        return true;
-    }
+//        $notification = new NotificationForm();
+//        $notification->subject = "subject sad asd ";
+//        $notification->message = "aaaa";
+//
+//        $commentsUsers = Users::find()
+//                ->select("DISTINCT(users.token)")
+//                ->where([
+//                    "id" => 20,
+//                ])
+//                ->asArray()
+//                ->column();
+//
+//
+//
+//        $notification->notifyToUserGoToAd($commentsUsers, "369");
+//
+////        $msg = array
+////            (
+////            'title' => "some subject",
+////            'body' => "some body",
+////            "userId" => 1,
+////            "challengeId" => 1,
+////        );
+////        $fields = array
+////            (
+//////            'registration_ids' => ["eWG5U4bYST60ryg-NYIfFN:APA91bG9jlSW84MVGvO3Xz4tHC6xpto1Szgtz_bfkLLsyLPHqzWtk_lkjjbFyzCVPlhKLf_Bu4x4u5C7Nc1FAnI3fR_fAaSrV-_XaALDvkfsb9ZIq3eNZuTlp9Hx1-CcKgD5aihc6d7z"],
+//////            'registration_ids' => ["dGu5pLuDSDaTLcmLqzL27r:APA91bFn1g7i2fUwICs8mIwqxwzmJUsor9DhrF5IUKS-ElCzpG7oB-LEXfLCOerDx9fWdgtxh9wNWq47TQmxR50s4v7X5cn6JHYICGnee1CRwVCUpzCl3_D1Ct5kPiMGoM2anJ6H9WC1"],
+////            'registration_ids' => ["e61sbzugSSGhRTuxwJNy3I:APA91bGOPahE89Smy-sDObv64N5kFn9NsqianHWrKsVXJSe1kB7oXixdCiGFvQw1vYeF60iFGqGWRqu8pQ5ITvpIklEqlFX4ba8eh-wfkSq03zdnHinve44QNbLV4sNJ6D8FijaPhkBV"],
+////            'data' => $msg
+////        );
+////
+////        $headers = array
+////            (
+////            'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
+////            'Content-Type: application/json'
+////        );
+////        $ch = curl_init();
+////        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+////        curl_setopt($ch, CURLOPT_POST, true);
+////        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+////        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+////        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+////        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+////        $result = curl_exec($ch);
+////        curl_close($ch);
+////        return true;
+//    }
 
     public function actionGetNotificationsByUser() {
 
@@ -2617,6 +2617,7 @@ FROM users
 //                ->join('join', 'users as recieverUser', 'recieverUser.id = notificaion.reciever_id')
                 ->join('join', 'users as senderUser', 'senderUser.id = notificaion.sender_id')
                 ->where(['reciever_id' => $userId])
+                ->orderBy("id DESC")
                 ->asArray()
                 ->all();
 
