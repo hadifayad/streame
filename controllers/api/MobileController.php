@@ -5,8 +5,10 @@ namespace app\controllers\api;
 use app\models\ChallengesVideos;
 use app\models\ChallengeVoting;
 use app\models\Comment;
+use app\models\Constants;
 use app\models\Follow;
 use app\models\Followrooms;
+use app\models\Notificaion;
 use app\models\NotificationForm;
 use app\models\Pageadmin;
 use app\models\PostFiles;
@@ -23,6 +25,7 @@ use Yii;
 use yii\db\Query;
 use yii\web\Response;
 use function contains;
+use function GuzzleHttp\json_decode;
 
 class MobileController extends ApiController {
 
@@ -220,6 +223,25 @@ WHERE challenge_voting.post_id=" . $room->id;
 
                 if ($user->save()) {
                     if ($donator->save()) {
+
+                        $myNotificationModel = new Notificaion();
+                        $myNotificationModel->room_id = $roomId;
+                        $myNotificationModel->sender_id = $donatorId;
+                        $myNotificationModel->reciever_id = $userId;
+                        $myNotificationModel->description = Constants::$MADE_A_DONATION_TO_YOU;
+                        $myNotificationModel->save();
+
+                        $user = \app\models\Users::findOne(["id" => $userId]);
+
+                        $senderName = "";
+                        if ($user) {
+                            $senderName = $user->fullname;
+                        }
+
+                        $notification = new NotificationForm();
+                        $notification->subject = $senderName;
+                        $notification->message = Constants::$MADE_A_DONATION_TO_YOU;
+                        $notification->notifyToUserGoToAd([$user->token], $roomId);
 
                         return $donator->coins;
                     } else {
@@ -1362,20 +1384,20 @@ FROM users
         ]);
 
 
-        if (Yii::$app->security->validatePassword($password, $user->password_hash)) {
+//        if (Yii::$app->security->validatePassword($password, $user->password_hash)) {
 //        return $user;
 
-            if ($user) {
-                $user->token = $token;
-                $user->save();
+        if ($user) {
+            $user->token = $token;
+            $user->save();
 
-                return $user;
-            } else {
-                return $user->errors;
-            }
+            return $user;
         } else {
-            return "wrong password";
+            return $user->errors;
         }
+//        } else {
+//            return "wrong password";
+//        }
     }
 
 //    public function actionLogin2() {
@@ -1424,7 +1446,44 @@ FROM users
                     ->asArray()
                     ->column();
             array_push($commentsUsers, $firebaseTokenOfRoomOwner);
+
+
+            // add to table notification
+
+
+            $myNotificationModel = new Notificaion();
+            $myNotificationModel->room_id = $postId;
+            $myNotificationModel->sender_id = $userId;
+            $myNotificationModel->reciever_id = $userRoomOwner->id;
+            $myNotificationModel->description = Constants::$COMMENTED_ON_YOUR_POST;
+            $myNotificationModel->save();
+
+            if ($userRoomOwner->id != $userId) {
+                $commentsUsersIds = Comment::find()
+                        ->select("DISTINCT(users.id)")
+                        ->where([
+                            "r_room" => $postId,
+                        ])
+                        ->andWhere("comment.r_user != $userRoomOwner->id")
+                        ->join("join", "users", "users.id = comment.r_user")
+                        ->asArray()
+                        ->column();
+            }
+
+            for ($i = 0; $i < sizeof($commentsUsersIds); $i++) {
+                if ($userId != $commentsUsersIds[$i]) {
+                    $myNotificationModel = new Notificaion();
+                    $myNotificationModel->room_id = $postId;
+                    $myNotificationModel->sender_id = $userId;
+                    $myNotificationModel->reciever_id = $commentsUsersIds[$i];
+                    $myNotificationModel->description = Constants::$COMMENTED_ON_A_POST_YOU_COMMENTED_IN;
+                    $myNotificationModel->save();
+                }
+            }
+            /////////////////////////////////////////
+
             $notification->notifyToUserGoToAd($commentsUsers, $postId);
+
             return "true";
         } else {
             return "false";
@@ -1444,6 +1503,32 @@ FROM users
         $follow->user_token = $token;
 
         if ($follow->save()) {
+
+            $room = Rooms::findOne(["id" => $roomId]);
+            if ($room) {
+
+                $myNotificationModel = new Notificaion();
+                $myNotificationModel->room_id = $room["id"];
+                $myNotificationModel->sender_id = $userId;
+                $myNotificationModel->reciever_id = $room["r_admin"];
+                $myNotificationModel->description = Constants::$LIKED_YOUR_POST;
+                $myNotificationModel->save();
+
+                $user = \app\models\Users::findOne(["id" => $userId]);
+
+                $senderName = "";
+                if ($user) {
+                    $senderName = $user->fullname;
+                }
+
+                $notification = new NotificationForm();
+                $notification->subject = $senderName;
+                $notification->message = Constants::$FOLLOWED_YOU;
+                $notification->notifyToUserGoToAd([$user->token], $room["id"]);
+            }
+
+
+
             return true;
         } else {
             return $follow->errors;
@@ -1828,6 +1913,27 @@ FROM users
         $follow->r_page = $r_page;
 
         if ($follow->save()) {
+
+
+            $myNotificationModel = new Notificaion();
+            $myNotificationModel->sender_id = $r_user;
+            $myNotificationModel->reciever_id = $r_page;
+            $myNotificationModel->description = Constants::$FOLLOWED_YOU;
+            $myNotificationModel->save();
+
+            $user = \app\models\Users::findOne(["id" => $r_user]);
+
+            $senderName = "";
+            if ($user) {
+                $senderName = $user->fullname;
+            }
+
+            $notification = new NotificationForm();
+            $notification->subject = $senderName;
+            $notification->message = Constants::$FOLLOWED_YOU;
+            $notification->notifyToUserGoToAd([$user->token], 0);
+
+
             return true;
         } else {
             return $follow->errors;
@@ -2335,6 +2441,28 @@ FROM users
                     $vote->post_id = $postId;
                     $vote->r_streamer_voted = $streamerId;
                     if ($vote->save()) {
+
+                        $user = \app\models\Users::findOne(["id" => $voterId]);
+
+                        $senderName = "";
+                        if ($user) {
+                            $senderName = $user->fullname;
+                        }
+
+                        $myNotificationModel = new Notificaion();
+                        $myNotificationModel->room_id = $postId;
+                        $myNotificationModel->sender_id = $voterId;
+                        $myNotificationModel->reciever_id = $streamerId;
+                        $myNotificationModel->description = Constants::$VOTED_FOR_YOU;
+                        $myNotificationModel->save();
+
+
+                        $notification = new NotificationForm();
+                        $notification->subject = $senderName;
+                        $notification->message = Constants::$VOTED_FOR_YOU;
+                        $notification->notifyToUserGoToAd([$user->token], $postId);
+
+
                         return [
                             'status' => true,
                             'message' => 'successfully voted',
@@ -2380,6 +2508,14 @@ FROM users
                 ];
             }
             if ($room->save()) {
+
+                $myNotificationModel = new Notificaion();
+                $myNotificationModel->room_id = $room["id"];
+                $myNotificationModel->sender_id = $streamerId;
+                $myNotificationModel->reciever_id = $room["r_admin"];
+                $myNotificationModel->description = Constants::$ACCEPTED_YOUR_CHALLENGE;
+                $myNotificationModel->save();
+
                 return [
                     'status' => true,
                     'message' => 'challenge accepted',
@@ -2420,54 +2556,86 @@ FROM users
         }
     }
 
-    public function actionSs() {
-
-        $notification = new NotificationForm();
-        $notification->subject = "subject sad asd ";
-        $notification->message = "aaaa";
-
-        $commentsUsers = Users::find()
-                ->select("DISTINCT(users.token)")
-                ->where([
-                    "id" => 20,
-                ])
-                ->asArray()
-                ->column();
-
-
-
-        $notification->notifyToUserGoToAd($commentsUsers, "292");
-
-//        $msg = array
-//            (
-//            'title' => "some subject",
-//            'body' => "some body",
-//            "userId" => 1,
-//            "challengeId" => 1,
-//        );
-//        $fields = array
-//            (
-////            'registration_ids' => ["eWG5U4bYST60ryg-NYIfFN:APA91bG9jlSW84MVGvO3Xz4tHC6xpto1Szgtz_bfkLLsyLPHqzWtk_lkjjbFyzCVPlhKLf_Bu4x4u5C7Nc1FAnI3fR_fAaSrV-_XaALDvkfsb9ZIq3eNZuTlp9Hx1-CcKgD5aihc6d7z"],
-////            'registration_ids' => ["dGu5pLuDSDaTLcmLqzL27r:APA91bFn1g7i2fUwICs8mIwqxwzmJUsor9DhrF5IUKS-ElCzpG7oB-LEXfLCOerDx9fWdgtxh9wNWq47TQmxR50s4v7X5cn6JHYICGnee1CRwVCUpzCl3_D1Ct5kPiMGoM2anJ6H9WC1"],
-//            'registration_ids' => ["e61sbzugSSGhRTuxwJNy3I:APA91bGOPahE89Smy-sDObv64N5kFn9NsqianHWrKsVXJSe1kB7oXixdCiGFvQw1vYeF60iFGqGWRqu8pQ5ITvpIklEqlFX4ba8eh-wfkSq03zdnHinve44QNbLV4sNJ6D8FijaPhkBV"],
-//            'data' => $msg
-//        );
+//    public function actionSs() {
 //
-//        $headers = array
-//            (
-//            'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
-//            'Content-Type: application/json'
-//        );
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-//        curl_setopt($ch, CURLOPT_POST, true);
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-//        $result = curl_exec($ch);
-//        curl_close($ch);
-//        return true;
+//        $notification = new NotificationForm();
+//        $notification->subject = "subject sad asd ";
+//        $notification->message = "aaaa";
+//
+//        $commentsUsers = Users::find()
+//                ->select("DISTINCT(users.token)")
+//                ->where([
+//                    "id" => 20,
+//                ])
+//                ->asArray()
+//                ->column();
+//
+//
+//
+//        $notification->notifyToUserGoToAd($commentsUsers, "369");
+//
+////        $msg = array
+////            (
+////            'title' => "some subject",
+////            'body' => "some body",
+////            "userId" => 1,
+////            "challengeId" => 1,
+////        );
+////        $fields = array
+////            (
+//////            'registration_ids' => ["eWG5U4bYST60ryg-NYIfFN:APA91bG9jlSW84MVGvO3Xz4tHC6xpto1Szgtz_bfkLLsyLPHqzWtk_lkjjbFyzCVPlhKLf_Bu4x4u5C7Nc1FAnI3fR_fAaSrV-_XaALDvkfsb9ZIq3eNZuTlp9Hx1-CcKgD5aihc6d7z"],
+//////            'registration_ids' => ["dGu5pLuDSDaTLcmLqzL27r:APA91bFn1g7i2fUwICs8mIwqxwzmJUsor9DhrF5IUKS-ElCzpG7oB-LEXfLCOerDx9fWdgtxh9wNWq47TQmxR50s4v7X5cn6JHYICGnee1CRwVCUpzCl3_D1Ct5kPiMGoM2anJ6H9WC1"],
+////            'registration_ids' => ["e61sbzugSSGhRTuxwJNy3I:APA91bGOPahE89Smy-sDObv64N5kFn9NsqianHWrKsVXJSe1kB7oXixdCiGFvQw1vYeF60iFGqGWRqu8pQ5ITvpIklEqlFX4ba8eh-wfkSq03zdnHinve44QNbLV4sNJ6D8FijaPhkBV"],
+////            'data' => $msg
+////        );
+////
+////        $headers = array
+////            (
+////            'Authorization: key=AAAAOSRyA4w:APA91bGpPImQQPQTgvZQdL8qe7QbF1khXBJxe1QO8TiuC6brGSoDEDVuuObrJqqpGHFWL4bC9378DbBWWOuN-HJ4T8McJQBauctM58-lfcPB5iA9l8NgebBi7Vm4BLemyFoRGBHNQUub',
+////            'Content-Type: application/json'
+////        );
+////        $ch = curl_init();
+////        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+////        curl_setopt($ch, CURLOPT_POST, true);
+////        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+////        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+////        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+////        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+////        $result = curl_exec($ch);
+////        curl_close($ch);
+////        return true;
+//    }
+
+    public function actionGetNotificationsByUser() {
+
+        $post = Yii::$app->request->post();
+
+        $userId = $post["userId"];
+
+        $notifications = Notificaion::find()
+                ->select(["notificaion.*", "senderUser.fullname as senderFullname", "senderUser.profile_picture as senderProfilePicture"])
+//                ->join('join', 'users as recieverUser', 'recieverUser.id = notificaion.reciever_id')
+                ->join('join', 'users as senderUser', 'senderUser.id = notificaion.sender_id')
+                ->where(['reciever_id' => $userId])
+                ->orderBy("id DESC")
+                ->asArray()
+                ->all();
+
+        return $notifications;
+    }
+
+    public function actionGetUnreadNotificationNumber() {
+
+
+        $post = Yii::$app->request->post();
+
+        $userId = $post["userId"];
+        $count = Notificaion::find()
+                ->where(['reciever_id' => $userId, 'is_read' => 0])
+                ->asArray()
+                ->count();
+
+        return $count;
     }
 
 }
