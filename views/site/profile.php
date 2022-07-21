@@ -43,13 +43,31 @@ $this->title = 'My Yii Application';
                            font-size: 16px;
                            font-family: "Myriad Pro Bold";" >ALI ABou jahjah</h4>
                            
+                           <button style="  background-color: #04AA6D; /* Green */
+  border: none;
+  color: white;
+  background: linear-gradient(184deg, rgba(127,71,221,1) 45%, rgba(47,15,101,1) 100%, rgba(218,238,225,1) 100%);
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+ 
+
+  cursor: pointer;border-radius: 20px;
+  "class="button button1">Follow</button>
+                           
                          <div class="container" >
   <div class="row" >
     <div class="col-sm-4">
      <div class="wrap" >
-   
-      <p >11</p>
-      <p >Seats</p>
+            <p style=" font-weight: bold;
+                           font-size: 16px;
+                           font-family: "Myriad Pro Bold";"">11</p>
+      <p style=" font-weight: bold;
+                           font-size: 16px;
+                           font-family: "Myriad Pro Bold";"">Posts</p>
     
    
   </div>
@@ -57,8 +75,13 @@ $this->title = 'My Yii Application';
     <div class="col-sm-4">
        <div class="wrap">
    
-      <p >11</p>
-      <p >Seats</p>
+             <p style=" font-weight: bold;
+                           font-size: 16px;
+                           font-family: "Myriad Pro Bold";"">11</p>
+   
+       <p style=" font-weight: bold;
+                           font-size: 16px;
+                           font-family: "Myriad Pro Bold";"">Followers</p>
     
    
   </div>
@@ -66,8 +89,15 @@ $this->title = 'My Yii Application';
     <div class="col-sm-4">
      <div class="wrap">
    
-      <p >11</p>
-      <p >Seats</p>
+     
+             <p style=" font-weight: bold;
+                           font-size: 16px;
+                           font-family: "Myriad Pro Bold";"">11</p>
+    
+            <p style=" font-weight: bold;
+                           font-size: 16px;
+                           font-family: "Myriad Pro Bold";"">TLC</p>
+      
     
    
   </div>
