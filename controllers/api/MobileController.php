@@ -234,8 +234,8 @@ WHERE challenge_voting.post_id=" . $room->id;
                         $user = \app\models\Users::findOne(["id" => $userId]);
 
                         $senderName = "";
-                        if ($user) {
-                            $senderName = $user->fullname;
+                        if ($donator) {
+                            $senderName = $donator->fullname;
                         }
 
                         $notification = new NotificationForm();
