@@ -65,7 +65,7 @@ class Users extends BaseUsers {
             [['fullname', 'password', 'username'], 'required'],
             [['password'], 'string'],
             [['role', 'is_approved','role'], 'integer'],
-            [['fullname', 'link_facebook', 'link_youtube', 'link_instagram', 'link_tiktok','tags','bio  '], 'string', 'max' => 200],
+            [['fullname', 'link_facebook', 'link_youtube', 'link_instagram', 'link_tiktok','tags','bio'], 'string', 'max' => 200],
             [['username'], 'string', 'max' => 100],
             [['token'], 'string', 'max' => 300],
             [['profile_picture'], 'string', 'max' => 2000],

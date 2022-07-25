@@ -33,7 +33,12 @@ $this->title = 'My Yii Application';
 </div>
 
 
-
+<br>
+    <br>
+        <br>
+    <br>
+        <br>
+    <br>
 <?= Html::a(Yii::t('app', 'Post'), ['rooms/create'], ['class' => 'btn btn-success my-ajax']) ?>
 
 <br>

@@ -231,7 +231,7 @@ WHERE challenge_voting.post_id=" . $room->id;
                         $myNotificationModel->description = Constants::$MADE_A_DONATION_TO_YOU;
                         $myNotificationModel->save();
 
-                        $user = \app\models\Users::findOne(["id" => $userId]);
+                        $user = Users::findOne(["id" => $userId]);
 
                         $senderName = "";
                         if ($user) {
@@ -1514,7 +1514,7 @@ FROM users
                 $myNotificationModel->description = Constants::$LIKED_YOUR_POST;
                 $myNotificationModel->save();
 
-                $user = \app\models\Users::findOne(["id" => $userId]);
+                $user = Users::findOne(["id" => $userId]);
 
                 $senderName = "";
                 if ($user) {
@@ -1921,7 +1921,7 @@ FROM users
             $myNotificationModel->description = Constants::$FOLLOWED_YOU;
             $myNotificationModel->save();
 
-            $user = \app\models\Users::findOne(["id" => $r_user]);
+            $user = Users::findOne(["id" => $r_user]);
 
             $senderName = "";
             if ($user) {
@@ -2442,7 +2442,7 @@ FROM users
                     $vote->r_streamer_voted = $streamerId;
                     if ($vote->save()) {
 
-                        $user = \app\models\Users::findOne(["id" => $voterId]);
+                        $user = Users::findOne(["id" => $voterId]);
 
                         $senderName = "";
                         if ($user) {
