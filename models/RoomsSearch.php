@@ -9,13 +9,12 @@ use app\models\Rooms;
 /**
  * RoomsSearch represents the model behind the search form of `app\models\Rooms`.
  */
-class RoomsSearch extends Rooms
-{
+class RoomsSearch extends Rooms {
+
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['id', 'r_admin', 'game', 'mention', 'mention2', 'mention3', 'accept1', 'accept2', 'accept3', 'challenge_coins', 'is_challenge_finished', 'challenge_winner', 'streamer_response', 'invitation_response'], 'integer'],
             [['title', 'c_text', 'creation_date', 'type', 'category', 'color1', 'color2', 'video_thumbnail', 'challenge_date'], 'safe'],
@@ -25,8 +24,7 @@ class RoomsSearch extends Rooms
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -77,13 +75,14 @@ class RoomsSearch extends Rooms
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'c_text', $this->c_text])
-            ->andFilterWhere(['like', 'type', $this->type])
-            ->andFilterWhere(['like', 'category', $this->category])
-            ->andFilterWhere(['like', 'color1', $this->color1])
-            ->andFilterWhere(['like', 'color2', $this->color2])
-            ->andFilterWhere(['like', 'video_thumbnail', $this->video_thumbnail]);
+                ->andFilterWhere(['like', 'c_text', $this->c_text])
+                ->andFilterWhere(['like', 'type', $this->type])
+                ->andFilterWhere(['like', 'category', $this->category])
+                ->andFilterWhere(['like', 'color1', $this->color1])
+                ->andFilterWhere(['like', 'color2', $this->color2])
+                ->andFilterWhere(['like', 'video_thumbnail', $this->video_thumbnail]);
 
         return $dataProvider;
     }
+
 }

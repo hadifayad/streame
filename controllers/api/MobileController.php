@@ -393,12 +393,14 @@ WHERE challenge_voting.post_id=" . $room->id;
                 return "not upload";
             }
         } else if ($type == "pictures") {
+
             $color1 = $post["color1"];
             $color2 = $post["color2"];
 
             $imagesSize = $post["imagesSize"];
             $location = "postPictures/";
             if ($room->save()) {
+
                 for ($i = 0; $i < $imagesSize; $i++) {
                     $image = $post["image" . ($i + 1)];
 
@@ -408,8 +410,8 @@ WHERE challenge_voting.post_id=" . $room->id;
                         $percent = 1;
 
                         $data = base64_decode($image);
-
                         $im = imagecreatefromstring($data);
+
                         $width = imagesx($im);
                         $height = imagesy($im);
                         $newwidth = $width * $percent;
@@ -2621,6 +2623,10 @@ FROM users
                 ->asArray()
                 ->all();
 
+        Notificaion::updateAll(["is_read" => 1], [
+            "reciever_id" => $userId
+        ]);
+
         return $notifications;
     }
 
@@ -2638,4 +2644,17 @@ FROM users
         return $count;
     }
 
+//    public function actionMakeNotificationsRead() {
+//
+//        $post = Yii::$app->request->post();
+//
+//        $userId = $post["userId"];
+//        Notificaion::updateAll(["is_read" => 1], [
+//            "reciever_id" => $userId
+//        ]);
+//        return [
+//            "status" => "1",
+//            "message" => "marked as unread"
+//        ];
+//    }
 }

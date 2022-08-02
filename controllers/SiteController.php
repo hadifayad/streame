@@ -108,7 +108,7 @@ type,
              FROM rooms
              JOIN users ON rooms.r_admin = users.id
              LEFT JOIN followrooms ON followrooms.r_room = rooms.id AND followrooms.r_user = '$userId'
-          
+             WHERE creation_date >= NOW()
              ORDER BY rooms.creation_date DESC;";
         $command = Yii::$app->db->createCommand($sql);
         $arrayList = $command->queryAll();
