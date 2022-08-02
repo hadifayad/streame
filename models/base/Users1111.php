@@ -36,8 +36,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string|null $password_reset_token
  * @property int $status
  * @property int $mandoobId
- * @property int|null $created_at
- * @property int|null $updated_at
+
  * @property string $password
  * @property string $token
  * @property string $email
@@ -47,7 +46,7 @@ use yii\behaviors\TimestampBehavior;
  * @property UserPlants[] $userPlants
  * @property Village $village0
  */
-abstract class Users extends User {
+abstract class Usersh extends Users {
 
     /**
      * @inheritdoc
