@@ -31,7 +31,7 @@ class RoomsController extends Controller {
                     // allow authenticated users
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['?'],
                     ],
                 // everything else is denied
                 ],
@@ -79,8 +79,41 @@ class RoomsController extends Controller {
     public function actionCreate() {
         $model = new Rooms();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) ) {
+               \yii\helpers\VarDumper::dump(Yii::$app->request->post(),3,3);
+            die();
+            $model->r_admin =6;
+                 $model->file = UploadedFile::getInstances($model, 'file');
+            $files = $model->file;
+         
+//            if ($model->uploa     \yii\helpers\VarDumper::dump($files,3,3);
+            die();
+//            if ($modFiles($files, $id)) {
+//                return $this->redirect(['view', 'id' => $id]);
+//            } else {
+//                
+//            }
+//                 foreach ($files as $file) {
+//                $randomString = Yii::$app->security->generateRandomString();
+//                $imageName = $randomString . '.' . $file->extension;
+//                $newsMedia = new NewsMedia();
+//                $newsMedia->file_name = $imageName;
+//                $newsMedia->new_id = $newsId;
+//                if ($newsMedia->save()) {
+//                    
+//                } else {
+//                    VarDumper::dump($newsMedia->getErrors(), 3, true);
+//                    die();
+//                }
+//                $file->saveAs('newsUploads/' . $imageName);
+//            }
+//            return true;
+            
+      
+            if($model->save()){
+                 return $this->redirect(['view', 'id' => $model->id]);
+            }
+           
         }
 
         return $this->renderAjax('create', [
