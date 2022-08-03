@@ -36,6 +36,7 @@ use yii\widgets\ActiveForm;
         ]
     ]);
     ?>
+        
 
     <?PHP // $form->field($model, 'r_admin')->textInput() ?>
 

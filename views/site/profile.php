@@ -23,7 +23,7 @@ $this->title = 'My Yii Application';
 
  <div class="site-index row " style="background: purple; padding: 10px;border-radius: 10px;background: rgb(127,71,221);
              background: linear-gradient(184deg, rgba(127,71,221,1) 45%, rgba(47,15,101,1) 100%, rgba(218,238,225,1) 100%);   ">
- <div class="col-lg-6 offset-lg-3 " style="background: white; padding: 2px;border-radius: 10px; margin-bottom: 10px;display: flex;
+ <div class="col-lg-6 offset-lg-3 " style="background: white; padding: 20px;border-radius: 10px; margin-bottom: 50px;
     align-items: center;;" >
      <div class="wrap center" style="    text-align: -webkit-center;">
 <div style="     text-align: -webkit-center;
@@ -57,8 +57,8 @@ $this->title = 'My Yii Application';
 
   cursor: pointer;border-radius: 20px;
   "class="button button1">Follow</button>
-                           
-                         <div class="container" >
+  <br><!-- comment -->
+  <br>
   <div class="row" >
     <div class="col-sm-4">
      <div class="wrap" >
@@ -103,7 +103,7 @@ $this->title = 'My Yii Application';
   </div>
 </div>
  </div>
-                         </div>
+                        
  </div>
      </div>
 

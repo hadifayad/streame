@@ -67,7 +67,7 @@ class Rooms extends \yii\db\ActiveRecord
             [['title'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 50],
              [['file'], 'file', 'skipOnEmpty' => true,
-                'extensions' => 'png, jpg,mp4',
+                'extensions' => 'png,jpg',
                 'maxFiles' => 5,
             ],
             [['category', 'video_thumbnail'], 'string', 'max' => 200],
