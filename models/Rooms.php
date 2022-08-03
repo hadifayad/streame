@@ -44,21 +44,21 @@ use Yii;
  * @property Users $mention20
  * @property Users $mention30
  */
-class Rooms extends \yii\db\ActiveRecord
-{
+class Rooms extends \yii\db\ActiveRecord {
+
+    public $file;
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'rooms';
     }
- public $file;
+
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['c_text'], 'string'],
             [['r_admin'], 'required'],
@@ -66,7 +66,7 @@ class Rooms extends \yii\db\ActiveRecord
             [['creation_date', 'challenge_date'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 50],
-             [['file'], 'file', 'skipOnEmpty' => true,
+            [['file'], 'file', 'skipOnEmpty' => true,
                 'extensions' => 'png,jpg',
                 'maxFiles' => 5,
             ],
@@ -83,8 +83,7 @@ class Rooms extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'title' => 'Title',
@@ -117,8 +116,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getChallengeVotings()
-    {
+    public function getChallengeVotings() {
         return $this->hasMany(ChallengeVoting::className(), ['post_id' => 'id']);
     }
 
@@ -127,8 +125,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getRUsers()
-    {
+    public function getRUsers() {
         return $this->hasMany(Users::className(), ['id' => 'r_user'])->viaTable('challenge_voting', ['post_id' => 'id']);
     }
 
@@ -137,8 +134,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getChallengesVideos()
-    {
+    public function getChallengesVideos() {
         return $this->hasMany(ChallengesVideos::className(), ['post_id' => 'id']);
     }
 
@@ -147,8 +143,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getStreamers()
-    {
+    public function getStreamers() {
         return $this->hasMany(Users::className(), ['id' => 'streamer_id'])->viaTable('challenges_videos', ['post_id' => 'id']);
     }
 
@@ -157,8 +152,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getComments()
-    {
+    public function getComments() {
         return $this->hasMany(Comment::className(), ['r_room' => 'id']);
     }
 
@@ -167,8 +161,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getFollowrooms()
-    {
+    public function getFollowrooms() {
         return $this->hasMany(Followrooms::className(), ['r_room' => 'id']);
     }
 
@@ -177,8 +170,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPostFiles()
-    {
+    public function getPostFiles() {
         return $this->hasMany(PostFiles::className(), ['post_id' => 'id']);
     }
 
@@ -187,8 +179,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getRAdmin()
-    {
+    public function getRAdmin() {
         return $this->hasOne(Users::className(), ['id' => 'r_admin']);
     }
 
@@ -197,8 +188,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMention0()
-    {
+    public function getMention0() {
         return $this->hasOne(Users::className(), ['id' => 'mention']);
     }
 
@@ -207,8 +197,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getGame0()
-    {
+    public function getGame0() {
         return $this->hasOne(Games::className(), ['id' => 'game']);
     }
 
@@ -217,8 +206,7 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMention20()
-    {
+    public function getMention20() {
         return $this->hasOne(Users::className(), ['id' => 'mention2']);
     }
 
@@ -227,8 +215,8 @@ class Rooms extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getMention30()
-    {
+    public function getMention30() {
         return $this->hasOne(Users::className(), ['id' => 'mention3']);
     }
+
 }

@@ -179,6 +179,14 @@ class NotificationForm extends Model {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
                 $result = curl_exec($ch);
                 curl_close($ch);
+
+
+                $myNotificationModel = new Notificaion();
+                $myNotificationModel->room_id = $room["id"];
+                $myNotificationModel->sender_id = null;
+                $myNotificationModel->reciever_id = $userId;
+                $myNotificationModel->description = $room["title"] . " - " . $room["c_text"];
+                $myNotificationModel->save();
             }
             return true;
         }

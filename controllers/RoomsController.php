@@ -2,12 +2,16 @@
 
 namespace app\controllers;
 
+use app\models\PostFiles;
 use app\models\Rooms;
 use app\models\RoomsSearch;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * RoomsController implements the CRUD actions for Rooms model.
@@ -20,7 +24,7 @@ class RoomsController extends Controller {
     public function behaviors() {
         return [
             'access' => [
-                'class' => \yii\filters\AccessControl::class,
+                'class' => AccessControl::class,
                 'only' => ['create', 'update', 'delete'],
                 'rules' => [
 //                    // deny all POST requests
@@ -79,45 +83,49 @@ class RoomsController extends Controller {
     public function actionCreate() {
         $model = new Rooms();
 
-        if ($model->load(Yii::$app->request->post()) ) {
-               \yii\helpers\VarDumper::dump(Yii::$app->request->post(),3,3);
-            die();
-            $model->r_admin =6;
-                 $model->file = UploadedFile::getInstances($model, 'file');
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->r_admin = 6;
+            $model->file = UploadedFile::getInstances($model, 'file');
             $files = $model->file;
-         
+
+//            VarDumper::dump($files, 3, 1);
+//            die();
+
 //            if ($model->uploa     \yii\helpers\VarDumper::dump($files,3,3);
-            die();
+//            die();
 //            if ($modFiles($files, $id)) {
 //                return $this->redirect(['view', 'id' => $id]);
 //            } else {
 //                
 //            }
-//                 foreach ($files as $file) {
-//                $randomString = Yii::$app->security->generateRandomString();
-//                $imageName = $randomString . '.' . $file->extension;
-//                $newsMedia = new NewsMedia();
-//                $newsMedia->file_name = $imageName;
-//                $newsMedia->new_id = $newsId;
-//                if ($newsMedia->save()) {
-//                    
-//                } else {
-//                    VarDumper::dump($newsMedia->getErrors(), 3, true);
-//                    die();
-//                }
-//                $file->saveAs('newsUploads/' . $imageName);
-//            }
 //            return true;
-            
-      
-            if($model->save()){
-                 return $this->redirect(['view', 'id' => $model->id]);
+
+
+            if ($model->save()) {
+
+                foreach ($files as $file) {
+                    $randomString = Yii::$app->security->generateRandomString();
+                    $imageName = $randomString . '.' . $file->extension;
+                    $postFiles = new PostFiles();
+                    $postFiles->file_name = $imageName;
+                    $postFiles->post_id = $model->primaryKey;
+                    if ($postFiles->save()) {
+                        
+                    } else {
+                        VarDumper::dump($postFiles->getErrors(), 3, true);
+                        die();
+                    }
+                    $file->saveAs('postPictures/' . $imageName);
+                }
+
+
+                return $this->redirect(['view', 'id' => $model->id]);
             }
-           
         }
 
         return $this->renderAjax('create', [
-            'model' => $model,  
+                    'model' => $model,
         ]);
     }
 
