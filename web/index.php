@@ -13,7 +13,7 @@ $config = require __DIR__ . '/../config/web.php';
 
 
 //
-//$url = 'http://www.theleader.team/profilePicture/cover.jpg';
+//$url = 'http://www.streameapp.com/profilePicture/cover.jpg';
 ////    $url = 'http://i.stack.imgur.com/' . $_GET['file_name'];
 //header('Content-type: image/jpg');
 //imagejpeg(imagecreatefromjpeg($url));

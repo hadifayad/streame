@@ -86,8 +86,7 @@ class RoomsController extends Controller {
         if ($model->load(Yii::$app->request->post())) {
 
             $model->r_admin = 6;
-            $model->file = UploadedFile::getInstances($model, 'file');
-            $files = $model->file;
+         
 
 //            VarDumper::dump($files, 3, 1);
 //            die();
@@ -101,10 +100,14 @@ class RoomsController extends Controller {
 //            }
 //            return true;
 
+            
 
             if ($model->save()) {
-
-                foreach ($files as $file) {
+                
+                if($model->type ="pictures"){
+                       $model->file = UploadedFile::getInstances($model, 'file');
+            $files = $model->file;
+                     foreach ($files as $file) {
                     $randomString = Yii::$app->security->generateRandomString();
                     $imageName = $randomString . '.' . $file->extension;
                     $postFiles = new PostFiles();
@@ -118,6 +121,31 @@ class RoomsController extends Controller {
                     }
                     $file->saveAs('postPictures/' . $imageName);
                 }
+                }
+                  if($model->type ="video"){
+      $model->video = UploadedFile::getInstances($model, 'video');
+            $files = $model->video;
+//             VarDumper::dump($model->video,3,3);
+//                    die();
+                     foreach ($files as $file) {
+                    $randomString = Yii::$app->security->generateRandomString();
+                    $imageName = $randomString . '.' . $file->extension;
+                    $postFiles = new PostFiles();
+                    $postFiles->file_name = $imageName;
+                    $postFiles->post_id = $model->primaryKey;
+//                    VarDumper::dump($postFiles,3,3);
+//                    die();
+                    if ($postFiles->save()) {
+                        
+                    } else {
+                        VarDumper::dump($postFiles->getErrors(), 3, true);
+                        die();
+                    }
+                    $file->saveAs('videoUploads/' . $imageName);
+                }
+                    
+                }
+               
 
 
                 return $this->redirect(['view', 'id' => $model->id]);

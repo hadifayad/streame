@@ -29,16 +29,16 @@ class MobileController extends ApiController {
 //        $movie = 'test.mp4';
 //        $thumbnail = 'thumbnail.png';
 //        $mov = new ffmpeg_movie($movie);
-//        $screenShotr = new \ScreenShotr\Core('http://theleader.team/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4');
+//        $screenShotr = new \ScreenShotr\Core('http://streameapp.com/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4');
 //        $screenShotr = new \ScreenShotr\Core('videoUploads/ddd.mp4');
 //        $screenshot = $screenShotr->generateScreenshot(1);
 //        return $screenshot;
 //        $obj = new GenerateVideoScreenshots("videoUploads/ddd.mp4");
 //        return $obj;
 //        return $obj->setOutputPath('output_location');
-//        $thumbnail = $obj->generateScreenshot('http://theleader.team/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4');
+//        $thumbnail = $obj->generateScreenshot('http://streameapp.com/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4');
 //        return $thumbnail;
-//        $video = $ffmpeg->open("http://theleader.team/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4");
+//        $video = $ffmpeg->open("http://streameapp.com/postVideos/jU5g93iiLen56VqJtxV2DbgPcdXRIwu2.mp4");
     }
 
     public function actionCreateRoom() {
@@ -192,7 +192,7 @@ class MobileController extends ApiController {
         }
 
 
-        return "https://www.theleader.team/postVideos/" . $randomFileName;
+        return "https://www.streameapp.com/postVideos/" . $randomFileName;
 
 
 
@@ -1592,7 +1592,7 @@ class MobileController extends ApiController {
             move_uploaded_file($temp_name, $location . $randomFileName);
 
 
-            return "https://www.theleader.team/postVideos/" . $randomFileName;
+            return "https://www.streameapp.com/postVideos/" . $randomFileName;
         } else {
             return "Error";
         }

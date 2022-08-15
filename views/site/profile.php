@@ -28,7 +28,7 @@ $this->title = 'My Yii Application';
      <div class="wrap center" style="    text-align: -webkit-center;">
 <div style="     text-align: -webkit-center;
  ">
-                                <img style="     margin-top: 50px;; border: 5px solid  rgb(127,71,221);" width="100" height="100" class="rounded-circle center" src="http://www.theleader.team/profilePicture/LbZFyvwd1Qgs5szxdTm2DJoKO635nXmn.jpeg">
+                                <img style="     margin-top: 50px;; border: 5px solid  rgb(127,71,221);" width="100" height="100" class="rounded-circle center" src="http://www.streameapp.com/profilePicture/LbZFyvwd1Qgs5szxdTm2DJoKO635nXmn.jpeg">
                             </div>
      <h3 class="center" style="color: black;
                            font-weight: bold;
@@ -139,7 +139,7 @@ $this->title = 'My Yii Application';
                                     width="50"
                                     height="50"
                                     class="rounded-circle"
-                                    src="<?= "http://www.theleader.team/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
+                                    src="<?= "http://www.streameapp.com/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
                                     />
                             </div>
                             <div style="display:inline-block;">
@@ -167,7 +167,7 @@ $this->title = 'My Yii Application';
                                             <img
                                                 style="background: black;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;"
                                                 class=""
-                                                src="<?= "http://www.theleader.team/postPictures/" . $imagesArray[$j] ?>"
+                                                src="<?= "http://www.streameapp.com/postPictures/" . $imagesArray[$j] ?>"
                                                 />
                                         </li>
                                     <?php } ?>
@@ -342,7 +342,7 @@ $this->title = 'My Yii Application';
                                     width="50"
                                     height="50"
                                     class="rounded-circle"
-                                    src="<?= "http://www.theleader.team/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
+                                    src="<?= "http://www.streameapp.com/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
                                     />
                             </div>
                             <div style="display:inline-block;">
@@ -366,7 +366,7 @@ $this->title = 'My Yii Application';
 
 
                             <video   style="background: black ;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;" controls>
-                                <source src="<?= "http://www.theleader.team/postVideos/" . $rooms[$i]["files"] ?>" type="video/mp4">
+                                <source src="<?= "http://www.streameapp.com/postVideos/" . $rooms[$i]["files"] ?>" type="video/mp4">
 
                                     Your browser does not support the video tag.
                             </video>
@@ -539,7 +539,7 @@ $this->title = 'My Yii Application';
                                         width="50"
                                         height="50"
                                         class="rounded-circle"
-                                        src="<?= "http://www.theleader.team/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
+                                        src="<?= "http://www.streameapp.com/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
                                         />
                                 </div>
                                 <div style="display:inline-block;">
@@ -566,7 +566,7 @@ $this->title = 'My Yii Application';
                                             <li class="splide__slide">
 
                                                 <video   style="background: black;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;" controls>
-                                                    <source src="<?= "http://www.theleader.team/postChallengesFiles/" . $videosArray[$j] ?>" type="video/mp4">
+                                                    <source src="<?= "http://www.streameapp.com/postChallengesFiles/" . $videosArray[$j] ?>" type="video/mp4">
 
                                                         Your browser does not support the video tag.
                                                 </video>
@@ -730,7 +730,7 @@ $this->title = 'My Yii Application';
                                         width="50"
                                         height="50"
                                         class="rounded-circle"
-                                        src="<?= "http://www.theleader.team/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
+                                        src="<?= "http://www.streameapp.com/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
                                         />
                                 </div>
                                 <div style="display:inline-block;">

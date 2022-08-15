@@ -2,6 +2,7 @@
 
 use app\models\Rooms;
 use kartik\widgets\FileInput;
+use richardfan\widget\JSRegister;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\ActiveForm;
@@ -37,12 +38,37 @@ use yii\widgets\ActiveForm;
     ]])->textarea(['rows' => 6])->label("Description")
         ?>
     </div>
+      <div class="col-lg-12">
+          <?= $form->field($model, 'type')->dropDownList([ "pictures" => 'pictures',"video" => 'video'])->label("Post Type") ?>
+            </div>
     <div class="col-lg-12">
         <?php
         echo $form->field($model, 'file[]')->widget(FileInput::classname(), [
             'options' => [
+                   'id'=>'image',
                 'accept' => 'image/*',
-                'multiple' => true
+                'multiple' => true,
+                'id'=>'image',
+            ],
+            'pluginOptions' => [
+//            'previewFileType' => 'image',
+                'overwriteInitial' => false,
+                'maxFileSize' => 1000000,
+                'removeClass' => 'btn btn-danger',
+                'removeIcon' => '<i class="glyphicon glyphicon-trash"></i>'
+            ]
+        ]);
+        ?>
+    </div>
+    
+        <div class="col-lg-12">
+        <?php
+        echo $form->field($model, 'video[]')->widget(FileInput::classname(), [
+            'options' => [
+                   'id'=>'video',
+                'accept' => 'video/*',
+                'multiple' => false,
+          
             ],
             'pluginOptions' => [
 //            'previewFileType' => 'image',
@@ -110,3 +136,33 @@ use yii\widgets\ActiveForm;
 
 
 </div>
+<?php
+JSRegister::begin([
+    'id' => '1'
+]);
+?>
+<script>
+      $(".field-video").hide();
+    $("#rooms-type").on("change", function () {
+
+        var type = $("#rooms-type").val();
+
+        if (type == "pictures") {
+          
+
+            $(".field-video").hide();
+            $(".field-image").show();
+        } else  if (type == "video") {
+           
+
+                  $(".field-image").hide();
+                    $(".field-video").show();
+        }
+//            $("#activities-c_executing_party").val(textSelected);
+//            console.log("full");
+
+        
+    });
+</script>
+
+<?php JSRegister::end(); ?>

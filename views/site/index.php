@@ -70,7 +70,7 @@ echo ModalAjax::widget([
                                                             width="50"
                                                             height="50"
                                                             class="rounded-circle"
-                                                            src="<?= "http://www.theleader.team/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
+                                                            src="<?= "http://streameapp.com/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
                                                             />
                                                     </div>
                                                     <div style="display:inline-block;">
@@ -82,7 +82,7 @@ echo ModalAjax::widget([
                                                         style="float: right;
                                                         margin: 10px;
                                                         transform: rotate(-45deg);"
-                                                        xmlns="http://www.w3.org/2000/svg" width="15.575" height="15.18" viewBox="0 0 15.575 15.18">
+                                                        xmlns="http://w3.org/2000/svg" width="15.575" height="15.18" viewBox="0 0 15.575 15.18">
                                                         <path id="Path_13" data-name="Path 13" d="M14.654,6.121,2.343.163A1.632,1.632,0,0,0,.117,2.238L2.258,7.589.117,12.941a1.632,1.632,0,0,0,2.226,2.076L14.654,9.058a1.632,1.632,0,0,0,0-2.937ZM1.128,1.834a.53.53,0,0,1,.134-.6.527.527,0,0,1,.608-.092l12.2,5.9H3.212Zm.742,12.2a.544.544,0,0,1-.742-.692L3.212,8.133H14.069Z" fill="#909090"/>
                                                     </svg>
 
@@ -98,7 +98,7 @@ echo ModalAjax::widget([
                                                                     <img
                                                                         style="background: black;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;"
                                                                         class=""
-                                                                        src="<?= "http://www.theleader.team/postPictures/" . $imagesArray[$j] ?>"
+                                                                        src="<?= "http://streameapp.com/postPictures/" . $imagesArray[$j] ?>"
                                                                         />
                                                                 </li>
                                                             <?php } ?>
@@ -112,7 +112,7 @@ echo ModalAjax::widget([
                                                         ?>
                                                         <svg     style="position: absolute;
                                                                  bottom: 60 ;
-                                                                 left: 30 ;"     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                                 left: 30 ;"     xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
 
                                                             <defs>
                                                                 <filter id="Ellipse_18" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
@@ -145,7 +145,7 @@ echo ModalAjax::widget([
 
                                                         <svg style="position: absolute;
                                                              bottom: 60;
-                                                             left: 30 ;"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                             left: 30 ;"  xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                             <defs>
                                                                 <filter id="Path_140" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                     <feOffset dy="3" input="SourceAlpha"/>
@@ -175,7 +175,7 @@ echo ModalAjax::widget([
                                                             style="position: absolute;
                                                             bottom: 60;
                                                             left: 30;"
-                                                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                            xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                             <defs>
                                                                 <filter id="Ellipse_18" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                     <feOffset dy="3" input="SourceAlpha"/>
@@ -200,7 +200,7 @@ echo ModalAjax::widget([
                                                             style="position: absolute;
                                                             bottom: 60;
                                                             right: 30 ;"
-                                                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                            xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                             <defs>
                                                                 <filter id="Ellipse_20" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                     <feOffset dy="3" input="SourceAlpha"/>
@@ -273,7 +273,7 @@ echo ModalAjax::widget([
                                                             width="50"
                                                             height="50"
                                                             class="rounded-circle"
-                                                            src="<?= "http://www.theleader.team/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
+                                                            src="<?= "http://streameapp.com/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
                                                             />
                                                     </div>
                                                     <div style="display:inline-block;">
@@ -285,7 +285,7 @@ echo ModalAjax::widget([
                                                         style="float: right;
                                                         transform: rotate(-45deg);
                                                         margin: 10px;"
-                                                        xmlns="http://www.w3.org/2000/svg" width="15.575" height="15.18" viewBox="0 0 15.575 15.18">
+                                                        xmlns="http://w3.org/2000/svg" width="15.575" height="15.18" viewBox="0 0 15.575 15.18">
                                                         <path id="Path_13" data-name="Path 13" d="M14.654,6.121,2.343.163A1.632,1.632,0,0,0,.117,2.238L2.258,7.589.117,12.941a1.632,1.632,0,0,0,2.226,2.076L14.654,9.058a1.632,1.632,0,0,0,0-2.937ZM1.128,1.834a.53.53,0,0,1,.134-.6.527.527,0,0,1,.608-.092l12.2,5.9H3.212Zm.742,12.2a.544.544,0,0,1-.742-.692L3.212,8.133H14.069Z" fill="#909090"/>
                                                     </svg>
 
@@ -293,11 +293,14 @@ echo ModalAjax::widget([
                                                 </div>
 
 
+
+
+
                                                 <div class="splide__track">
 
 
                                                     <video   style="background: black ;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;" controls>
-                                                        <source src="<?= "http://www.theleader.team/postVideos/" . $rooms[$i]["files"] ?>" type="video/mp4">
+                                                        <source src="<?= "http://streameapp.com/videoUploads/" . $rooms[$i]["files"] ?>" type="video/mp4">
 
                                                             Your browser does not support the video tag.
                                                     </video>
@@ -312,7 +315,7 @@ echo ModalAjax::widget([
                                                             style="position: absolute;
                                                             bottom: 60 ;
                                                             left: 30 ;"
-                                                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                            xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                             <defs>
                                                                 <filter id="Ellipse_18" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                     <feOffset dy="3" input="SourceAlpha"/>
@@ -339,7 +342,7 @@ echo ModalAjax::widget([
                                                         <?php
                                                     } else if ($rooms[$i]["category"] == "challenge") {
                                                         ?>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                        <svg xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                             <defs>
                                                                 <filter id="Path_140" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                     <feOffset dy="3" input="SourceAlpha"/>
@@ -369,7 +372,7 @@ echo ModalAjax::widget([
                                                             style="position: absolute;
                                                             bottom: 60 ;
                                                             left: 30 ;"
-                                                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                            xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                             <defs>
                                                                 <filter id="Ellipse_18" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                     <feOffset dy="3" input="SourceAlpha"/>
@@ -394,7 +397,7 @@ echo ModalAjax::widget([
                                                         style="position: absolute;
                                                         bottom: 60;
                                                         right: 30;"
-                                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                        xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                         <defs>
                                                             <filter id="Ellipse_20" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                 <feOffset dy="3" input="SourceAlpha"/>
@@ -470,7 +473,7 @@ echo ModalAjax::widget([
                                                                 width="50"
                                                                 height="50"
                                                                 class="rounded-circle"
-                                                                src="<?= "http://www.theleader.team/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
+                                                                src="<?= "http://streameapp.com/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
                                                                 />
                                                         </div>
                                                         <div style="display:inline-block;">
@@ -482,7 +485,7 @@ echo ModalAjax::widget([
                                                             style="float: right;
                                                             margin: 10px;
                                                             transform: rotate(-45deg);"
-                                                            xmlns="http://www.w3.org/2000/svg" width="15.575" height="15.18" viewBox="0 0 15.575 15.18">
+                                                            xmlns="http://w3.org/2000/svg" width="15.575" height="15.18" viewBox="0 0 15.575 15.18">
                                                             <path id="Path_13" data-name="Path 13" d="M14.654,6.121,2.343.163A1.632,1.632,0,0,0,.117,2.238L2.258,7.589.117,12.941a1.632,1.632,0,0,0,2.226,2.076L14.654,9.058a1.632,1.632,0,0,0,0-2.937ZM1.128,1.834a.53.53,0,0,1,.134-.6.527.527,0,0,1,.608-.092l12.2,5.9H3.212Zm.742,12.2a.544.544,0,0,1-.742-.692L3.212,8.133H14.069Z" fill="#909090"/>
                                                         </svg>
 
@@ -497,7 +500,7 @@ echo ModalAjax::widget([
                                                                     <li class="splide__slide">
 
                                                                         <video   style="background: black;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;" controls>
-                                                                            <source src="<?= "http://www.theleader.team/postChallengesFiles/" . $videosArray[$j] ?>" type="video/mp4">
+                                                                            <source src="<?= "http://streameapp.com/postChallengesFiles/" . $videosArray[$j] ?>" type="video/mp4">
 
                                                                                 Your browser does not support the video tag.
                                                                         </video>
@@ -516,7 +519,7 @@ echo ModalAjax::widget([
                                                             left: 30;"
 
 
-                                                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                            xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                             <defs>
                                                                 <filter id="Path_140" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                     <feOffset dy="3" input="SourceAlpha"/>
@@ -545,7 +548,7 @@ echo ModalAjax::widget([
                                                                 style="position: absolute;
                                                                 bottom: 60;
                                                                 right: 30;"
-                                                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                                xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                                 <defs>
                                                                     <filter id="Ellipse_20" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                         <feOffset dy="3" input="SourceAlpha"/>
@@ -661,7 +664,7 @@ echo ModalAjax::widget([
                                                                 width="50"
                                                                 height="50"
                                                                 class="rounded-circle"
-                                                                src="<?= "http://www.theleader.team/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
+                                                                src="<?= "http://streameapp.com/profilePicture/" . $rooms[$i]["profile_picture"] ?>"
                                                                 />
                                                         </div>
                                                         <div style="display:inline-block;">
@@ -673,7 +676,7 @@ echo ModalAjax::widget([
                                                             style="float: right;
                                                             transform: rotate(-45deg);
                                                             margin: 10px;"
-                                                            xmlns="http://www.w3.org/2000/svg" width="15.575" height="15.18" viewBox="0 0 15.575 15.18">
+                                                            xmlns="http://w3.org/2000/svg" width="15.575" height="15.18" viewBox="0 0 15.575 15.18">
                                                             <path id="Path_13" data-name="Path 13" d="M14.654,6.121,2.343.163A1.632,1.632,0,0,0,.117,2.238L2.258,7.589.117,12.941a1.632,1.632,0,0,0,2.226,2.076L14.654,9.058a1.632,1.632,0,0,0,0-2.937ZM1.128,1.834a.53.53,0,0,1,.134-.6.527.527,0,0,1,.608-.092l12.2,5.9H3.212Zm.742,12.2a.544.544,0,0,1-.742-.692L3.212,8.133H14.069Z" fill="#909090"/>
                                                         </svg>
 
@@ -714,7 +717,7 @@ echo ModalAjax::widget([
 
                                                             <svg     style="position: relative;
                                                                      bottom: 60 ;
-                                                                     left: 30 ;"     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                                     left: 30 ;"     xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
 
                                                                 <defs>
                                                                     <filter id="Ellipse_18" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
@@ -751,7 +754,7 @@ echo ModalAjax::widget([
                                                                     style="position: absolute;
                                                                     bottom: 60;
                                                                     right: 30;"
-                                                                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                                    xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                                     <defs>
                                                                         <filter id="Path_140" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                             <feOffset dy="3" input="SourceAlpha"/>
@@ -781,7 +784,7 @@ echo ModalAjax::widget([
                                                                 style="position: relative;
                                                                 bottom: 60 ;
                                                                 left: 30 ;"
-                                                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                                xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                                 <defs>
                                                                     <filter id="Ellipse_18" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                         <feOffset dy="3" input="SourceAlpha"/>
@@ -808,7 +811,7 @@ echo ModalAjax::widget([
                                                                 style="position: absolute;
                                                                 bottom: 141px;
                                                                 right: 30;"
-                                                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+                                                                xmlns="http://w3.org/2000/svg" xmlns:xlink="http://w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
                                                                 <defs>
                                                                     <filter id="Ellipse_20" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
                                                                         <feOffset dy="3" input="SourceAlpha"/>

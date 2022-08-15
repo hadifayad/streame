@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
         <?php
     echo $form->field($model, 'file[]')->widget(FileInput::classname(), [
         'options' => [
-            'accept' => 'image/*',
+            'accept' => 'image/*,mp4',
             'multiple' => true
         ],
         'pluginOptions' => [

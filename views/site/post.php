@@ -23,7 +23,7 @@ if ($room["type"] == "pictures") {
                     width="50"
                     height="50"
                     class="rounded-circle"
-                    src="<?= "http://www.theleader.team/profilePicture/" . $room["profile_picture"] ?>"
+                    src="<?= "http://www.streameapp.com/profilePicture/" . $room["profile_picture"] ?>"
                     />
             </div>
             <div style="display:inline-block;">
@@ -51,7 +51,7 @@ if ($room["type"] == "pictures") {
                             <img
                                 style="background: black;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;"
                                 class=""
-                                src="<?= "http://www.theleader.team/postPictures/" . $imagesArray[$j] ?>"
+                                src="<?= "http://www.streameapp.com/postPictures/" . $imagesArray[$j] ?>"
                                 />
                         </li>   
                     <?php } ?>
@@ -225,7 +225,7 @@ if ($room["type"] == "video") {
                     width="50"
                     height="50"
                     class="rounded-circle"
-                    src="<?= "http://www.theleader.team/profilePicture/" . $room["profile_picture"] ?>"
+                    src="<?= "http://www.streameapp.com/profilePicture/" . $room["profile_picture"] ?>"
                     />
             </div>
             <div style="display:inline-block;">
@@ -249,7 +249,7 @@ if ($room["type"] == "video") {
 
 
             <video   style="background: black ;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;" controls>
-                <source src="<?= "http://www.theleader.team/postVideos/" . $room["files"] ?>" type="video/mp4">
+                <source src="<?= "http://www.streameapp.com/postVideos/" . $room["files"] ?>" type="video/mp4">
 
                     Your browser does not support the video tag.
             </video>
@@ -422,7 +422,7 @@ if ($room["type"] == "text") {
                         width="50"
                         height="50"
                         class="rounded-circle"
-                        src="<?= "http://www.theleader.team/profilePicture/" . $room["profile_picture"] ?>"
+                        src="<?= "http://www.streameapp.com/profilePicture/" . $room["profile_picture"] ?>"
                         />
                 </div>
                 <div style="display:inline-block;">
@@ -449,7 +449,7 @@ if ($room["type"] == "text") {
                             <li class="splide__slide">
 
                                 <video   style="background: black;width: 100%; height: 500px;border-radius: 10px; object-fit: contain;" controls>
-                                    <source src="<?= "http://www.theleader.team/postChallengesFiles/" . $videosArray[$j] ?>" type="video/mp4">
+                                    <source src="<?= "http://www.streameapp.com/postChallengesFiles/" . $videosArray[$j] ?>" type="video/mp4">
 
                                         Your browser does not support the video tag.
                                 </video>
@@ -612,7 +612,7 @@ if ($room["type"] == "text") {
                         width="50"
                         height="50"
                         class="rounded-circle"
-                        src="<?= "http://www.theleader.team/profilePicture/" . $room["profile_picture"] ?>"
+                        src="<?= "http://www.streameapp.com/profilePicture/" . $room["profile_picture"] ?>"
                         />
                 </div>
                 <div style="display:inline-block;">
@@ -823,7 +823,7 @@ for ($i = 0; $i < sizeof($commentsByPost); $i++) {
                     width="50"
                     height="50"
                     class="rounded-circle"
-                    src="<?= "http://www.theleader.team/profilePicture/" . $comment["profile_picture"] ?>"
+                    src="<?= "http://www.streameapp.com/profilePicture/" . $comment["profile_picture"] ?>"
                     />
             </div>
             <div style="display:inline-block;">

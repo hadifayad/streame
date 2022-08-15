@@ -47,6 +47,7 @@ use Yii;
 class Rooms extends \yii\db\ActiveRecord {
 
     public $file;
+    public $video;
 
     /**
      * {@inheritdoc}
@@ -67,7 +68,11 @@ class Rooms extends \yii\db\ActiveRecord {
             [['title'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 50],
             [['file'], 'file', 'skipOnEmpty' => true,
-                'extensions' => 'png,jpg',
+                'extensions' => 'png,jpg,mp4',
+                'maxFiles' => 5,
+            ],
+              [['video'], 'file', 'skipOnEmpty' => true,
+                'extensions' => 'mp4',
                 'maxFiles' => 5,
             ],
             [['category', 'video_thumbnail'], 'string', 'max' => 200],
